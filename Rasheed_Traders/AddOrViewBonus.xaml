@@ -1,0 +1,25 @@
+﻿<Window x:Class="Rasheed_Traders.AddOrViewBonus"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Rasheed_Traders"
+        mc:Ignorable="d"
+        Title="AddOrViewBonus" Height="450" Width="800">
+    <Grid>
+        <Grid x:Name="createBonus" Height="Auto" Width="Auto" Margin="1,1,359,-1">
+            <Grid x:Name="newBonus" Width="Auto" Height="Auto" Background="#FFFDFBFB" Margin="0,70,180,-2">
+                <TextBlock HorizontalAlignment="Left" Margin="19,24,0,0" Text="Name" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="28" FontFamily="Century" Width="88"/>
+                <TextBox HorizontalAlignment="Left" Margin="20,72,0,0" VerticalAlignment="Top" Width="287" FontSize="24" Height="40"/>
+                <TextBlock HorizontalAlignment="Left" Margin="20,135,0,0" Text="Description" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="28" FontFamily="Century" Width="169"/>
+                <Button Content="Cancel" HorizontalAlignment="Left" Margin="215,339,0,0" VerticalAlignment="Top" Click="Button_Click" FontSize="24" Background="#FFF3C59F" FontFamily="Bell MT" Padding="8,4,8,4" RenderTransformOrigin="1.826,1.312" Width="98"/>
+                <Button Content="Create" HorizontalAlignment="Left" Margin="109,339,0,0" VerticalAlignment="Top" Click="Button_Click" FontSize="24" Background="#FFC4DE9C" FontFamily="Bell MT" Padding="8,4,8,4" Width="98"/>
+                <TextBox HorizontalAlignment="Left" Margin="22,185,0,0" TextWrapping="Wrap" AcceptsReturn="True"  VerticalAlignment="Top" FontSize="24" Height="135" Width="287"/>
+            </Grid>
+            <Label Content="CREAT A NEW BONUS" HorizontalAlignment="Left" Margin="10,15,0,0" VerticalAlignment="Top" FontFamily="Modern No. 20" FontSize="31" Background="#FFF1F0F0" Width="331"/>
+        </Grid>
+        <Grid x:Name="viewBonus" Height="Auto" Width="Auto" Margin="351,-1,2,1">
+            <DataGrid x:Name="table" Width="Auto" Height="Auto" Margin="16,16,14,14" FontSize="16" FontFamily="Arial"  ColumnWidth="*"/>
+        </Grid>
+    </Grid>
+</Window>

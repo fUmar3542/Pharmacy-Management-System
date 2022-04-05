@@ -1,0 +1,27 @@
+﻿<Window x:Class="Rasheed_Traders.Partner"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Rasheed_Traders"
+        mc:Ignorable="d"
+        Title="Partner" Height="450" Width="800">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="E:\partners.jpg" Opacity ="0.4" TileMode="None"/>
+        </Grid.Background>
+        <Grid x:Name="Main" Background="#FFDBE0D1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="327" Width="594" >
+            <Label x:Name="newMedicine" Content="NEW PARTNER" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FF260383" FontSize="34" FontWeight="Bold" HorizontalContentAlignment="Left" Height="48" Width="276" Background="{x:Null}" VerticalContentAlignment="Top" BorderBrush="#FF3C2323" FontFamily="Modern No. 20" Margin="0,8,0,0"/>
+            <Grid x:Name="sub" Background="#FFF9FBF5" Margin="31,61,27,19" Width="Auto" Height="Auto" >
+                <TextBlock HorizontalAlignment="Left" Margin="15,18,0,0" Text="Name" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="26" FontFamily="Century" Width="88"/>
+                <TextBox HorizontalAlignment="Left" Margin="193,18,0,0" VerticalAlignment="Top" Width="315" FontSize="26" Height="35"/>
+                <TextBlock HorizontalAlignment="Left" Margin="15,76,0,0" Text="Location" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="26" FontFamily="Century"/>
+                <TextBlock HorizontalAlignment="Left" Margin="15,134,0,0" Text="Phone" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="26" FontFamily="Century" Width="99"/>
+                <TextBox HorizontalAlignment="Left" Margin="193,76,0,0" VerticalAlignment="Top" Width="315" FontSize="26" Height="35"/>
+                <TextBox HorizontalAlignment="Left" Margin="193,134,0,0" VerticalAlignment="Top" Width="315" FontSize="26" Height="35"/>
+                <Button x:Name="Cancel" Content="Cancel" HorizontalAlignment="Left" Margin="410,190,0,0" VerticalAlignment="Top" Click="Button_Click" FontSize="24" Background="#FFF3C59F" FontFamily="Bell MT" Padding="8,4,8,4" RenderTransformOrigin="1.826,1.312" Width="98"/>
+                <Button x:Name="createButton" Content="Create" HorizontalAlignment="Left" Margin="297,190,0,0" VerticalAlignment="Top" Click="Button_Click" FontSize="24" Background="#FFC4DE9C" FontFamily="Bell MT" Padding="8,4,8,4" Width="98"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

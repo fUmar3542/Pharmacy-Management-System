@@ -1,0 +1,24 @@
+﻿<Window x:Class="Rasheed_Traders.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Rasheed_Traders"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="E:\login3.jpg" Opacity ="0.3" TileMode="None"/>
+        </Grid.Background>
+        <Grid x:Name="Main" HorizontalAlignment="center" VerticalAlignment="center">
+            <Label x:Name="mainHeading" Content="RASHEED TRADERS®" HorizontalAlignment="Left" Margin="130,58,0,0" VerticalAlignment="Top" Foreground="#FF361414" FontSize="48" FontWeight="Bold" HorizontalContentAlignment="Left" Height="70" Width="460" Background="{x:Null}" VerticalContentAlignment="Top" BorderBrush="#FF3C2323" FontFamily="Algerian"/>
+            <Button x:Name="ChangePassword" Content="Change Password" HorizontalAlignment="Left" Margin="610,26,0,0" VerticalAlignment="Top" Click="Button_Click" RenderTransformOrigin="0.53,1.355" OpacityMask="#FF811515" FontSize="18" Background="#FF214F57" FontFamily="Book Antiqua" FontWeight="Bold" Foreground="#FFF9F2F2" BorderBrush="#FFD67070" BorderThickness="0,0,0,0" Padding="8,4,8,4" ClickMode="Press" />
+            <TextBlock x:Name="Username" HorizontalAlignment="Left" Margin="134,156,0,0" Text="Username" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="36" FontFamily="Century Schoolbook" Foreground="#FF290C1B" FontStyle="Italic" TextDecorations="{x:Null}"/>
+            <TextBlock x:Name="Password" HorizontalAlignment="Left" Margin="134,256,0,0" Text="Password" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="36" FontFamily="Century Schoolbook" Foreground="#FF290C1B" FontStyle="Italic" TextDecorations="{x:Null}"/>
+            <Button x:Name="Login" Content="Login" HorizontalAlignment="Left" Margin="505,364,0,0" VerticalAlignment="Top" Click="Button_Click" RenderTransformOrigin="0.53,1.355" OpacityMask="#FFEED6D6" FontSize="20" Background="#FF214F57" FontFamily="Bell MT" FontWeight="Bold" Foreground="#FFF9F2F2" BorderBrush="#FFF0DBDB" Width="100" Padding="1,3,1,3"></Button>
+            <Button x:Name="signup" Content="Sign Up" HorizontalAlignment="Left" Margin="400,364,0,0" VerticalAlignment="Top" Click="Button_Click" RenderTransformOrigin="0.53,1.355" OpacityMask="#FFEED6D6" FontSize="20" Background="#FF214F57" FontFamily="Bell MT" FontWeight="Bold" Foreground="#FFF9F2F2" BorderBrush="#FFF0DBDB" Width="100" Padding="1,3,1,3"></Button>
+            <TextBox x:Name="UserBlock" HorizontalAlignment="Left" Margin="134,204,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="471" Background="{x:Null}" TextDecorations="{x:Null}" FontSize="24" BorderBrush="#FF2B1A1A" SelectionBrush="#FF1D2225" BorderThickness="0,0,0,1" TextChanged="TextBox_TextChanged" CaretBrush="#FF400836" Opacity="0.99" Cursor="Hand" Foreground="#FFE80A0A"/>
+            <PasswordBox x:Name="PassBlock"  MaxLength="8" HorizontalAlignment="Left" Margin="134,313,0,0"  VerticalAlignment="Top" Width="471" Background="{x:Null}"  FontSize="24" BorderBrush="#FF2B1A1A" SelectionBrush="#FF1D2225" BorderThickness="0,0,0,1" CaretBrush="#FF400836"  Opacity="1.0" Cursor="Hand" Foreground="#FFE80A0A" />
+        </Grid>
+    </Grid>
+</Window>
