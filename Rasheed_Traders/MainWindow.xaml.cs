@@ -42,14 +42,80 @@ namespace Rasheed_Traders
             }
             else if (sender.Equals(ChangePassword))
             {
-                string title = "Window1";  /*Your Window Instance Name*/
-                var existingWindow = Application.Current.Windows.
-                Cast<Window>().SingleOrDefault(x => x.Title.Equals(title));
-                if (existingWindow == null)
+                if (userBlock.Text != null)
                 {
-                    Window1 newWindow = new Window1(); /* Give Your window Instance */
-                    newWindow.Title = title;
-                    newWindow.Show();
+                    Rasheed_TradersEntities db = new Rasheed_TradersEntities();
+                    var doc = from d in db.Users
+                              select new
+                              {
+                                  username = d.username,
+                              };
+                    bool check = false;
+                    foreach(var item in doc)
+                    {
+                        if(item.username == userBlock.Text)
+                        {
+                            check = true;
+                            string title = "Window1";  /*Your Window Instance Name*/
+                            var existingWindow = Application.Current.Windows.
+                            Cast<Window>().SingleOrDefault(x => x.Title.Equals(title));
+                            if (existingWindow == null)
+                            {
+                                Window1 newWindow = new Window1(userBlock.Text); /* Give Your window Instance */
+                                newWindow.Title = title;
+                                newWindow.Show();
+                            }
+                        }
+                    }
+                    if(check == false)
+                        MessageBox.Show("Username doesn't exit. Enter valid username or SignUp first");
+                }
+                else
+                    MessageBox.Show("Enter username first");
+            }
+            else if(sender.Equals(Login))
+            {
+                if ( userBlock.Text == null || passBlock.Password == null )
+                {
+                    MessageBox.Show("Please fill out all the fields first");
+                    return;
+                }
+                Rasheed_TradersEntities db = new Rasheed_TradersEntities();
+                var doc = from d in db.Users
+                          select new
+                          {
+                              username = d.username,
+                              Password = d.password
+                          };
+                bool check = false;
+                foreach (var item in doc)
+                {
+                    if (item.username == userBlock.Text)
+                    {
+                        check = true;
+                        if (item.Password == passBlock.Password)
+                        {                           
+                            string title = "HomeWindow";  /*Your Window Instance Name*/
+                            var existingWindow = Application.Current.Windows.
+                            Cast<Window>().SingleOrDefault(x => x.Title.Equals(title));
+                            if (existingWindow == null)
+                            {
+                                HomeWindow newWindow = new HomeWindow(); /* Give Your window Instance */
+                                newWindow.Title = title;
+                                newWindow.Show();
+                            }
+                            this.Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Incorrect Password");
+                            return;
+                        }
+                    }
+                }
+                if(check == false)
+                {
+                    MessageBox.Show("Username doesn't exist. Please signup");
                 }
             }
         }
