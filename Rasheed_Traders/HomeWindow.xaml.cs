@@ -44,11 +44,26 @@ namespace Rasheed_Traders
 
         private void loadData()
         {
-            List<Home> a = new List<Home>();
-            a.Add(new Home() { ID = 1, Type = "Syrup", Name = "Serum", Potency = "100mg", Quantity = 20 });
-            a.Add(new Home() { ID = 2, Type = "Tab", Name = "Panadol", Potency = "10mg", Quantity = 200 });
-            a.Add(new Home() { ID = 3, Type = "Syrup", Name = "Bronocol", Potency = "80mg", Quantity = 30 });
-            table.ItemsSource = a;
+            Rasheed_TradersEntities db = new Rasheed_TradersEntities();
+            var data = (from c in db.Medicines
+                        from e in db.Stocks.Where(x => x.medicineId == c.id).DefaultIfEmpty()
+                        from f in db.Types.Where(y => y.id == c.typeId).DefaultIfEmpty()
+                        select new
+                        {
+                            id = c.id,
+                            name = c.name,
+                            type = f.name,
+                            potency = c.potency,
+                            quantity = e.quantity,
+                        }).ToList();
+            table.ItemsSource = data;
+
+
+            //List<Home> a = new List<Home>();
+            //a.Add(new Home() { ID = 1, Type = "Syrup", Name = "Serum", Potency = "100mg", Quantity = 20 });
+            //a.Add(new Home() { ID = 2, Type = "Tab", Name = "Panadol", Potency = "10mg", Quantity = 200 });
+            //a.Add(new Home() { ID = 3, Type = "Syrup", Name = "Bronocol", Potency = "80mg", Quantity = 30 });
+            //table.ItemsSource = a;
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -127,12 +142,12 @@ namespace Rasheed_Traders
             }
         }
     }
-    public class Home
-    {
-        public int ID { get; set; }
-        public string Type { get; set; }
-        public string Name { get; set; }
-        public string Potency { get; set; }
-        public int Quantity { get; set; }
-    }
+    //public class Home
+    //{
+    //    public int ID { get; set; }
+    //    public string Type { get; set; }
+    //    public string Name { get; set; }
+    //    public string Potency { get; set; }
+    //    public int Quantity { get; set; }
+    //}
 }

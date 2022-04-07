@@ -10,9 +10,9 @@
         <Grid x:Name="createType" Height="Auto" Width="Auto" Margin="1,1,459,-1">
             <Grid x:Name="newType" Width="Auto" Height="Auto" Background="#FFFDFBFB">
                 <TextBlock HorizontalAlignment="Left" Margin="21,94,0,0" Text="Name" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="28" FontFamily="Century" Width="88"/>
-                <TextBox HorizontalAlignment="Left" Margin="20,146,0,0" VerticalAlignment="Top" Width="287" FontSize="28" Height="40"/>
-                <Button Content="Cancel" HorizontalAlignment="Left" Margin="213,216,0,0" VerticalAlignment="Top" Click="Button_Click" FontSize="24" Background="#FFF3C59F" FontFamily="Bell MT" Padding="8,4,8,4" RenderTransformOrigin="1.826,1.312" Width="98"/>
-                <Button Content="Create" HorizontalAlignment="Left" Margin="107,216,0,0" VerticalAlignment="Top" Click="Button_Click" FontSize="24" Background="#FFC4DE9C" FontFamily="Bell MT" Padding="8,4,8,4" Width="98"/>
+                <TextBox x:Name="typeName" HorizontalAlignment="Left" Margin="20,146,0,0" VerticalAlignment="Top" Width="287" FontSize="28" Height="40"/>
+                <Button x:Name="cancel" Content="Cancel" HorizontalAlignment="Left" Margin="213,216,0,0" VerticalAlignment="Top" Click="Button_Click" FontSize="24" Background="#FFF3C59F" FontFamily="Bell MT" Padding="8,4,8,4" RenderTransformOrigin="1.826,1.312" Width="98"/>
+                <Button x:Name="create" Content="Create" HorizontalAlignment="Left" Margin="107,216,0,0" VerticalAlignment="Top" Click="Button_Click" FontSize="24" Background="#FFC4DE9C" FontFamily="Bell MT" Padding="8,4,8,4" Width="98"/>
             </Grid>
             <Label Content="CREAT A NEW TYPE" HorizontalAlignment="Left" Margin="10,15,0,0" VerticalAlignment="Top" FontFamily="Modern No. 20" FontSize="31" Background="#FFF1F0F0" Width="320"/>
         </Grid>

@@ -26,19 +26,43 @@ namespace Rasheed_Traders
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            if (sender.Equals(cancel))
+                this.Close();
+            else if (sender.Equals(create))
+            {
+                if (typeName.Text == null )
+                {
+                    MessageBox.Show("Enter the type name");
+                    return;
+                }
+                Rasheed_TradersEntities db = new Rasheed_TradersEntities();
+                var doc = from d in db.Types
+                          select d;
+                foreach (var item in doc)
+                {
+                    if (item.name == typeName.Text)
+                    {
+                        MessageBox.Show("Type name already exist");
+                        return;
+                    }
+                }
+                Type u = new Type { name = typeName.Text, createdAt = DateTime.Now };
+                db.Types.Add(u);
+                db.SaveChanges();
+                MessageBox.Show("Type Created successfully");
+            }
         }
 
         private void loadData()
         {
-            List<Type> a = new List<Type>();
-            a.Add(new Type() { ID = 1, Name = "Serum", createdAt = new DateTime(1974, 1, 17), updatedAt = new DateTime(1974, 1, 17) });
-            a.Add(new Type() { ID = 2, Name = "Panadol", createdAt = new DateTime(1974, 1, 17), updatedAt = new DateTime(1974, 1, 17) });
-            a.Add(new Type() { ID = 3, Name = "Bronocol", createdAt = new DateTime(1974, 1, 17), updatedAt = new DateTime(1974, 1, 17) });
-            table.ItemsSource = a;
+            //List<Type> a = new List<Type>();
+            //a.Add(new Type() { ID = 1, Name = "Serum", createdAt = new DateTime(1974, 1, 17), updatedAt = new DateTime(1974, 1, 17) });
+            //a.Add(new Type() { ID = 2, Name = "Panadol", createdAt = new DateTime(1974, 1, 17), updatedAt = new DateTime(1974, 1, 17) });
+            //a.Add(new Type() { ID = 3, Name = "Bronocol", createdAt = new DateTime(1974, 1, 17), updatedAt = new DateTime(1974, 1, 17) });
+            //table.ItemsSource = a;
         }
     }
-    public class Type
+    public class Type1
     {
         public int ID { get; set; }
         public string Name { get; set; }

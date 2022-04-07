@@ -27,7 +27,31 @@ namespace Rasheed_Traders
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            if (sender.Equals(cancel))
+                this.Close();
+            else if (sender.Equals(create))
+            {
+                //if (bonusName.Text == null)
+                //{
+                //    MessageBox.Show("Enter the bonus name");
+                //    return;
+                //}
+                //Rasheed_TradersEntities db = new Rasheed_TradersEntities();
+                //var doc = from d in db.Types
+                //          select d;
+                //foreach (var item in doc)
+                //{
+                //    if (item.name == bonusName.Text)
+                //    {
+                //        MessageBox.Show("Bonus name already exist");
+                //        return;
+                //    }
+                //}
+                //Type u = new Type { name = bonusName.Text, createdAt = DateTime.Now };
+                //db.Types.Add(u);
+                //db.SaveChanges();
+                //MessageBox.Show("Type Created successfully");
+            }
         }
         private void loadData()
         {
