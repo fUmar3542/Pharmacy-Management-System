@@ -39,7 +39,7 @@ namespace Rasheed_Traders
                     MessageBox.Show("Password must match the confirm password");
                     return;
                 }
-                Rasheed_TradersEntities db = new Rasheed_TradersEntities();
+                Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
                 var doc = from d in db.Users
                           select new
                           {

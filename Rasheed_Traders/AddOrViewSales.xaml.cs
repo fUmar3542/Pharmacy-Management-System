@@ -24,13 +24,22 @@ namespace Rasheed_Traders
             InitializeComponent();
             loadData();
         }
-        private void loadData()
+        public void loadData()
         {
-            List<Sale> a = new List<Sale>();
-            a.Add(new Sale() { ID = 1, BuyerID = 1, Items = 30, Date = new DateTime(2000, 12, 21), DiscountPercentage = "20%", DiscountAmount = 1290, SubTotal = 5150, Total = 4650 });
-            a.Add(new Sale() { ID = 2, BuyerID = 2, Items = 37, Date = new DateTime(2010, 12, 21), DiscountPercentage = "40%", DiscountAmount = 1350, SubTotal = 5440, Total = 4890 });
-            a.Add(new Sale() { ID = 3, BuyerID = 3, Items = 40, Date = new DateTime(2020, 12, 21), DiscountPercentage = "23%", DiscountAmount = 1200, SubTotal = 6540, Total = 6050 });
-            table.ItemsSource = a;
+            Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+            var doc2 = from d in db.Sales
+                       where d.isDeleted == false
+                       select new
+                       {
+                           Id = d.id,
+                           SubTotal = d.subTotal,
+                           Total = d.total,
+                           Date = d.createdAt,
+                           Items = d.items,
+                           Discount_Percentage = d.discount,
+                           Discount_Amount = d.discountAmount,
+                       };
+            table.ItemsSource = doc2.ToList();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -51,17 +60,6 @@ namespace Rasheed_Traders
             {
 
             }
-        }
-        public class Sale
-        {
-            public int ID { get; set; }
-            public int BuyerID { get; set; }
-            public int Items { get; set; }
-            public DateTime Date { get; set; }
-            public string DiscountPercentage { get; set; }
-            public int DiscountAmount { get; set; }
-            public int SubTotal { get; set; }
-            public int Total { get; set; }
         }
     }
 }

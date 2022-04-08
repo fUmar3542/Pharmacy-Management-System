@@ -21,13 +21,14 @@ namespace Rasheed_Traders
         }
     
         public int id { get; set; }
-        public string discount { get; set; }
-        public Nullable<int> discountAmount { get; set; }
-        public int subTotal { get; set; }
-        public int total { get; set; }
+        public Nullable<double> discount { get; set; }
+        public Nullable<double> discountAmount { get; set; }
+        public double subTotal { get; set; }
+        public double total { get; set; }
         public System.DateTime createdAt { get; set; }
         public Nullable<System.DateTime> updatedAt { get; set; }
         public bool isDeleted { get; set; }
+        public int items { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SaleItem> SaleItems { get; set; }

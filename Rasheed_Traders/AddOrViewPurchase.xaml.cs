@@ -27,11 +27,7 @@ namespace Rasheed_Traders
 
         private void loadData()
         {
-            List<Data1> a = new List<Data1>();
-            a.Add(new Data1() { ID = 1, BuyerID = 1, Items = 30, Date = new DateTime(2000, 12, 21), DiscountPercentage = "20%", DiscountAmount = 1290, SubTotal = 5150, Total = 4650 });
-            a.Add(new Data1() { ID = 2, BuyerID = 2, Items = 37, Date = new DateTime(2010, 12, 21), DiscountPercentage = "40%", DiscountAmount = 1350, SubTotal = 5440, Total = 4890 });
-            a.Add(new Data1() { ID = 3, BuyerID = 3, Items = 40, Date = new DateTime(2020, 12, 21), DiscountPercentage = "23%", DiscountAmount = 1200, SubTotal = 6540, Total = 6050 });
-            table.ItemsSource = a;
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -53,16 +49,5 @@ namespace Rasheed_Traders
 
             }
         }
-    }
-    public class Data1
-    {
-        public int ID { get; set; }
-        public int BuyerID { get; set; }
-        public int Items { get; set; }
-        public DateTime Date { get; set; }
-        public string DiscountPercentage { get; set; }
-        public int DiscountAmount { get; set; }
-        public int SubTotal { get; set; }
-        public int Total { get; set; }
     }
 }

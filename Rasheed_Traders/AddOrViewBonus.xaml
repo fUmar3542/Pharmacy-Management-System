@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Rasheed_Traders"
         mc:Ignorable="d"
-        Title="AddOrViewBonus" Height="450" Width="800">
+        Title="AddOrViewBonus" Height="450" Width="900">
     <Grid>
         <Grid x:Name="createBonus" Height="Auto" Width="Auto" Margin="1,1,359,-1">
             <Grid x:Name="newBonus" Width="Auto" Height="Auto" Background="#FFFDFBFB" Margin="0,70,180,-2">
@@ -19,7 +19,7 @@
             <Label Content="CREAT A NEW BONUS" HorizontalAlignment="Left" Margin="10,15,0,0" VerticalAlignment="Top" FontFamily="Modern No. 20" FontSize="31" Background="#FFF1F0F0" Width="331"/>
         </Grid>
         <Grid x:Name="viewBonus" Height="Auto" Width="Auto" Margin="351,-1,2,1">
-            <DataGrid x:Name="table" Width="Auto" Height="Auto" Margin="16,16,14,14" FontSize="16" FontFamily="Arial"  ColumnWidth="*"/>
+            <DataGrid x:Name="tableData" Width="Auto" Height="Auto" Margin="16,16,14,14" FontSize="16" FontFamily="Arial"  ColumnWidth="*"/>
         </Grid>
     </Grid>
 </Window>

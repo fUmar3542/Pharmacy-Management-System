@@ -10,8 +10,11 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="description" Type="text" />
+          <Property Name="createdAt" Type="datetime" Nullable="false" />
+          <Property Name="updatedAt" Type="datetime" />
+          <Property Name="isDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Medicine">
           <Key>
@@ -20,7 +23,7 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="50" />
           <Property Name="priceBuy" Type="int" Nullable="false" />
-          <Property Name="priceSell" Type="int" />
+          <Property Name="priceSell" Type="int" Nullable="false" />
           <Property Name="typeId" Type="int" Nullable="false" />
           <Property Name="potency" Type="varchar" MaxLength="10" />
           <Property Name="createdAt" Type="datetime" Nullable="false" />
@@ -32,13 +35,14 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="discount" Type="varchar" MaxLength="10" />
-          <Property Name="discountAmount" Type="int" />
-          <Property Name="subTotal" Type="int" Nullable="false" />
-          <Property Name="total" Type="int" Nullable="false" />
+          <Property Name="discount" Type="float" />
+          <Property Name="discountAmount" Type="float" />
+          <Property Name="subTotal" Type="float" Nullable="false" />
+          <Property Name="total" Type="float" Nullable="false" />
           <Property Name="createdAt" Type="datetime" Nullable="false" />
           <Property Name="updatedAt" Type="datetime" />
           <Property Name="isDeleted" Type="bit" Nullable="false" />
+          <Property Name="items" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="SaleItem">
           <Key>
@@ -46,17 +50,18 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="medicineId" Type="int" Nullable="false" />
-          <Property Name="tpId" Type="int" Nullable="false" />
           <Property Name="saleId" Type="int" Nullable="false" />
           <Property Name="bonusId" Type="int" />
-          <Property Name="discount" Type="varchar" MaxLength="10" />
-          <Property Name="discountAmount" Type="int" />
+          <Property Name="discount" Type="float" />
+          <Property Name="discountAmount" Type="float" />
           <Property Name="quantity" Type="int" Nullable="false" />
-          <Property Name="subTotal" Type="int" Nullable="false" />
-          <Property Name="total" Type="int" Nullable="false" />
+          <Property Name="subTotal" Type="float" Nullable="false" />
+          <Property Name="total" Type="float" Nullable="false" />
           <Property Name="createdAt" Type="datetime" Nullable="false" />
           <Property Name="updatedAt" Type="datetime" />
           <Property Name="isDeleted" Type="bit" Nullable="false" />
+          <Property Name="buyerId" Type="int" Nullable="false" />
+          <Property Name="typeId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Stock">
           <Key>
@@ -127,18 +132,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SaleItem_Customer">
-          <End Role="TradingPartener" Type="Self.TradingPartener" Multiplicity="1" />
-          <End Role="SaleItem" Type="Self.SaleItem" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TradingPartener">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="SaleItem">
-              <PropertyRef Name="tpId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_SaleItem_Medicine">
           <End Role="Medicine" Type="Self.Medicine" Multiplicity="1" />
           <End Role="SaleItem" Type="Self.SaleItem" Multiplicity="*" />
@@ -160,6 +153,30 @@
             </Principal>
             <Dependent Role="SaleItem">
               <PropertyRef Name="saleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SaleItem_TradingPartner">
+          <End Role="TradingPartener" Type="Self.TradingPartener" Multiplicity="1" />
+          <End Role="SaleItem" Type="Self.SaleItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TradingPartener">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="SaleItem">
+              <PropertyRef Name="buyerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SaleItem_Type">
+          <End Role="Type" Type="Self.Type" Multiplicity="1" />
+          <End Role="SaleItem" Type="Self.SaleItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="SaleItem">
+              <PropertyRef Name="typeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -204,16 +221,20 @@
             <End Role="Bonus" EntitySet="Bonus" />
             <End Role="SaleItem" EntitySet="SaleItem" />
           </AssociationSet>
-          <AssociationSet Name="FK_SaleItem_Customer" Association="Self.FK_SaleItem_Customer">
-            <End Role="TradingPartener" EntitySet="TradingPartener" />
-            <End Role="SaleItem" EntitySet="SaleItem" />
-          </AssociationSet>
           <AssociationSet Name="FK_SaleItem_Medicine" Association="Self.FK_SaleItem_Medicine">
             <End Role="Medicine" EntitySet="Medicine" />
             <End Role="SaleItem" EntitySet="SaleItem" />
           </AssociationSet>
           <AssociationSet Name="FK_SaleItem_Sale" Association="Self.FK_SaleItem_Sale">
             <End Role="Sale" EntitySet="Sale" />
+            <End Role="SaleItem" EntitySet="SaleItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaleItem_TradingPartner" Association="Self.FK_SaleItem_TradingPartner">
+            <End Role="TradingPartener" EntitySet="TradingPartener" />
+            <End Role="SaleItem" EntitySet="SaleItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaleItem_Type" Association="Self.FK_SaleItem_Type">
+            <End Role="Type" EntitySet="Type" />
             <End Role="SaleItem" EntitySet="SaleItem" />
           </AssociationSet>
           <AssociationSet Name="FK_Stock_Customer" Association="Self.FK_Stock_Customer">
@@ -234,8 +255,11 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="createdAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="updatedAt" Type="DateTime" Precision="3" />
+          <Property Name="isDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="SaleItems" Relationship="Self.FK_SaleItem_Bonus" FromRole="Bonus" ToRole="SaleItem" />
         </EntityType>
         <EntityType Name="Medicine">
@@ -245,7 +269,7 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="priceBuy" Type="Int32" Nullable="false" />
-          <Property Name="priceSell" Type="Int32" />
+          <Property Name="priceSell" Type="Int32" Nullable="false" />
           <Property Name="typeId" Type="Int32" Nullable="false" />
           <Property Name="potency" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="createdAt" Type="DateTime" Nullable="false" Precision="3" />
@@ -255,41 +279,29 @@
           <NavigationProperty Name="SaleItems" Relationship="Self.FK_SaleItem_Medicine" FromRole="Medicine" ToRole="SaleItem" />
           <NavigationProperty Name="Stocks" Relationship="Self.FK_Stock_Medicine" FromRole="Medicine" ToRole="Stock" />
         </EntityType>
-        <EntityType Name="Sale">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="discount" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="discountAmount" Type="Int32" />
-          <Property Name="subTotal" Type="Int32" Nullable="false" />
-          <Property Name="total" Type="Int32" Nullable="false" />
-          <Property Name="createdAt" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="updatedAt" Type="DateTime" Precision="3" />
-          <Property Name="isDeleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="SaleItems" Relationship="Self.FK_SaleItem_Sale" FromRole="Sale" ToRole="SaleItem" />
-        </EntityType>
         <EntityType Name="SaleItem">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="medicineId" Type="Int32" Nullable="false" />
-          <Property Name="tpId" Type="Int32" Nullable="false" />
           <Property Name="saleId" Type="Int32" Nullable="false" />
           <Property Name="bonusId" Type="Int32" />
-          <Property Name="discount" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="discountAmount" Type="Int32" />
+          <Property Name="discount" Type="Double" />
+          <Property Name="discountAmount" Type="Double" />
           <Property Name="quantity" Type="Int32" Nullable="false" />
-          <Property Name="subTotal" Type="Int32" Nullable="false" />
-          <Property Name="total" Type="Int32" Nullable="false" />
+          <Property Name="subTotal" Type="Double" Nullable="false" />
+          <Property Name="total" Type="Double" Nullable="false" />
           <Property Name="createdAt" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="updatedAt" Type="DateTime" Precision="3" />
           <Property Name="isDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="buyerId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Bonu" Relationship="Self.FK_SaleItem_Bonus" FromRole="SaleItem" ToRole="Bonus" />
           <NavigationProperty Name="Medicine" Relationship="Self.FK_SaleItem_Medicine" FromRole="SaleItem" ToRole="Medicine" />
-          <NavigationProperty Name="Sale" Relationship="Self.FK_SaleItem_Sale" FromRole="SaleItem" ToRole="Sale" />
-          <NavigationProperty Name="TradingPartener" Relationship="Self.FK_SaleItem_Customer" FromRole="SaleItem" ToRole="TradingPartener" />
+          <NavigationProperty Name="TradingPartener" Relationship="Self.FK_SaleItem_TradingPartner" FromRole="SaleItem" ToRole="TradingPartener" />
+          <Property Name="typeId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Type" Relationship="Rasheed_TradersModel.FK_SaleItem_Type" FromRole="SaleItem" ToRole="Type" />
+          <NavigationProperty Name="Sale" Relationship="Rasheed_TradersModel.FK_SaleItem_Sale" FromRole="SaleItem" ToRole="Sale" />
         </EntityType>
         <EntityType Name="Stock">
           <Key>
@@ -318,7 +330,7 @@
           <Property Name="isDeleted" Type="Boolean" Nullable="false" />
           <Property Name="isBuyer" Type="Boolean" />
           <Property Name="isSeller" Type="Boolean" />
-          <NavigationProperty Name="SaleItems" Relationship="Self.FK_SaleItem_Customer" FromRole="TradingPartener" ToRole="SaleItem" />
+          <NavigationProperty Name="SaleItems" Relationship="Self.FK_SaleItem_TradingPartner" FromRole="TradingPartener" ToRole="SaleItem" />
           <NavigationProperty Name="Stocks" Relationship="Self.FK_Stock_Customer" FromRole="TradingPartener" ToRole="Stock" />
         </EntityType>
         <EntityType Name="Type">
@@ -331,6 +343,7 @@
           <Property Name="updatedAt" Type="DateTime" Precision="3" />
           <Property Name="isDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Medicines" Relationship="Self.FK_Medicine_Type" FromRole="Type" ToRole="Medicine" />
+          <NavigationProperty Name="SaleItems" Relationship="Rasheed_TradersModel.FK_SaleItem_Type" FromRole="Type" ToRole="SaleItem" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -389,19 +402,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SaleItem_Sale">
-          <End Role="Sale" Type="Self.Sale" Multiplicity="1" />
-          <End Role="SaleItem" Type="Self.SaleItem" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Sale">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="SaleItem">
-              <PropertyRef Name="saleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SaleItem_Customer">
+        <Association Name="FK_SaleItem_TradingPartner">
           <End Role="TradingPartener" Type="Self.TradingPartener" Multiplicity="1" />
           <End Role="SaleItem" Type="Self.SaleItem" Multiplicity="*" />
           <ReferentialConstraint>
@@ -409,7 +410,7 @@
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="SaleItem">
-              <PropertyRef Name="tpId" />
+              <PropertyRef Name="buyerId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -425,10 +426,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Rasheed_TradersEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="Rasheed_TradersEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Bonus" EntityType="Self.Bonu" />
           <EntitySet Name="Medicines" EntityType="Self.Medicine" />
-          <EntitySet Name="Sales" EntityType="Self.Sale" />
           <EntitySet Name="SaleItems" EntityType="Self.SaleItem" />
           <EntitySet Name="Stocks" EntityType="Self.Stock" />
           <EntitySet Name="TradingParteners" EntityType="Self.TradingPartener" />
@@ -450,11 +450,7 @@
             <End Role="Medicine" EntitySet="Medicines" />
             <End Role="Stock" EntitySet="Stocks" />
           </AssociationSet>
-          <AssociationSet Name="FK_SaleItem_Sale" Association="Self.FK_SaleItem_Sale">
-            <End Role="Sale" EntitySet="Sales" />
-            <End Role="SaleItem" EntitySet="SaleItems" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SaleItem_Customer" Association="Self.FK_SaleItem_Customer">
+          <AssociationSet Name="FK_SaleItem_TradingPartner" Association="Self.FK_SaleItem_TradingPartner">
             <End Role="TradingPartener" EntitySet="TradingParteners" />
             <End Role="SaleItem" EntitySet="SaleItems" />
           </AssociationSet>
@@ -462,19 +458,70 @@
             <End Role="TradingPartener" EntitySet="TradingParteners" />
             <End Role="Stock" EntitySet="Stocks" />
           </AssociationSet>
+          <AssociationSet Name="FK_SaleItem_Type" Association="Rasheed_TradersModel.FK_SaleItem_Type">
+            <End Role="Type" EntitySet="Types" />
+            <End Role="SaleItem" EntitySet="SaleItems" />
+          </AssociationSet>
+          <EntitySet Name="Sales" EntityType="Rasheed_TradersModel.Sale" />
+          <AssociationSet Name="FK_SaleItem_Sale" Association="Rasheed_TradersModel.FK_SaleItem_Sale">
+            <End Role="Sale" EntitySet="Sales" />
+            <End Role="SaleItem" EntitySet="SaleItems" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_SaleItem_Type">
+          <End Type="Rasheed_TradersModel.Type" Role="Type" Multiplicity="1" />
+          <End Type="Rasheed_TradersModel.SaleItem" Role="SaleItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="SaleItem">
+              <PropertyRef Name="typeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Sale">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="discount" Type="Double" />
+          <Property Name="discountAmount" Type="Double" />
+          <Property Name="subTotal" Type="Double" Nullable="false" />
+          <Property Name="total" Type="Double" Nullable="false" />
+          <Property Name="createdAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="updatedAt" Type="DateTime" Precision="3" />
+          <Property Name="isDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="items" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SaleItems" Relationship="Rasheed_TradersModel.FK_SaleItem_Sale" FromRole="Sale" ToRole="SaleItem" />
+        </EntityType>
+        <Association Name="FK_SaleItem_Sale">
+          <End Type="Rasheed_TradersModel.Sale" Role="Sale" Multiplicity="1" />
+          <End Type="Rasheed_TradersModel.SaleItem" Role="SaleItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sale">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="SaleItem">
+              <PropertyRef Name="saleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Rasheed_TradersModelStoreContainer" CdmEntityContainer="Rasheed_TradersEntities">
+        <EntityContainerMapping StorageEntityContainer="Rasheed_TradersModelStoreContainer" CdmEntityContainer="Rasheed_TradersEntities1">
           <EntitySetMapping Name="Bonus">
             <EntityTypeMapping TypeName="Rasheed_TradersModel.Bonu">
               <MappingFragment StoreEntitySet="Bonus">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="createdAt" ColumnName="createdAt" />
+                <ScalarProperty Name="updatedAt" ColumnName="updatedAt" />
+                <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -493,26 +540,12 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Sales">
-            <EntityTypeMapping TypeName="Rasheed_TradersModel.Sale">
-              <MappingFragment StoreEntitySet="Sale">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="discount" ColumnName="discount" />
-                <ScalarProperty Name="discountAmount" ColumnName="discountAmount" />
-                <ScalarProperty Name="subTotal" ColumnName="subTotal" />
-                <ScalarProperty Name="total" ColumnName="total" />
-                <ScalarProperty Name="createdAt" ColumnName="createdAt" />
-                <ScalarProperty Name="updatedAt" ColumnName="updatedAt" />
-                <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SaleItems">
             <EntityTypeMapping TypeName="Rasheed_TradersModel.SaleItem">
               <MappingFragment StoreEntitySet="SaleItem">
+                <ScalarProperty Name="typeId" ColumnName="typeId" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="medicineId" ColumnName="medicineId" />
-                <ScalarProperty Name="tpId" ColumnName="tpId" />
                 <ScalarProperty Name="saleId" ColumnName="saleId" />
                 <ScalarProperty Name="bonusId" ColumnName="bonusId" />
                 <ScalarProperty Name="discount" ColumnName="discount" />
@@ -523,6 +556,7 @@
                 <ScalarProperty Name="createdAt" ColumnName="createdAt" />
                 <ScalarProperty Name="updatedAt" ColumnName="updatedAt" />
                 <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+                <ScalarProperty Name="buyerId" ColumnName="buyerId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -568,10 +602,25 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="Rasheed_TradersModel.User">
               <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sales">
+            <EntityTypeMapping TypeName="Rasheed_TradersModel.Sale">
+              <MappingFragment StoreEntitySet="Sale">
+                <ScalarProperty Name="items" ColumnName="items" />
+                <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+                <ScalarProperty Name="updatedAt" ColumnName="updatedAt" />
+                <ScalarProperty Name="createdAt" ColumnName="createdAt" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="subTotal" ColumnName="subTotal" />
+                <ScalarProperty Name="discountAmount" ColumnName="discountAmount" />
+                <ScalarProperty Name="discount" ColumnName="discount" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

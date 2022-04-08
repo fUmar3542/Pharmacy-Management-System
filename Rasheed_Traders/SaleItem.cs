@@ -16,21 +16,23 @@ namespace Rasheed_Traders
     {
         public int id { get; set; }
         public int medicineId { get; set; }
-        public int tpId { get; set; }
         public int saleId { get; set; }
         public Nullable<int> bonusId { get; set; }
-        public string discount { get; set; }
-        public Nullable<int> discountAmount { get; set; }
+        public Nullable<double> discount { get; set; }
+        public Nullable<double> discountAmount { get; set; }
         public int quantity { get; set; }
-        public int subTotal { get; set; }
-        public int total { get; set; }
+        public double subTotal { get; set; }
+        public double total { get; set; }
         public System.DateTime createdAt { get; set; }
         public Nullable<System.DateTime> updatedAt { get; set; }
         public bool isDeleted { get; set; }
+        public int buyerId { get; set; }
+        public int typeId { get; set; }
     
         public virtual Bonu Bonu { get; set; }
         public virtual Medicine Medicine { get; set; }
-        public virtual Sale Sale { get; set; }
         public virtual TradingPartener TradingPartener { get; set; }
+        public virtual Type Type { get; set; }
+        public virtual Sale Sale { get; set; }
     }
 }

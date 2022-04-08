@@ -44,7 +44,7 @@ namespace Rasheed_Traders
             {
                 if (userBlock.Text != null)
                 {
-                    Rasheed_TradersEntities db = new Rasheed_TradersEntities();
+                    Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
                     var doc = from d in db.Users
                               select new
                               {
@@ -80,7 +80,7 @@ namespace Rasheed_Traders
                     MessageBox.Show("Please fill out all the fields first");
                     return;
                 }
-                Rasheed_TradersEntities db = new Rasheed_TradersEntities();
+                Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
                 var doc = from d in db.Users
                           select new
                           {

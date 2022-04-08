@@ -18,6 +18,7 @@ namespace Rasheed_Traders
         public Type()
         {
             this.Medicines = new HashSet<Medicine>();
+            this.SaleItems = new HashSet<SaleItem>();
         }
     
         public int id { get; set; }
@@ -28,5 +29,7 @@ namespace Rasheed_Traders
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Medicine> Medicines { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SaleItem> SaleItems { get; set; }
     }
 }

@@ -13,10 +13,10 @@ namespace Rasheed_Traders
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class Rasheed_TradersEntities : DbContext
+    public partial class Rasheed_TradersEntities1 : DbContext
     {
-        public Rasheed_TradersEntities()
-            : base("name=Rasheed_TradersEntities")
+        public Rasheed_TradersEntities1()
+            : base("name=Rasheed_TradersEntities1")
         {
         }
     
@@ -27,11 +27,11 @@ namespace Rasheed_Traders
     
         public virtual DbSet<Bonu> Bonus { get; set; }
         public virtual DbSet<Medicine> Medicines { get; set; }
-        public virtual DbSet<Sale> Sales { get; set; }
         public virtual DbSet<SaleItem> SaleItems { get; set; }
         public virtual DbSet<Stock> Stocks { get; set; }
         public virtual DbSet<TradingPartener> TradingParteners { get; set; }
         public virtual DbSet<Type> Types { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Sale> Sales { get; set; }
     }
 }
