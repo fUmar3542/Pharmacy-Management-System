@@ -36,7 +36,7 @@ namespace Rasheed_Traders
                     MessageBox.Show("Please fill out all the fields first");
                     return;
                 }
-                Rasheed_TradersEntities db = new Rasheed_TradersEntities();
+                Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
                 var doc = from d in db.Users
                           where userName == d.username
                           select d;

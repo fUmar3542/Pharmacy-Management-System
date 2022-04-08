@@ -31,43 +31,44 @@ namespace Rasheed_Traders
                 this.Close();
             else if (sender.Equals(create))
             {
-                //if (bonusName.Text == null)
-                //{
-                //    MessageBox.Show("Enter the bonus name");
-                //    return;
-                //}
-                //Rasheed_TradersEntities db = new Rasheed_TradersEntities();
-                //var doc = from d in db.Types
-                //          select d;
-                //foreach (var item in doc)
-                //{
-                //    if (item.name == bonusName.Text)
-                //    {
-                //        MessageBox.Show("Bonus name already exist");
-                //        return;
-                //    }
-                //}
-                //Type u = new Type { name = bonusName.Text, createdAt = DateTime.Now };
-                //db.Types.Add(u);
-                //db.SaveChanges();
-                //MessageBox.Show("Type Created successfully");
+                if (bonusName.Text == null)
+                {
+                    MessageBox.Show("Enter the bonus name");
+                    return;
+                }
+                Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+                var doc = from d in db.Bonus
+                          select d;
+                foreach (var item in doc)
+                {
+                    if (item.name == bonusName.Text)
+                    {
+                        MessageBox.Show("Bonus name already exist");
+                        return;
+                    }
+                }
+                Bonu b = new Bonu { createdAt = DateTime.Now, name = bonusName.Text, description = description.Text, isDeleted = false };
+                db.Bonus.Add(b);
+                db.SaveChanges();
+                MessageBox.Show("Bonus Created successfully");
+                loadData();
+                bonusName.Text = null;
+                description.Text = null;
             }
         }
         private void loadData()
         {
-            List<Bonus> a = new List<Bonus>();
-            a.Add(new Bonus() { ID = 1, Type = "Overall", Name = "Normal", Percentage = "10%" });
-            a.Add(new Bonus() { ID = 2, Type = "Particular", Name = "Advance", Percentage = "55%" });
-            a.Add(new Bonus() { ID = 3, Type = "Overall", Name = "Executive", Percentage = "80%" });
-            table.ItemsSource = a;
+            Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+            var doc = from d in db.Bonus
+                      where d.isDeleted == false
+                      select new
+                      {
+                          Id = d.id,
+                          Name = d.name,
+                          Date = d.createdAt,
+                          Description = d.description
+                      };
+            tableData.ItemsSource = doc.ToList();
         }
-    }
-
-    public class Bonus
-    {
-        public int ID { get; set; }
-        public string Type { get; set; }
-        public string Name { get; set; }
-        public string Percentage { get; set; }
     }
 }

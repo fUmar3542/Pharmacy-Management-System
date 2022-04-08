@@ -24,7 +24,7 @@ namespace Rasheed_Traders
         public int id { get; set; }
         public string name { get; set; }
         public int priceBuy { get; set; }
-        public Nullable<int> priceSell { get; set; }
+        public int priceSell { get; set; }
         public int typeId { get; set; }
         public string potency { get; set; }
         public System.DateTime createdAt { get; set; }

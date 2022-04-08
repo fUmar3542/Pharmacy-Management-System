@@ -35,7 +35,7 @@ namespace Rasheed_Traders
                     MessageBox.Show("Enter the type name");
                     return;
                 }
-                Rasheed_TradersEntities db = new Rasheed_TradersEntities();
+                Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
                 var doc = from d in db.Types
                           select d;
                 foreach (var item in doc)
@@ -50,16 +50,23 @@ namespace Rasheed_Traders
                 db.Types.Add(u);
                 db.SaveChanges();
                 MessageBox.Show("Type Created successfully");
+                loadData();
+                typeName.Text = null;
             }
         }
 
         private void loadData()
         {
-            //List<Type> a = new List<Type>();
-            //a.Add(new Type() { ID = 1, Name = "Serum", createdAt = new DateTime(1974, 1, 17), updatedAt = new DateTime(1974, 1, 17) });
-            //a.Add(new Type() { ID = 2, Name = "Panadol", createdAt = new DateTime(1974, 1, 17), updatedAt = new DateTime(1974, 1, 17) });
-            //a.Add(new Type() { ID = 3, Name = "Bronocol", createdAt = new DateTime(1974, 1, 17), updatedAt = new DateTime(1974, 1, 17) });
-            //table.ItemsSource = a;
+            Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+            var doc = from d in db.Types
+                      where d.isDeleted == false
+                      select new
+                      {
+                          Id = d.id,
+                          Name = d.name,
+                          Date = d.createdAt                         
+                      };
+            table.ItemsSource = doc.ToList();
         }
     }
     public class Type1
