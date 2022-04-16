@@ -25,8 +25,8 @@
             </Menu>
             <DataGrid x:Name="table" ColumnWidth="*" Margin="48,120,52,14" FontSize="16" FontFamily="Arial"  />
             <Grid x:Name="search"  Margin="0,0,0,0" HorizontalAlignment="Right" Width="Auto" >
-                <TextBox Margin="48,73,202,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" BorderBrush="#FF8B8D93" Height="35"/>
-                <Button Content="Search"  Margin="603,73,49,0" VerticalAlignment="Top" FontSize="22" Width="148" Padding="1,5,1,5" FontFamily="Bell MT" Background="#FFB2C78C"/>
+                <TextBox x:Name="searchedContent" Margin="48,73,202,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" BorderBrush="#FF8B8D93" Height="35"/>
+                <Button x:Name="searchButton" Content="Search"  Margin="603,73,49,0" VerticalAlignment="Top" FontSize="22" Width="148" Padding="1,5,1,5" FontFamily="Bell MT" Background="#FFB2C78C" Click="Button_Click"/>
             </Grid>
         </Grid>
     </Grid>

@@ -56,6 +56,8 @@ namespace Rasheed_Traders
                 User u = new User {name = name.Text, username = username.Text, password = password.Password, };
                 db.Users.Add(u);
                 db.SaveChanges();
+                MessageBox.Show("Username created successfully");
+                this.Close();
             }
         }
     }

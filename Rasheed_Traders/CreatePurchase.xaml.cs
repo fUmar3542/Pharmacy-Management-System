@@ -24,10 +24,10 @@ namespace Rasheed_Traders
     {
         public ObservableCollection<string> Positions { get; set; }
 
-        //List<TicketInfo> ticketsList = new List<TicketInfo>
-        //{
-        //    new TicketInfo{ mediStatus="True",mediCombo = new ObservableCollection<string>() { "Forward", "Defense", "Goalie" },typeStatus="True", typeCombo=new ObservableCollection<string>() { "Forward", "Defense", "Goalie" },Quantity=1}
-        //};
+        List<TicketInfo> ticketsList = new List<TicketInfo>
+        {
+            new TicketInfo{ mediStatus="True",mediCombo = new ObservableCollection<string>() { "Forward", "Defense", "Goalie" },typeStatus="True", typeCombo=new ObservableCollection<string>() { "Forward", "Defense", "Goalie" },Quantity=1}
+        };
         public CreatePurchase()
         {
             InitializeComponent();
@@ -49,54 +49,281 @@ namespace Rasheed_Traders
             }
             else if (sender.Equals(addRow))
             {
-                //TicketInfo t = new TicketInfo { mediStatus = "True", mediCombo = new ObservableCollection<string>() { "Forward", "Defense", "Goalie" }, typeStatus = "True", typeCombo = new ObservableCollection<string>() { "Forward", "Defense", "Goalie" }, Quantity = 1 };
-                //List<TicketInfo> list = table.Items.OfType<TicketInfo>().ToList();
-                //list.Add(t);
-                //table.ItemsSource = null;
-                //table.ItemsSource = list;
+                TicketInfo t = new TicketInfo { mediStatus = "True", mediCombo = new ObservableCollection<string>() { "Forward", "Defense", "Goalie" }, typeStatus = "True", typeCombo = new ObservableCollection<string>() { "Forward", "Defense", "Goalie" }, Quantity = 1 };
+                List<TicketInfo> list = table.Items.OfType<TicketInfo>().ToList();
+                list.Add(t);
+                table.ItemsSource = null;
+                table.ItemsSource = list;
             }
             else if (sender.Equals(removeRow))
             {
                 var selectedItem = table.SelectedItem;
                 if (selectedItem != null)
                 {
-                    //List<TicketInfo> list = table.Items.OfType<TicketInfo>().ToList();
-                    //for (int i = 0; i < list.Count; i++)
-                    //{
-                    //    if (list[i] == selectedItem)
-                    //        list.Remove(list[i]);
-                    //}
-                    //table.ItemsSource = null;
-                    //table.ItemsSource = list;
+                    List<TicketInfo> list = table.Items.OfType<TicketInfo>().ToList();
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        if (list[i] == selectedItem)
+                            list.Remove(list[i]);
+                    }
+                    table.ItemsSource = null;
+                    table.ItemsSource = list;
                 }
             }
             else if (sender.Equals(done))
             {
-                MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure?", "Sale Confirmation", System.Windows.MessageBoxButton.YesNo);
-                if (messageBoxResult == MessageBoxResult.Yes)  // error is here
-                {
-                    Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
-                    var doc = from d in db.TradingParteners
-                              select new
-                              {
-                                  name = d.name,
-                              };
-                    foreach (var item in doc)
-                    {
-                        combobox.Items.Add(item.name);
-                    }
-                }
+                saleDone();
             }
+        }
+
+        private void saleDone()
+        {
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure?", "Purchase Confirmation", System.Windows.MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                List<TicketInfo> list = table.Items.OfType<TicketInfo>().ToList();
+                if (list.Count() == 0)
+                    return;
+                Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+                List<string> mediId = new List<string>();
+                int id1 = 0, id2 = 0, id3 = 0, id4 = -1, i = 0;
+                double total1 = 0, subTotal = 0, iTotal = 0, iSubtotal, dAmount = 0;
+                string name = "";
+                // Partner id searching
+                var doc2 = (from d in db.TradingParteners
+                            where d.isDeleted == false && d.isSeller == true && d.name == combobox.Text
+                            select new
+                            {
+                                id = d.id,
+                                nm = d.name
+                            }).FirstOrDefault();
+                id3 = doc2.id;
+                name = doc2.nm;
+
+                Sale s = new Sale();
+                int bonus = 0;
+                double dPercentage = 0;
+
+                // Searching of medicineId and typeId of each record
+                foreach (var index in list)
+                {
+                    bonus = 0;
+                    id1 = returnId("Medicine", index.mediStatus);
+                    if (id1 == -1)
+                    {
+                        MessageBox.Show("Select items first");
+                        return;
+                    }
+                    id2 = returnId("Type", index.typeStatus);
+                    if (id2 == -1)
+                    {
+                        MessageBox.Show("Select items first");
+                        return;
+                    }
+                    if (index.bonusStatus != "0")
+                    {
+                        id4 = returnId("Bonus", index.bonusStatus);
+                        char[] num = index.bonusStatus.ToCharArray();
+                        int len = num.Length;
+                        int num2 = 0, num3 = 0, num4 = 0;
+                        while (num[num2] != '+')
+                        {
+                            num3 += (num[num2] - '0');
+                            num2++;
+                        }
+                        num2++;
+                        while (num2 != len)
+                        {
+                            num4 += (num[num2] - '0');
+                            num2++;
+                        }
+                        bonus = (index.Quantity / num3) * num4; // bonus items
+                    }
+                    updateStock(id1, id3, bonus + index.Quantity,index.Price);
+                    iSubtotal = index.Price * (index.Quantity);
+                    dAmount = (index.DiscountPercentage / 100) * iSubtotal;
+                    iTotal = iSubtotal - dAmount;
+                    total1 += iTotal;
+                    subTotal += iSubtotal;
+                    if (bonus != 0)   // if bonusId selected
+                    {
+                        SaleItem item = new SaleItem() { saleId = s.id, medicineId = id1, typeId = id2, buyerId = id3, bonusId = id4, total = iTotal, subTotal = iSubtotal, discount = index.DiscountPercentage, discountAmount = dAmount, quantity = index.Quantity + bonus, createdAt = DateTime.Now };
+                        db.SaleItems.Add(item);
+                    }
+                    else
+                    {
+                        SaleItem item = new SaleItem() { saleId = s.id, medicineId = id1, typeId = id2, buyerId = id3, total = iTotal, subTotal = iSubtotal, discount = index.DiscountPercentage, discountAmount = dAmount, quantity = index.Quantity, createdAt = DateTime.Now };
+                        db.SaleItems.Add(item);
+                    }
+                    dPercentage = index.DiscountPercentage;
+                    i++;
+                }
+                if (percentage.Text != "")
+                {
+                    double number = Convert.ToDouble(percentage.Text);
+                    s.discount = number;
+                    s.discountAmount = total1 * (number / 100);
+                    total1 = total1 - Convert.ToDouble(s.discountAmount);
+                }
+                s.subTotal = subTotal;
+                s.total = total1;
+                s.createdAt = DateTime.Now;
+                s.isDeleted = false;
+                s.items = i;
+                if(i == 1)
+                {
+                    s.discountAmount = dAmount;
+                    s.discount = dPercentage;
+                }
+                s.Name = name;
+                s.isPurchase = true;
+                db.Sales.Add(s);
+                db.SaveChanges();
+                this.Close();
+                updateWindow();
+            }
+        }
+
+        private void updateWindow()
+        {
+            string title = "AddOrViewPurchase";  /*Your Window Instance Name*/
+            var existingWindow = Application.Current.Windows.
+            Cast<Window>().SingleOrDefault(x => x.Title.Equals(title));
+            if (existingWindow != null)
+            {
+                existingWindow.Close();
+                AddOrViewPurchase newWindow = new AddOrViewPurchase(); /* Give Your window Instance */
+                newWindow.Title = title;
+                newWindow.Show();
+            }
+            string title1 = "HomeWindow";
+            var e = Application.Current.Windows.
+            Cast<Window>().SingleOrDefault(x => x.Title.Equals(title1));
+            if (e != null)
+            {
+                e.Close();
+                HomeWindow newWindow = new HomeWindow(); /* Give Your window Instance */
+                newWindow.Title = title;
+                newWindow.Show();
+            }
+        }
+        private void updateStock(int a, int b, int c,int price)
+        {
+            // Updating stock
+            Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+            var st = (from d in db.Stocks
+                     where d.isDeleted == false && d.medicineId == a 
+                     select d).FirstOrDefault();
+            if (st == null)
+            {
+                Stock stk = new Stock()
+                {
+                    medicineId = a,
+                    tpId = b,
+                    quantity = c,
+                    createdAt = DateTime.Now,
+                    isDeleted = false
+                };
+                db.Stocks.Add(stk);
+                var s = (from d in db.Medicines
+                         where d.isDeleted == false && d.id == a
+                         select d).FirstOrDefault();
+                s.priceBuy = price;
+            }
+            else
+                st.quantity += c;
+            db.SaveChanges();
+        }
+
+        public int returnId(string a, string b)
+        {
+            Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+            if (b == "")
+                return -1;
+            if (a == "Medicine")
+            {
+                var doc = (from d in db.Medicines
+                           where d.isDeleted == false && d.name == b
+                           select new
+                           {
+                               id = d.id
+                           }).FirstOrDefault();
+                return doc.id;
+            }
+            else if (a == "Bonus")
+            {
+                var doc = (from d in db.Bonus
+                           where d.isDeleted == false && d.name == b
+                           select new
+                           {
+                               id = d.id
+                           }).FirstOrDefault();
+                return doc.id;
+            }
+            else if (a == "Type")
+            {
+                var doc = (from d in db.Types
+                          where d.isDeleted == false && d.name == b
+                          select new
+                          {
+                              id = d.id
+                          }).FirstOrDefault();
+                return doc.id;
+            }
+            return -1;
         }
         private void loadData()
         {
-            //Positions = new ObservableCollection<string>() { "Forward", "Defense", "Goalie" };
-            //combobox.ItemsSource = Positions;
-            //table.Visibility = Visibility.Visible;
-            //table.RowHeight = 28;
-            //table.ItemsSource = ticketsList;
-            //cm.ItemsSource = Positions;
-            //cm1.ItemsSource = Positions;
+            // Select Seller
+            Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+            var doc = from d in db.TradingParteners
+                      where d.isSeller == true
+                      select new
+                      {
+                          name = d.name,
+                      };
+            foreach (var item in doc)
+            {
+                combobox.Items.Add(item.name);
+            }
+            // Select Medicine
+            var doc1 = from d in db.Medicines
+                       select new
+                       {
+                           name = d.name,
+                       };
+            List<string> m = new List<string>();
+            List<string> m1 = new List<string>();
+            List<string> m2 = new List<string>();
+            foreach (var item in doc1)
+            {
+                m.Add(item.name);
+                ticketsList[0].mediCombo.Add(item.name);
+            }
+            cm1.ItemsSource = m;
+            // Select Type
+            var doc2 = from d in db.Types
+                       select new
+                       {
+                           name = d.name,
+                       };
+            foreach (var item in doc2)
+            {
+                m1.Add(item.name);
+            }
+            cm.ItemsSource = m1;
+
+            // Select Bonus
+            var doc3 = from d in db.Bonus
+                       select new
+                       {
+                           name = d.name,
+                       };
+            foreach (var item in doc3)
+            {
+                m2.Add(item.name);
+            }
+            cm2.ItemsSource = m2;
         }
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

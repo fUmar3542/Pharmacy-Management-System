@@ -9,19 +9,28 @@
     <Grid>
         <Grid x:Name="Date" Width="Auto" Height="80" VerticalAlignment="Top" HorizontalAlignment="Center">
             <Label Content="From Date"  Margin="13,18,650,0" VerticalAlignment="Top" FontSize="22"  Padding="3,5,10,9" FontFamily="Bell MT" Background="#FFE6ECC5"/>
-            <DatePicker Margin="128,18,405,0" VerticalAlignment="Top" FontSize="22" BorderBrush="#FF8B8D93" Height="37" />
+            <DatePicker x:Name="fromDate" Margin="128,18,405,0" VerticalAlignment="Top" FontSize="22" BorderBrush="#FF8B8D93" Height="37"  CalendarClosed="dateTimePicker1_CloseUp"/>
             <Label Content="To Date"  Margin="400,18,252,0" VerticalAlignment="Top" FontSize="22"  Padding="20,5,3,9" FontFamily="Bell MT" Background="#FFE6ECC5"  FontStyle="Normal"/>
-            <DatePicker Margin="528,18,21,0"  VerticalAlignment="Top" FontSize="22" BorderBrush="#FF8B8D93" Height="37" />
+            <DatePicker x:Name="to" Margin="528,18,21,0"  VerticalAlignment="Top" FontSize="22" BorderBrush="#FF8B8D93" Height="37" CalendarClosed="dateTimePicker1_CloseUp"/>
         </Grid>
-        <Grid x:Name="Data" Height="Auto">
-            <DataGrid x:Name="table" ColumnWidth="*" Margin="25,71,24,109" FontSize="16" FontFamily="Arial" />
-        </Grid>
+        <DataGrid x:Name="table" ColumnWidth="*" Margin="25,71,24,109" FontSize="16" FontFamily="Arial" AutoGenerateColumns="false" IsReadOnly="true" DataContext="">
+            <DataGrid.Columns >
+                <DataGridTextColumn Header="Total Items" Binding="{Binding Total_Items}" Width="*"  FontFamily="Arial" ></DataGridTextColumn>
+                <DataGridTextColumn Header="Partner Name" Binding="{Binding Partner_Name}" Width="*"  FontFamily="Arial" ></DataGridTextColumn>
+                <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*"  FontFamily="Arial" ></DataGridTextColumn>
+                <DataGridTextColumn Header="SubTotal" Binding="{Binding SUBTOTAL}" Width="*"  FontFamily="Arial" ></DataGridTextColumn>
+                <DataGridTextColumn Header="Total" Binding="{Binding TOTAL}" Width="*"  FontFamily="Arial" ></DataGridTextColumn>
+                <DataGridTextColumn Header="Date" Binding="{Binding DATE}" Width="*"  FontFamily="Arial" ></DataGridTextColumn>
+                <DataGridTextColumn Header="Discount Percentage" Binding="{Binding Discount_Percentage}" Width="*"  FontFamily="Arial" ></DataGridTextColumn>
+                <DataGridTextColumn Header="Discount Amount" Binding="{Binding Discount_Amount}" Width="*"  FontFamily="Arial" ></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
         <Grid x:Name="Summary" Width="Auto" Height="100" VerticalAlignment="Bottom" >
             <TextBlock HorizontalAlignment="Left"  Text="Total Sale" TextWrapping="Wrap"  Background="#FFF1EECE" FontSize="20" FontFamily="Century" Margin="406,4,0,66"/>
-            <TextBox HorizontalAlignment="Left"   Width="206" FontSize="20" Height="24" Margin="571,6,0,70"/>
+            <TextBox x:Name="sale1" HorizontalAlignment="Left"  IsReadOnly="true" Width="206" FontSize="20" Height="24" Margin="550,6,22,70" FontFamily="Arial" Padding="2,2,0,0"/>
             <TextBlock HorizontalAlignment="Left"  Text="Total Purchase" TextWrapping="Wrap" Background="#FFF1EECE" FontSize="20" FontFamily="Century" Margin="407,36,0,36"/>
-            <TextBox HorizontalAlignment="Left"   Width="206" FontSize="20" Height="24" Margin="571,36,0,40"/>
-            <TextBox HorizontalAlignment="Left"   Width="206" FontSize="20" Height="24" Margin="571,66,0,10"/>
+            <TextBox x:Name="purchase" HorizontalAlignment="Left" IsReadOnly="true"  Width="206" FontSize="20" Height="24" Margin="550,36,0,40" Padding="2,2,0,0" FontFamily="Arial"/>
+            <TextBox x:Name="profit" HorizontalAlignment="Left" IsReadOnly="true"  Width="206" FontSize="20" Height="24" Margin="550,66,0,10" Padding="2,2,0,0" FontFamily="Arial"/>
             <TextBlock HorizontalAlignment="Left"  Text="Total Profit" TextWrapping="Wrap"  Background="#FFF1EECE" FontSize="20" FontFamily="Century" Margin="408,66,0,4"/>
         </Grid>
     </Grid>

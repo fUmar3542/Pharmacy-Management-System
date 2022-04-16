@@ -28,14 +28,14 @@ namespace Rasheed_Traders
         {
             Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
             var doc2 = from d in db.Sales
-                       where d.isDeleted == false
+                       where d.isDeleted == false && d.isPurchase == false
                        select new
                        {
-                           Id = d.id,
-                           SubTotal = d.subTotal,
-                           Total = d.total,
-                           Date = d.createdAt,
-                           Items = d.items,
+                           TOTAL_ITEMS = d.items,
+                           BUYER_NAME = d.Name.ToUpper(),
+                           SUBTOTAL = d.subTotal,
+                           TOTAL = d.total,
+                           DATE = d.createdAt,
                            Discount_Percentage = d.discount,
                            Discount_Amount = d.discountAmount,
                        };
@@ -58,7 +58,25 @@ namespace Rasheed_Traders
             }
             else if (sender.Equals(searchButton))
             {
-
+                if (searchedContent.Text == "")
+                {
+                    loadData();
+                    return;
+                }
+                Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+                var doc2 = from d in db.Sales
+                           where d.isDeleted == false && d.isPurchase == false && d.Name.Contains(searchedContent.Text)
+                           select new
+                           {
+                               TOTAL_ITEMS = d.items,
+                               BUYER_NAME = d.Name.ToUpper(),
+                               SUBTOTAL = d.subTotal,
+                               TOTAL = d.total,
+                               DATE = d.createdAt,
+                               Discount_Percentage = d.discount,
+                               Discount_Amount = d.discountAmount,
+                           };
+                table.ItemsSource = doc2.ToList();
             }
         }
     }

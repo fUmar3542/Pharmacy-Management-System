@@ -27,7 +27,20 @@ namespace Rasheed_Traders
 
         private void loadData()
         {
-
+            Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+            var doc2 = from d in db.Sales
+                       where d.isDeleted == false && d.isPurchase == true
+                       select new
+                       {
+                           TOTAL_ITEMS = d.items,
+                           SELLER_NAME = d.Name.ToUpper(),
+                           SUBTOTAL = d.subTotal,
+                           TOTAL = d.total,
+                           DATE = d.createdAt,
+                           Discount_Percentage = d.discount,
+                           Discount_Amount = d.discountAmount,
+                       };
+            table.ItemsSource = doc2.ToList();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -46,7 +59,25 @@ namespace Rasheed_Traders
             }
             else if (sender.Equals(searchButton))
             {
-
+                if (searchedContent.Text == "")
+                {
+                    loadData();
+                    return;
+                }
+                Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+                var doc2 = from d in db.Sales
+                           where d.isDeleted == false && d.isPurchase == true && d.Name.Contains(searchedContent.Text)
+                           select new
+                           {
+                               TOTAL_ITEMS = d.items,
+                               SELLER_NAME = d.Name.ToUpper(),
+                               SUBTOTAL = d.subTotal,
+                               TOTAL = d.total,
+                               DATE = d.createdAt,
+                               Discount_Percentage = d.discount,
+                               Discount_Amount = d.discountAmount,
+                           };
+                table.ItemsSource = doc2.ToList();
             }
         }
     }
