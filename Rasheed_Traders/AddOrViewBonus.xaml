@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Rasheed_Traders"
         mc:Ignorable="d"
-        Title="AddOrViewBonus" Height="450" Width="900">
+        Title="AddOrViewBonus" Height="500" Width="900">
     <Grid>
         <Grid x:Name="createBonus" Height="Auto" Width="Auto" Margin="1,1,359,-1">
             <Grid x:Name="newBonus" Width="Auto" Height="Auto" Background="#FFFDFBFB" Margin="0,70,180,-2">

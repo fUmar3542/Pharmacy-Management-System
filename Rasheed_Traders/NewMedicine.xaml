@@ -17,7 +17,7 @@
                 <TextBox x:Name="mediName" HorizontalAlignment="Left" Margin="193,12,0,0" VerticalAlignment="Top" Width="315" FontSize="26" Height="35"/>
                 <TextBlock HorizontalAlignment="Left" Margin="21,71,0,0" Text="Type" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="26" FontFamily="Century"/>
                 <TextBlock HorizontalAlignment="Left" Margin="21,129,0,0" Text="Potency" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="26" FontFamily="Century" Width="99"/>
-                <ComboBox x:Name="combo" HorizontalAlignment="Left" Margin="193,66,0,0" VerticalAlignment="Top" Width="315" FontSize="26" Height="35" SelectionChanged="ComboBox_SelectionChanged">
+                <ComboBox x:Name="combo" HorizontalAlignment="Left" Margin="193,66,0,0" VerticalAlignment="Top" Width="315" FontSize="22" Height="35" SelectionChanged="ComboBox_SelectionChanged">
                     <ComboBox.Background>
                         <LinearGradientBrush EndPoint="0,1">
                             <GradientStop Color="#FFF0F0F0"/>

@@ -29,6 +29,8 @@ namespace Rasheed_Traders
         public Nullable<System.DateTime> updatedAt { get; set; }
         public bool isDeleted { get; set; }
         public int items { get; set; }
+        public string Name { get; set; }
+        public Nullable<bool> isPurchase { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SaleItem> SaleItems { get; set; }

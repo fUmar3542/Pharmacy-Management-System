@@ -56,7 +56,27 @@ namespace Rasheed_Traders
                 db.TradingParteners.Add(u);
                 db.SaveChanges();
                 MessageBox.Show("Trading partner added successfully");
-                //this.Close();
+                this.Close();
+                string title = "AddOrViewSales";  /*Your Window Instance Name*/
+                var existingWindow = Application.Current.Windows.
+                Cast<Window>().SingleOrDefault(x => x.Title.Equals(title));
+                if (existingWindow != null)
+                {
+                    existingWindow.Close();
+                    AddOrViewSales newWindow1 = new AddOrViewSales(); /* Give Your window Instance */
+                    newWindow1.Title = title;
+                    newWindow1.Show();
+                }
+                string title1 = "AddOrViewPurchase";  /*Your Window Instance Name*/
+                var existingWindow1 = Application.Current.Windows.
+                Cast<Window>().SingleOrDefault(x => x.Title.Equals(title1));
+                if (existingWindow1 != null)
+                {
+                    existingWindow1.Close();
+                    AddOrViewPurchase newWindow = new AddOrViewPurchase(); /* Give Your window Instance */
+                    newWindow.Title = title1;
+                    newWindow.Show();
+                }
             }
         }
     }

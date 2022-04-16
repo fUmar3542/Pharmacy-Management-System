@@ -32,7 +32,7 @@ namespace Rasheed_Traders
                       where d.isDeleted == false
                       select new
                       {
-                          name = d.name,
+                          name = d.name.ToUpper(),
                       };
             foreach (var item in doc)
                 combo.Items.Add(item.name);
@@ -79,6 +79,7 @@ namespace Rasheed_Traders
                 db.Medicines.Add(u);
                 db.SaveChanges();
                 MessageBox.Show("Medicine added successfully");
+                this.Close();
             }
         }
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

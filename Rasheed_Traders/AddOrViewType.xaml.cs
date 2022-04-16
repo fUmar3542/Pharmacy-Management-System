@@ -62,7 +62,6 @@ namespace Rasheed_Traders
                       where d.isDeleted == false
                       select new
                       {
-                          Id = d.id,
                           Name = d.name,
                           Date = d.createdAt                         
                       };
