@@ -19,7 +19,6 @@ namespace Rasheed_Traders
     /// Interaction logic for CreatePurchase.xaml
     /// </summary>
     /// 
-
     public partial class CreatePurchase : Window
     {
         public ObservableCollection<string> Positions { get; set; }
@@ -186,16 +185,6 @@ namespace Rasheed_Traders
 
         private void updateWindow()
         {
-            string title = "AddOrViewPurchase";  /*Your Window Instance Name*/
-            var existingWindow = Application.Current.Windows.
-            Cast<Window>().SingleOrDefault(x => x.Title.Equals(title));
-            if (existingWindow != null)
-            {
-                existingWindow.Close();
-                AddOrViewPurchase newWindow = new AddOrViewPurchase(); /* Give Your window Instance */
-                newWindow.Title = title;
-                newWindow.Show();
-            }
             string title1 = "HomeWindow";
             var e = Application.Current.Windows.
             Cast<Window>().SingleOrDefault(x => x.Title.Equals(title1));
@@ -203,6 +192,16 @@ namespace Rasheed_Traders
             {
                 e.Close();
                 HomeWindow newWindow = new HomeWindow(); /* Give Your window Instance */
+                newWindow.Title = title1;
+                newWindow.Show();
+            }
+            string title = "AddOrViewPurchase";  /*Your Window Instance Name*/
+            var existingWindow = Application.Current.Windows.
+            Cast<Window>().SingleOrDefault(x => x.Title.Equals(title));
+            if (existingWindow != null)
+            {
+                existingWindow.Close();
+                AddOrViewPurchase newWindow = new AddOrViewPurchase(); /* Give Your window Instance */
                 newWindow.Title = title;
                 newWindow.Show();
             }
@@ -234,7 +233,6 @@ namespace Rasheed_Traders
                 st.quantity += c;
             db.SaveChanges();
         }
-
         public int returnId(string a, string b)
         {
             Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
@@ -312,7 +310,6 @@ namespace Rasheed_Traders
                 m1.Add(item.name);
             }
             cm.ItemsSource = m1;
-
             // Select Bonus
             var doc3 = from d in db.Bonus
                        select new
@@ -324,6 +321,7 @@ namespace Rasheed_Traders
                 m2.Add(item.name);
             }
             cm2.ItemsSource = m2;
+            
         }
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

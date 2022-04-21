@@ -8,11 +8,10 @@
         Title="AddOrViewSales" Height="500" Width="950">
     <Grid>
         <Grid x:Name="Main" Height="Auto" Width="Auto">
-            <DataGrid x:Name="table" ColumnWidth="*" Width="Auto" Height="Auto" Margin="25,71,24,14" FontSize="16" FontFamily="Arial"  />
+            <DataGrid x:Name="table" ColumnWidth="*" Width="Auto" Height="Auto" Margin="25,71,24,14" FontSize="16" FontFamily="Arial" MouseDoubleClick="Row_MouseDoubleClick" />
             <Grid x:Name="search"  Margin="0,0,0,0" HorizontalAlignment="Right" Width="Auto" >
-                <TextBox x:Name="searchedContent" Margin="29,20,340,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" BorderBrush="#FF8B8D93" Height="37"/>
-                <Button x:Name="createSale" Content="Create Sale"  Margin="620,20,32,0" VerticalAlignment="Top" FontSize="22" Width="148" Padding="1,5,1,5" FontFamily="Bell MT" Background="#FFF1A26B" Click="Button_Click"/>
-                <Button x:Name="searchButton" Content="Search"  Margin="467,20,185,0" VerticalAlignment="Top" FontSize="22" Width="148" Padding="1,5,1,5" FontFamily="Bell MT" Background="#FFB2C78C" Click="Button_Click"/>
+                <TextBox x:Name="searchedContent" Margin="0,20,250,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" BorderBrush="#FF8B8D93" Height="37" Width="470" TextChanged="searchedContent_TextChanged"/>
+                <Button x:Name="createSale" Content="Create Sale"  Margin="480,20,24,0" VerticalAlignment="Top" FontSize="22" Padding="5,5,5,5" FontFamily="Bell MT" Background="#FFF1A26B" RenderTransformOrigin="0.457,0.582" Click="Button_Click"/>
             </Grid>
         </Grid>
     </Grid>

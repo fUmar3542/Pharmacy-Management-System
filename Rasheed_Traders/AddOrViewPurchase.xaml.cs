@@ -23,6 +23,7 @@ namespace Rasheed_Traders
         {
             InitializeComponent();
             loadData();
+            searchedContent.Text = "Search";
         }
 
         private void loadData()
@@ -43,6 +44,40 @@ namespace Rasheed_Traders
             table.ItemsSource = doc2.ToList();
         }
 
+        private void Row_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            // Ensure row was clicked and not empty space
+            var row = ItemsControl.ContainerFromElement((DataGrid)sender,
+                                                e.OriginalSource as DependencyObject) as DataGridRow;
+            if (row == null)
+                return;
+            else
+            {
+                var s = table.SelectedItem;
+                int a = table.SelectedIndex, index = 0;
+                Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+                var doc2 = from d in db.Sales
+                           where d.isDeleted == false && d.isPurchase == true
+                           select d;
+                foreach (var item in doc2)
+                {
+                    if (a == index)
+                    {
+                        string title = "purchaseItems";  /*Your Window Instance Name*/
+                        var existingWindow = Application.Current.Windows.
+                        Cast<Window>().SingleOrDefault(x => x.Title.Equals(title));
+                        if (existingWindow == null)
+                        {
+                            purchaseItems newWindow = new purchaseItems(item.id); /* Give Your window Instance */
+                            newWindow.Title = title;
+                            newWindow.Show();
+                        }
+                    }
+                    index++;
+                }
+
+            }
+        }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (sender.Equals(createPurchase))
@@ -56,29 +91,30 @@ namespace Rasheed_Traders
                     newWindow.Title = title;
                     newWindow.Show();
                 }
-            }
-            else if (sender.Equals(searchButton))
+            }          
+        }
+
+        private void searchedContent_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (searchedContent.Text == "" || searchedContent.Text == "Search")
             {
-                if (searchedContent.Text == "")
-                {
-                    loadData();
-                    return;
-                }
-                Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
-                var doc2 = from d in db.Sales
-                           where d.isDeleted == false && d.isPurchase == true && d.Name.Contains(searchedContent.Text)
-                           select new
-                           {
-                               TOTAL_ITEMS = d.items,
-                               SELLER_NAME = d.Name.ToUpper(),
-                               SUBTOTAL = d.subTotal,
-                               TOTAL = d.total,
-                               DATE = d.createdAt,
-                               Discount_Percentage = d.discount,
-                               Discount_Amount = d.discountAmount,
-                           };
-                table.ItemsSource = doc2.ToList();
+                loadData();
+                return;
             }
+            Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+            var doc2 = from d in db.Sales
+                       where d.isDeleted == false && d.isPurchase == true && d.Name.Contains(searchedContent.Text)
+                       select new
+                       {
+                           TOTAL_ITEMS = d.items,
+                           SELLER_NAME = d.Name.ToUpper(),
+                           SUBTOTAL = d.subTotal,
+                           TOTAL = d.total,
+                           DATE = d.createdAt,
+                           Discount_Percentage = d.discount,
+                           Discount_Amount = d.discountAmount,
+                       };
+            table.ItemsSource = doc2.ToList();
         }
     }
 }

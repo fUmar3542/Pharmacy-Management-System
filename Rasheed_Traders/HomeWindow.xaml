@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Rasheed_Traders"
         mc:Ignorable="d"
-        Title="HomeWindow" Height="450" Width="800"
+        Title="HomeWindow" Height="480" Width="950"
         SizeChanged="Window_SizeChanged">
     <Grid>
         <Grid x:Name="Main" Height="Auto" Width="Auto">
-            <Menu x:Name="menu" Width="800" Height="50" Background="#FFF3CDCD" Margin="0,0,0,375" >
+            <Menu x:Name="menu" Width="auto" Height="50" Background="#FFF3CDCD" Margin="45,10,-8,0" VerticalAlignment="Top" HorizontalAlignment="Left">
                 <MenuItem Header="Medicine" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Constantia" RenderTransformOrigin="13.029,35.393" Padding="25,9,25,9">
                     <MenuItem x:Name="addMedicine" Header="Add New Medicine" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Constantia" RenderTransformOrigin="13.029,35.393" Padding="15,9,15,9" Click="MenuItem_Click"/>
                     <MenuItem x:Name="addType" Header="Add/View Type" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Constantia" RenderTransformOrigin="13.029,35.393" Padding="15,9,15,9"  Click="MenuItem_Click"/>
@@ -23,11 +23,8 @@
                 </MenuItem>
                 <MenuItem x:Name="ledger" Header="Ledger" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Constantia" RenderTransformOrigin="13.029,35.393" Padding="25,9,25,9" Click="MenuItem_Click"/>
             </Menu>
-            <DataGrid x:Name="table" ColumnWidth="*" Margin="48,120,52,14" FontSize="16" FontFamily="Arial"  />
-            <Grid x:Name="search"  Margin="0,0,0,0" HorizontalAlignment="Right" Width="Auto" >
-                <TextBox x:Name="searchedContent" Margin="48,73,202,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" BorderBrush="#FF8B8D93" Height="35"/>
-                <Button x:Name="searchButton" Content="Search"  Margin="603,73,49,0" VerticalAlignment="Top" FontSize="22" Width="148" Padding="1,5,1,5" FontFamily="Bell MT" Background="#FFB2C78C" Click="Button_Click"/>
-            </Grid>
+            <TextBox x:Name="searchedContent" ToolTip="Search Medicine" TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="22" BorderBrush="#FF8B8D93" Height="40" Width="318" TextChanged="searchedContent_TextChanged" Margin="0,15,52,0" Padding="8,4,0,0"/>
+            <DataGrid x:Name="table" ColumnWidth="*" Margin="48,78,52,14" FontSize="16" FontFamily="Arial"  />
         </Grid>
     </Grid>
 </Window>
