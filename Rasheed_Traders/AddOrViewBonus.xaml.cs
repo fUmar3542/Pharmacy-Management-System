@@ -33,7 +33,7 @@ namespace Rasheed_Traders
             {
                 if (bonusName.Text == null)
                 {
-                    MessageBox.Show("Enter the bonus name");
+                    MessageBox.Show("Enter bonus name");
                     return;
                 }
                 Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
@@ -54,6 +54,35 @@ namespace Rasheed_Traders
                 loadData();
                 bonusName.Text = null;
                 description.Text = null;
+                updateWindow();
+            }
+        }
+
+        public void updateWindow()
+        {
+            string title = "CreateSale";  /*Your Window Instance Name*/
+            var existingWindow = Application.Current.Windows.
+            Cast<Window>().SingleOrDefault(x => x.Title.Equals(title));
+            if (existingWindow != null)
+            {
+                CreateSale newWindow1 = new CreateSale(); /* Give Your window Instance */
+                List<TicketInfo> list = ((CreateSale)existingWindow).table.Items.OfType<TicketInfo>().ToList();
+                newWindow1.table.ItemsSource = list;
+                existingWindow.Close();
+                newWindow1.Title = title;
+                newWindow1.Show();
+            }
+            string title1 = "CreatePurchase";  /*Your Window Instance Name*/
+            var existingWindow1 = Application.Current.Windows.
+            Cast<Window>().SingleOrDefault(x => x.Title.Equals(title1));
+            if (existingWindow1 != null)
+            {
+                CreatePurchase newWindow = new CreatePurchase(); /* Give Your window Instance */
+                List<TicketInfo> list = ((CreatePurchase)existingWindow1).table.Items.OfType<TicketInfo>().ToList();
+                newWindow.table.ItemsSource = list;
+                existingWindow1.Close();
+                newWindow.Title = title1;
+                newWindow.Show();
             }
         }
         private void loadData()

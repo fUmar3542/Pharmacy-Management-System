@@ -51,10 +51,37 @@ namespace Rasheed_Traders
                 db.SaveChanges();
                 MessageBox.Show("Type Created successfully");
                 loadData();
-                typeName.Text = null;
+                typeName.Text = "";
+                updateWindow();
             }
         }
-
+        public void updateWindow()
+        {
+            string title = "CreateSale";  /*Your Window Instance Name*/
+            var existingWindow = Application.Current.Windows.
+            Cast<Window>().SingleOrDefault(x => x.Title.Equals(title));
+            if (existingWindow != null)
+            {
+                CreateSale newWindow1 = new CreateSale(); /* Give Your window Instance */
+                List<TicketInfo> list = ((CreateSale)existingWindow).table.Items.OfType<TicketInfo>().ToList();
+                newWindow1.table.ItemsSource = list;
+                existingWindow.Close();
+                newWindow1.Title = title;
+                newWindow1.Show();
+            }
+            string title1 = "CreatePurchase";  /*Your Window Instance Name*/
+            var existingWindow1 = Application.Current.Windows.
+            Cast<Window>().SingleOrDefault(x => x.Title.Equals(title1));
+            if (existingWindow1 != null)
+            {
+                CreatePurchase newWindow = new CreatePurchase(); /* Give Your window Instance */
+                List<TicketInfo> list = ((CreatePurchase)existingWindow1).table.Items.OfType<TicketInfo>().ToList();
+                newWindow.table.ItemsSource = list;
+                existingWindow1.Close();
+                newWindow.Title = title1;
+                newWindow.Show();
+            }
+        }
         private void loadData()
         {
             Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
@@ -67,12 +94,5 @@ namespace Rasheed_Traders
                       };
             table.ItemsSource = doc.ToList();
         }
-    }
-    public class Type1
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public DateTime createdAt { get; set; }
-        public DateTime updatedAt { get; set; }
     }
 }

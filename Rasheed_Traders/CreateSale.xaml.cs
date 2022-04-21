@@ -85,7 +85,7 @@ namespace Rasheed_Traders
                 Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
                 List<string> mediId = new List<string>();
                 int id1 = 0, id2 = 0, id3 = 0, id4 = -1, i = 0;
-                double total1 = 0, subTotal = 0, iTotal = 0, iSubtotal, dAmount = 0;
+                double total1 = 0, subTotal = 0, iTotal = 0, iSubtotal = 0, dAmount = 0;
                 string name = "";
                 // Partner id searching
                 var doc2 = from d in db.TradingParteners
@@ -187,6 +187,16 @@ namespace Rasheed_Traders
         }
         private void updateWindow()
         {
+            string title1 = "HomeWindow";
+            var e = Application.Current.Windows.
+            Cast<Window>().SingleOrDefault(x => x.Title.Equals(title1));
+            if (e != null)
+            {
+                e.Close();
+                HomeWindow newWindow = new HomeWindow(); /* Give Your window Instance */
+                newWindow.Title = title1;
+                newWindow.Show();
+            }
             string title = "AddOrViewSales";  /*Your Window Instance Name*/
             var existingWindow = Application.Current.Windows.
             Cast<Window>().SingleOrDefault(x => x.Title.Equals(title));
@@ -196,16 +206,6 @@ namespace Rasheed_Traders
                 AddOrViewSales newWindow1 = new AddOrViewSales(); /* Give Your window Instance */
                 newWindow1.Title = title;
                 newWindow1.Show();
-            }
-            string title1 = "HomeWindow";
-            var e = Application.Current.Windows.
-            Cast<Window>().SingleOrDefault(x => x.Title.Equals(title1));
-            if (e != null)
-            {
-                e.Close();
-                HomeWindow newWindow = new HomeWindow(); /* Give Your window Instance */
-                newWindow.Title = title;
-                newWindow.Show();
             }
         }
         private bool updateStock(int a,  int c,int price)

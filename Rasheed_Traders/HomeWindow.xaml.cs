@@ -24,22 +24,23 @@ namespace Rasheed_Traders
         {
             InitializeComponent();
             loadData();
+            searchedContent.Text = "Search";
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
 
-            if (isMaximized)
-            {
-                isMaximized = false;
-                menu.Margin = new Thickness(0, 0, 0, 630);
-                menu.Width = ActualWidth - 100;
-            }
-            else
-            {
-                isMaximized = true;
-                menu.Margin = new Thickness(0, 0, 0, 375);
-            }
+            //if (isMaximized)
+            //{
+            //    isMaximized = false;
+            //    menu.Margin = new Thickness(0, 0, 0, 630);
+            //    menu.Width = ActualWidth - 100;
+            //}
+            //else
+            //{
+            //    isMaximized = true;
+            //    menu.Margin = new Thickness(0, 0, 0, 375);
+            //}
         }
 
         private void loadData()
@@ -64,26 +65,6 @@ namespace Rasheed_Traders
 
         private void Button_Click(object sender, RoutedEventArgs r)
         {
-            if (searchedContent.Text == "")
-            {
-                loadData();
-                return;
-            }
-            Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
-            var data = (from c in db.Medicines
-                        from e in db.Stocks.Where(x => x.medicineId == c.id).DefaultIfEmpty()
-                        from f in db.Types.Where(y => y.id == c.typeId).DefaultIfEmpty()
-                        where c.isDeleted == false && e.id != null && c.name.Contains(searchedContent.Text)    // Stock id exists
-                        select new
-                        {
-                            Name = c.name.ToUpper(),
-                            Type = f.name.ToUpper(),
-                            Potency = c.potency.ToUpper(),
-                            Unit_Price = c.priceBuy,
-                            Date = c.createdAt,
-                            Quantity = e.quantity,
-                        });
-            table.ItemsSource = data.ToList();
         }
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -159,6 +140,30 @@ namespace Rasheed_Traders
                     newWindow.Show();
                 }
             }
+        }
+
+        private void searchedContent_TextChanged(object sender, TextChangedEventArgs ex)
+        {
+            if (searchedContent.Text == "" || searchedContent.Text == "Search")
+            {
+                loadData();
+                return;
+            }
+            Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+            var data = (from c in db.Medicines
+                        from e in db.Stocks.Where(x => x.medicineId == c.id).DefaultIfEmpty()
+                        from f in db.Types.Where(y => y.id == c.typeId).DefaultIfEmpty()
+                        where c.isDeleted == false && e.id != null && (c.name.Contains(searchedContent.Text) || f.name.Contains(searchedContent.Text))
+                        select new
+                        {
+                            Name = c.name.ToUpper(),
+                            Type = f.name.ToUpper(),
+                            Potency = c.potency.ToUpper(),
+                            Unit_Price = c.priceBuy,
+                            Date = c.createdAt,
+                            Quantity = e.quantity,
+                        });
+            table.ItemsSource = data.ToList();
         }
     }
 }

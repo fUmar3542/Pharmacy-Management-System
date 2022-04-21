@@ -64,7 +64,6 @@ namespace Rasheed_Traders
             }
             sale1.Text = totalSale.ToString();
             purchase.Text = totalPurchase.ToString();
-            profit.Text = (totalSale - totalPurchase).ToString();
             table.ItemsSource = ticketsList;
         }
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -109,7 +108,6 @@ namespace Rasheed_Traders
             }
             sale1.Text = totalSale.ToString();
             purchase.Text = totalPurchase.ToString();
-            profit.Text = (totalSale - totalPurchase).ToString();
             to.SelectedDate = DateTime.Now;
             fromDate.SelectedDate = from;
             table.ItemsSource = ticketsList;
