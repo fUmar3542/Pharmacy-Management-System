@@ -46,7 +46,7 @@ namespace Rasheed_Traders
                         return;
                     }
                 }
-                Type u = new Type { name = typeName.Text, createdAt = DateTime.Now };
+                Type u = new Type { name = typeName.Text.ToUpper(), createdAt = DateTime.Now };
                 db.Types.Add(u);
                 db.SaveChanges();
                 MessageBox.Show("Type Created successfully");
@@ -89,7 +89,7 @@ namespace Rasheed_Traders
                       where d.isDeleted == false
                       select new
                       {
-                          Name = d.name,
+                          Name = d.name.ToUpper(),
                           Date = d.createdAt                         
                       };
             table.ItemsSource = doc.ToList();

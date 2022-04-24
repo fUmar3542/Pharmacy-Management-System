@@ -19,7 +19,7 @@ namespace Rasheed_Traders
     /// </summary>
     public partial class HomeWindow : Window
     {
-        bool isMaximized = false;
+        List<homeData> list = new List<homeData>() { };
         public HomeWindow()
         {
             InitializeComponent();
@@ -29,18 +29,6 @@ namespace Rasheed_Traders
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-
-            //if (isMaximized)
-            //{
-            //    isMaximized = false;
-            //    menu.Margin = new Thickness(0, 0, 0, 630);
-            //    menu.Width = ActualWidth - 100;
-            //}
-            //else
-            //{
-            //    isMaximized = true;
-            //    menu.Margin = new Thickness(0, 0, 0, 375);
-            //}
         }
 
         private void loadData()
@@ -59,8 +47,15 @@ namespace Rasheed_Traders
                             Date = c.createdAt,
                             Quantity = e.quantity,
                         });
-            if(data != null)
-                table.ItemsSource = data.ToList();
+            if (data != null)
+            {
+                list.Clear();
+                foreach (var item in data)
+                {
+                    list.Add(new homeData() { Name = item.Name, Type = item.Type, Potency = item.Potency, Price = item.Unit_Price, Dt = item.Date,Quantity = item.Quantity });
+                }
+                table.ItemsSource = list;
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs r)
@@ -149,21 +144,55 @@ namespace Rasheed_Traders
                 loadData();
                 return;
             }
-            Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
-            var data = (from c in db.Medicines
-                        from e in db.Stocks.Where(x => x.medicineId == c.id).DefaultIfEmpty()
-                        from f in db.Types.Where(y => y.id == c.typeId).DefaultIfEmpty()
-                        where c.isDeleted == false && e.id != null && (c.name.Contains(searchedContent.Text) || f.name.Contains(searchedContent.Text))
-                        select new
-                        {
-                            Name = c.name.ToUpper(),
-                            Type = f.name.ToUpper(),
-                            Potency = c.potency.ToUpper(),
-                            Unit_Price = c.priceBuy,
-                            Date = c.createdAt,
-                            Quantity = e.quantity,
-                        });
-            table.ItemsSource = data.ToList();
+            List<homeData> list1 = new List<homeData>() { };
+            foreach (var item in list)
+            {
+                if(item.Name.Contains(searchedContent.Text.ToUpper()) || item.Type.Contains(searchedContent.Text.ToUpper()))
+                    list1.Add(new homeData() { Name = item.Name, Type = item.Type, Potency = item.Potency, Price = item.Price, Dt = item.Dt, Quantity = item.Quantity });
+            }
+            table.ItemsSource = null;
+            table.ItemsSource = list1;
+        }
+    }
+
+    public class homeData
+    {
+        private string name;
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+        private string type;
+        public string Type
+        {
+            get { return type; }
+            set { type = value; }
+        }
+        private string potency;
+        public string Potency
+        {
+            get { return potency; }
+            set { potency = value; }
+        }
+
+        private DateTime dt;
+        public DateTime Dt
+        {
+            get { return dt; }
+            set { dt = value; }
+        }
+        private int price;
+        public int Price
+        {
+            get { return price; }
+            set { price = value; }
+        }
+        private int quantity;
+        public int Quantity
+        {
+            get { return quantity; }
+            set { quantity = value; }
         }
     }
 }

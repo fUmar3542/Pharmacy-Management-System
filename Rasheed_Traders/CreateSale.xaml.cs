@@ -149,12 +149,12 @@ namespace Rasheed_Traders
                     subTotal += iSubtotal;
                     if (bonus != 0)   // if bonusId selected
                     {
-                        SaleItem item = new SaleItem() { saleId = s.id, medicineId = id1, typeId = id2, buyerId = id3, bonusId = id4, total = iTotal, subTotal = iSubtotal, discount = index.DiscountPercentage, discountAmount = dAmount, quantity = index.Quantity + bonus, createdAt = DateTime.Now };
+                        SaleItem item = new SaleItem() { saleId = s.id, medicineId = id1, typeId = id2, buyerId = id3, bonusId = id4, total = iTotal, subTotal = iSubtotal, discount = index.DiscountPercentage, discountAmount = dAmount, quantity = index.Quantity + bonus, createdAt = DateTime.Now, isDeleted = false };
                         db.SaleItems.Add(item);
                     }
                     else
                     {
-                        SaleItem item = new SaleItem() { saleId = s.id, medicineId = id1, typeId = id2, buyerId = id3, total = iTotal, subTotal = iSubtotal, discount = index.DiscountPercentage, discountAmount = dAmount, quantity = index.Quantity, createdAt = DateTime.Now };
+                        SaleItem item = new SaleItem() { saleId = s.id, medicineId = id1, typeId = id2, buyerId = id3, total = iTotal, subTotal = iSubtotal, discount = index.DiscountPercentage, discountAmount = dAmount, quantity = index.Quantity, createdAt = DateTime.Now, isDeleted = false };
                         db.SaleItems.Add(item);
                     }
                     dPercentage = index.DiscountPercentage;
@@ -244,42 +244,36 @@ namespace Rasheed_Traders
                 return -1;
             if(a == "Medicine")
             {
-                var doc = from d in db.Medicines
+                var doc = (from d in db.Medicines
                           where d.isDeleted == false && d.name == b
                           select new
                           {
                               id = d.id
-                          };
-                foreach (var m in doc)
-                {
-                    return m.id;
-                }
+                          });
+                foreach(var item in doc)
+                     return item.id;
             }
             else if(a == "Bonus")
             {
-                var doc = from d in db.Bonus
+                var doc = (from d in db.Bonus
                           where d.isDeleted == false  && d.name == b
                           select new
                           {
                               id = d.id
-                          };
-                foreach (var m in doc)
-                {
-                    return m.id;
-                }
+                          });
+                foreach (var item in doc)
+                    return item.id;
             }
             else if(a == "Type")
             {
-                var doc = from d in db.Types
+                var doc = (from d in db.Types
                           where d.isDeleted == false && d.name == b
                           select new
                           {
                               id = d.id
-                          };
-                foreach (var m in doc)
-                {
-                    return m.id;
-                }
+                          });
+                foreach (var item in doc)
+                    return item.id;
             }
             return -1;
         }
@@ -310,7 +304,7 @@ namespace Rasheed_Traders
             foreach (var item in doc1)
             {
                 m.Add(item.name);
-                ticketsList[0].mediCombo.Add(item.name);
+                //ticketsList[0].mediCombo.Add(item.name);
             }
             cm1.ItemsSource = m;
 

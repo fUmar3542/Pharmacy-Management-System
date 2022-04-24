@@ -1,0 +1,46 @@
+﻿<Window x:Class="Rasheed_Traders.ParticularSaleItem"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Rasheed_Traders"
+        mc:Ignorable="d"
+        Title="ParticularSaleItem" Height="500" Width="620">
+    <Grid  Background="#FFF8FBF0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,4,2,-2" Width="608" Height="517">
+        <TextBlock HorizontalAlignment="Left" Margin="22,36,0,0" Text="Name" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="26" FontFamily="Century" Width="88"/>
+        <ComboBox x:Name="mediCombo" HorizontalAlignment="Left" Margin="277,41,0,0" VerticalAlignment="Top" Width="300" FontSize="22" Height="35" SelectionChanged="ComboBox_SelectionChanged" RenderTransformOrigin="0.478,-1.42">
+            <ComboBox.Background>
+                <LinearGradientBrush EndPoint="0,1">
+                    <GradientStop Color="#FFF0F0F0"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </ComboBox.Background>
+        </ComboBox>
+        <ComboBox x:Name="bonusCombo" HorizontalAlignment="Left" Margin="277,152,0,0" VerticalAlignment="Top" Width="300" FontSize="22" Height="35" SelectionChanged="ComboBox_SelectionChanged" RenderTransformOrigin="0.478,-1.42">
+            <ComboBox.Background>
+                <LinearGradientBrush EndPoint="0,1">
+                    <GradientStop Color="#FFF0F0F0"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </ComboBox.Background>
+        </ComboBox>
+        <TextBlock HorizontalAlignment="Left" Margin="22,93,0,0" Text="Type" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="26" FontFamily="Century"/>
+        <TextBlock HorizontalAlignment="Left" Margin="22,151,0,0" Text="Bonus" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="26" FontFamily="Century" Width="99"/>
+        <ComboBox x:Name="typeCombo" HorizontalAlignment="Left" Margin="277,94,0,0" VerticalAlignment="Top" Width="300" FontSize="22" Height="35" SelectionChanged="ComboBox_SelectionChanged">
+            <ComboBox.Background>
+                <LinearGradientBrush EndPoint="0,1">
+                    <GradientStop Color="#FFF0F0F0"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </ComboBox.Background>
+        </ComboBox>
+        <Button x:Name="update" Content="Update" HorizontalAlignment="Left" Margin="341,398,0,84"  FontSize="22" Padding="5,5,5,5" FontFamily="Bell MT" Background="#FF8FB944" RenderTransformOrigin="0.457,0.582" Click="Button_Click" Width="110"/>
+        <Button x:Name="cancel" Content="Cancel" HorizontalAlignment="Left" Margin="462,398,0,80"  FontSize="22" Padding="5,5,5,5" FontFamily="Bell MT" Background="#FFF1A26B" RenderTransformOrigin="0.457,0.582" Click="Button_Click" Width="110"/>
+        <TextBox x:Name="quantity" Text="0" HorizontalAlignment="Left" Margin="277,214,0,0" VerticalAlignment="Top" Width="300" FontSize="26" Height="35"/>
+        <TextBlock HorizontalAlignment="Left" Margin="22,331,0,0" Text="Discount Percentage" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="26" FontFamily="Century" Width="249"/>
+        <TextBox x:Name="price" Text="0" HorizontalAlignment="Left" Margin="277,273,0,0" VerticalAlignment="Top" Width="300" FontSize="26" Height="35"/>
+        <TextBlock HorizontalAlignment="Left" Margin="22,213,0,0" Text="Quantity" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="26" FontFamily="Century" Width="125"/>
+        <TextBox x:Name="dPercentage" Text="0" HorizontalAlignment="Left" Margin="277,329,0,0" VerticalAlignment="Top" Width="300" FontSize="26" Height="35"/>
+        <TextBlock  HorizontalAlignment="Left" Margin="22,278,0,0" Text="Price" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="26" FontFamily="Century" Width="90"/>
+    </Grid>
+</Window>

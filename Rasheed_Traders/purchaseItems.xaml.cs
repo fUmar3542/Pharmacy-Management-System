@@ -20,6 +20,7 @@ namespace Rasheed_Traders
     public partial class purchaseItems : Window
     {
         int saleId = 0;
+        List<SaleInfo> ticketsList = new List<SaleInfo>();
         public purchaseItems(int a)
         {
             saleId = a;
@@ -43,7 +44,13 @@ namespace Rasheed_Traders
                             Total = c.total,
                         });
             if (data != null)
-                table.ItemsSource = data.ToList();
+            {
+                foreach (var item in data)
+                {
+                    ticketsList.Add(new SaleInfo() { Name = item.Name, Potency = item.Potency, Quantity = item.Quanitity, Discount = Convert.ToDouble(item.Discount), SubTotal = item.SubTotal, Total = Convert.ToInt32(item.Total) });
+                }
+                table.ItemsSource = ticketsList;
+            }
             else
                 table.ItemsSource = null;
         }
@@ -55,8 +62,8 @@ namespace Rasheed_Traders
                 var selectedItem = table.SelectedItem;
                 int a = table.SelectedIndex,
                     index = 0,
-                    medQuantity = 0,
-                    medId = 0;
+                    medId = 0,
+                    medQuantity = 0;
                 if (selectedItem != null)
                 {
                     MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
@@ -78,8 +85,8 @@ namespace Rasheed_Traders
                                 data1.items--;
                                 data1.subTotal -= item.subTotal;
                                 data1.total -= item.total;
-                                medQuantity = item.quantity;
                                 medId = item.medicineId;
+                                medQuantity = item.quantity;
                             }
                             index++;
                         }
@@ -88,18 +95,54 @@ namespace Rasheed_Traders
                         var data2 = (from c in db.Stocks
                                      where c.isDeleted == false && c.medicineId == medId
                                      select c).SingleOrDefault();
-                        data2.quantity -= medQuantity;
+                        data2.quantity += medQuantity;     // Stock updationn
                         db.SaveChanges();
                         if (data1.items == 0)
                             this.Close();
                         else
                             loadData();
-                        MessageBox.Show("PurchaseItem removed successfully");
+                        MessageBox.Show("SaleItem removed successfully");
                         updateWindow();
                     }
                 }
             }
         }
+
+        private void Row_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            // Ensure row was clicked and not empty space
+            var row = ItemsControl.ContainerFromElement((DataGrid)sender,
+                                                e.OriginalSource as DependencyObject) as DataGridRow;
+            if (row == null)
+                return;
+            else
+            {
+                int a = table.SelectedIndex, index = 0;
+                Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+                var doc2 = from d in db.SaleItems
+                           where d.isDeleted == false && d.saleId == saleId
+                           select d;
+                foreach (var item in doc2)
+                {
+                    if (a == index)
+                    {
+                        string title = "ParticularSaleItem";  /*Your Window Instance Name*/
+                        var existingWindow = Application.Current.Windows.
+                        Cast<Window>().SingleOrDefault(x => x.Title.Equals(title));
+                        if (existingWindow == null)
+                        {
+                            ParticularSaleItem newWindow = new ParticularSaleItem(saleId, item.id,false); /* Give Your window Instance */
+                            newWindow.Title = title;
+                            newWindow.Show();
+                        }
+                    }
+                    index++;
+                }
+                loadData();
+
+            }
+        }
+
         private void updateWindow()
         {
             string title1 = "HomeWindow";

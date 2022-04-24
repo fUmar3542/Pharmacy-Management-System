@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Collections.ObjectModel;
 using System.Windows.Shapes;
 
 namespace Rasheed_Traders
@@ -19,7 +20,9 @@ namespace Rasheed_Traders
     /// </summary>
     public partial class SaleItems : Window
     {
-        int saleId = 0; 
+        int saleId = 0;
+
+        List<SaleInfo> ticketsList = new List<SaleInfo>();
         public SaleItems(int a)
         {
             saleId = a;
@@ -41,11 +44,47 @@ namespace Rasheed_Traders
                             Discount = c.discountAmount,
                             SubTotal = c.subTotal,
                             Total = c.total,
-                        });
-            if (data != null)
-                table.ItemsSource = data.ToList();
+                        });;
+            foreach (var item in data)
+            {
+                ticketsList.Add(new SaleInfo() { Name = item.Name, Potency = item.Potency, Quantity = item.Quanitity, Discount = Convert.ToDouble(item.Discount), SubTotal = item.SubTotal, Total = Convert.ToInt32(item.Total) });
+            }
+            table.ItemsSource = ticketsList;
+        }
+
+        private void Row_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            // Ensure row was clicked and not empty space
+            var row = ItemsControl.ContainerFromElement((DataGrid)sender,
+                                                e.OriginalSource as DependencyObject) as DataGridRow;
+            if (row == null)
+                return;
             else
-                table.ItemsSource = null;
+            {
+                int a = table.SelectedIndex, index = 0;
+                Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+                var doc2 = from d in db.SaleItems
+                           where d.isDeleted == false && d.saleId == saleId 
+                           select d;
+                foreach (var item in doc2)
+                {
+                    if (a == index)
+                    {
+                        string title = "ParticularSaleItem";  /*Your Window Instance Name*/
+                        var existingWindow = Application.Current.Windows.
+                        Cast<Window>().SingleOrDefault(x => x.Title.Equals(title));
+                        if (existingWindow == null)
+                        {
+                            ParticularSaleItem newWindow = new ParticularSaleItem(saleId,item.id,true); /* Give Your window Instance */
+                            newWindow.Title = title;
+                            newWindow.Show();
+                        }
+                    }
+                    index++;
+                }
+                loadData();
+
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -123,6 +162,50 @@ namespace Rasheed_Traders
                 newWindow1.Title = title;
                 newWindow1.Show();
             }
+        }
+    }
+
+    public class SaleInfo
+    {
+        private string name ;
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+        private string potency;
+        public string Potency
+        {
+            get { return potency; }
+            set { potency = value; }
+        }
+        public ObservableCollection<string> mediCombo { get; set; }
+
+        private double discount;
+        public double Discount
+        {
+            get { return discount; }
+            set { discount = value; }
+        }
+        private int quantity;
+        public int Quantity
+        {
+            get { return quantity; }
+            set { quantity = value; }
+        }
+
+        private double subTotal;
+        public double SubTotal
+        {
+            get { return subTotal; }
+            set { subTotal = value; }
+        }
+
+        private int total;
+        public int Total
+        {
+            get { return total; }
+            set { total = value; }
         }
     }
 }

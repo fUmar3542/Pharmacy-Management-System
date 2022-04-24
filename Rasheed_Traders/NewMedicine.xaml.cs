@@ -75,7 +75,7 @@ namespace Rasheed_Traders
                         return;
                     }
                 }        
-                Medicine u = new Medicine { name = mediName.Text,potency = potency.Text , typeId = i, createdAt = DateTime.Now,isDeleted=false};
+                Medicine u = new Medicine { name = mediName.Text.ToUpper(),potency = potency.Text , typeId = i, createdAt = DateTime.Now,isDeleted=false};
                 db.Medicines.Add(u);
                 db.SaveChanges();
                 MessageBox.Show("Medicine added successfully");

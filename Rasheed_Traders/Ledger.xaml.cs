@@ -81,30 +81,30 @@ namespace Rasheed_Traders
                        {
                            Total_Items = d.items,
                            Partner_Name = d.Name.ToUpper(),
-                           SUBTOTAL = d.subTotal,
+                           SubTotal = d.subTotal,
                            Is_Purchase = d.isPurchase,
-                           TOTAL = d.total,
-                           DATE = d.createdAt,
+                           Total = d.total,
+                           Date = d.createdAt,
                            Discount_Percentage = d.discount,
                            Discount_Amount = d.discountAmount,
                        };
             int totalPurchase = 0,totalSale = 0;
             foreach(var item in doc2)
             {
-                ledger g = new ledger { Partner_Name = item.Partner_Name, TOTAL = Convert.ToInt32(item.TOTAL), Total_Items = item.Total_Items, SUBTOTAL = item.SUBTOTAL, DATE = item.DATE, Discount_Amount = Convert.ToInt32(item.Discount_Amount), Discount_Percentage = Convert.ToDouble(item.Discount_Percentage) };
+                ledger g = new ledger { Partner_Name = item.Partner_Name, TOTAL = Convert.ToInt32(item.Total), Total_Items = item.Total_Items, SUBTOTAL = item.SubTotal, DATE = item.Date, Discount_Amount = Convert.ToInt32(item.Discount_Amount), Discount_Percentage = Convert.ToDouble(item.Discount_Percentage) };
                 if (item.Is_Purchase == true)
                 {
                     g.Type = "Purchase";
-                    totalPurchase += Convert.ToInt32(item.TOTAL);
+                    totalPurchase += Convert.ToInt32(item.Total);
                 }
                 else if (item.Is_Purchase == false)
                 {
                     g.Type = "Sale";
-                    totalSale += Convert.ToInt32(item.TOTAL);
+                    totalSale += Convert.ToInt32(item.Total);
                 }
                 ticketsList.Add(g);
-                if (from > item.DATE)
-                    from = item.DATE;
+                if (from > item.Date)
+                    from = item.Date;
             }
             sale1.Text = totalSale.ToString();
             purchase.Text = totalPurchase.ToString();
