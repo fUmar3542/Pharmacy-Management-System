@@ -19,6 +19,8 @@ namespace Rasheed_Traders
     /// </summary>
     public partial class AddOrViewSales : Window
     {
+
+        List<saleView> list = new List<saleView>() { };
         public AddOrViewSales()
         {
             InitializeComponent();
@@ -39,7 +41,12 @@ namespace Rasheed_Traders
                            Discount_Percentage = d.discount,
                            Discount_Amount = d.discountAmount,
                        };
-            table.ItemsSource = doc2.ToList();
+            list.Clear();
+            foreach (var item in doc2)
+            {
+                list.Add(new saleView() { Items = item.TOTAL_ITEMS, Name = item.BUYER_NAME, SubTotal = item.SUBTOTAL, Total = item.TOTAL, Dt = item.DATE, DiscountPercentage = Convert.ToDouble(item.Discount_Percentage), DiscountAmount = Convert.ToDouble(item.Discount_Amount) });
+            }
+            table.ItemsSource = list;
         }
 
         private void Row_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -100,20 +107,61 @@ namespace Rasheed_Traders
                 loadData();
                 return;
             }
-            Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
-            var doc2 = from d in db.Sales
-                    where d.isDeleted == false && d.isPurchase == false && d.Name.Contains(searchedContent.Text)
-                    select new
-                    {
-                        TOTAL_ITEMS = d.items,
-                        BUYER_NAME = d.Name.ToUpper(),
-                        SUBTOTAL = d.subTotal,
-                        TOTAL = d.total,
-                        DATE = d.createdAt,
-                        Discount_Percentage = d.discount,
-                        Discount_Amount = d.discountAmount,
-                    };
-            table.ItemsSource = doc2.ToList();
+            List<saleView> list1 = new List<saleView>() { };
+            foreach (var item in list)
+            {
+                if(item.Name.Contains(searchedContent.Text.ToUpper()))
+                    list1.Add(new saleView() { Items = item.Items, Name = item.Name, SubTotal = item.SubTotal, Total = item.Total, Dt = item.Dt, DiscountPercentage = Convert.ToDouble(item.DiscountPercentage), DiscountAmount = Convert.ToDouble(item.DiscountAmount) });
+            }
+            table.ItemsSource = list1;
+        }
+    }
+
+    public class saleView
+    {
+        private int items;
+        public int Items
+        {
+            get { return items; }
+            set { items = value; }
+        }
+        private string name;
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+        private double subTotal;
+        public double SubTotal
+        {
+            get { return subTotal; }
+            set { subTotal = value; }
+        }
+        private double total;
+        public double Total
+        {
+            get { return total; }
+            set { total = value; }
+        }
+
+        private DateTime dt;
+        public DateTime Dt
+        {
+            get { return dt; }
+            set { dt = value; }
+        }
+
+        private double discountAmount;
+        public double DiscountAmount
+        {
+            get { return discountAmount; }
+            set { discountAmount = value; }
+        }
+        private double discountPercentage;
+        public double DiscountPercentage
+        {
+            get { return discountPercentage; }
+            set { discountPercentage = value; }
         }
     }
 }
