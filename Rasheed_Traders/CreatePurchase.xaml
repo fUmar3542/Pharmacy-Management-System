@@ -12,7 +12,6 @@
         <DataGrid x:Name="table"   Margin="22,111,24,80" FontSize="16" FontFamily="Arial" AutoGenerateColumns="false" CanUserAddRows="false" DataContext="">
             <DataGrid.Columns >
                 <DataGridComboBoxColumn x:Name="cm1" Visibility="Visible"  Header="Select Medicine" ItemsSource="{Binding mediCombo}" SelectedItemBinding="{Binding mediStatus}" Width="*"></DataGridComboBoxColumn>
-                <DataGridComboBoxColumn x:Name="cm" Visibility="Visible"  Header="Select Type" ItemsSource="{Binding typeCombo}"  SelectedItemBinding="{Binding typeStatus}" Width="*"  ></DataGridComboBoxColumn>
                 <DataGridTextColumn Header="Unit Price" Binding="{Binding Price}" Width="*"  FontFamily="Arial" ></DataGridTextColumn>
                 <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="*"  FontFamily="Arial" ></DataGridTextColumn>
                 <DataGridComboBoxColumn x:Name="cm2" Visibility="Visible"  Header="Select Bonus" ItemsSource="{Binding bonusCombo}"  SelectedItemBinding="{Binding bonusStatus}" Width="*"  ></DataGridComboBoxColumn>

@@ -33,5 +33,6 @@ namespace Rasheed_Traders
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Sale> Sales { get; set; }
         public virtual DbSet<Stock> Stocks { get; set; }
+        public virtual DbSet<Invoice> Invoices { get; set; }
     }
 }

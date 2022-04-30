@@ -81,6 +81,16 @@ namespace Rasheed_Traders
                 newWindow.Title = title1;
                 newWindow.Show();
             }
+            string t = "NewMedicine";
+            var ex = Application.Current.Windows.
+                  Cast<Window>().SingleOrDefault(x => x.Title.Equals(t));
+            if (ex != null)
+            {
+                ex.Close();
+                NewMedicine newWindow1 = new NewMedicine(); /* Give Your window Instance */
+                newWindow1.Title = t;
+                newWindow1.Show();
+            }
         }
         private void loadData()
         {
@@ -90,7 +100,7 @@ namespace Rasheed_Traders
                       select new
                       {
                           Name = d.name.ToUpper(),
-                          Date = d.createdAt                         
+                          Date = d.createdAt
                       };
             table.ItemsSource = doc.ToList();
         }

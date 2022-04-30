@@ -12,6 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Collections.ObjectModel;
 using System.Windows.Shapes;
+using System.Drawing;
+using System.Drawing.Printing;
+using System.Drawing.Imaging;
+using CrystalDecisions.CrystalReports.Engine;
 
 namespace Rasheed_Traders
 {
@@ -44,10 +48,17 @@ namespace Rasheed_Traders
                             Discount = c.discountAmount,
                             SubTotal = c.subTotal,
                             Total = c.total,
+                            typeId =f.typeId
                         });;
             foreach (var item in data)
             {
-                ticketsList.Add(new SaleInfo() { Name = item.Name, Potency = item.Potency, Quantity = item.Quanitity, Discount = Convert.ToDouble(item.Discount), SubTotal = item.SubTotal, Total = Convert.ToInt32(item.Total) });
+                var tp = (from d in db.Types
+                          where d.id == item.typeId
+                          select new
+                          {
+                              name = d.name,
+                          }).SingleOrDefault();
+                ticketsList.Add(new SaleInfo() { Name = tp.name + " - " +  item.Name, Potency = item.Potency, Quantity = item.Quanitity, Discount = Convert.ToDouble(item.Discount), SubTotal = item.SubTotal, Total = Convert.ToInt32(item.Total) });
             }
             table.ItemsSource = ticketsList;
         }
@@ -137,6 +148,37 @@ namespace Rasheed_Traders
                         updateWindow();
                     }
                 }
+            }
+            else
+            {
+                int subtotal = 0, total = 0;
+                Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+                var data1 = from d in db.Invoices select d;
+                if (db != null)
+                {
+                    foreach (var item in data1)
+                        db.Invoices.Remove(item);
+                }
+                var data = (from p in db.SaleItems
+                            from f in db.Medicines.Where(y => y.id == p.medicineId).DefaultIfEmpty()
+                            where p.isDeleted == false && p.saleId == saleId
+                            select p);
+                foreach(var item in data)
+                {
+                    var medicine = (from d in db.Medicines
+                                   where d.id == item.medicineId
+                                   select d).SingleOrDefault();
+                    var type = (from d in db.Types
+                                where d.id == medicine.typeId
+                                select d).SingleOrDefault();
+                    Invoice invoice = new Invoice() { Item = medicine.name, Type = type.name, Discount = item.discount.ToString() + "%", SubTotal = item.subTotal, Total = Convert.ToInt32(item.total) };
+                    db.Invoices.Add(invoice);
+                    subtotal += Convert.ToInt32(item.subTotal);
+                    total += Convert.ToInt32(item.total);
+                }
+                db.SaveChanges();
+                ReportViewer rp = new ReportViewer();           
+                rp.Show();
             }
         }
 

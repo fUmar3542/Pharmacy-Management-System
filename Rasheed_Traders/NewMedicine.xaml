@@ -11,13 +11,18 @@
             <ImageBrush ImageSource="E:\medicine.jpg" Opacity ="0.3" TileMode="None"/>
         </Grid.Background>
         <Grid x:Name="Main" Background="#FFDED6D8" HorizontalAlignment="Center" VerticalAlignment="Center" Height="322" Width="594" >
-            <Label x:Name="newMedicine" Content="NEW MEDICINE" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FF361414" FontSize="34" FontWeight="Bold" HorizontalContentAlignment="Left" Height="48" Width="354" Background="{x:Null}" VerticalContentAlignment="Top" BorderBrush="#FF3C2323" FontFamily="Modern No. 20" Margin="50,4,1,0"/>
+            <Label x:Name="newMedicine" Content="NEW MEDICINE" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FF361414" FontSize="34" FontWeight="Bold" HorizontalContentAlignment="Left" Height="48" Width="251" Background="{x:Null}" VerticalContentAlignment="Top" BorderBrush="#FF3C2323" FontFamily="Calibri" Margin="169,4,174,0"/>
             <Grid x:Name="sub" Background="#FFF6F7F4" Margin="31,61,27,19" Width="Auto" Height="Auto" >
-                <TextBlock HorizontalAlignment="Left" Margin="21,11,0,0" Text="Name" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="26" FontFamily="Century" Width="88"/>
-                <TextBox x:Name="mediName" HorizontalAlignment="Left" Margin="193,12,0,0" VerticalAlignment="Top" Width="315" FontSize="26" Height="35"/>
-                <TextBlock HorizontalAlignment="Left" Margin="21,71,0,0" Text="Type" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="26" FontFamily="Century"/>
-                <TextBlock HorizontalAlignment="Left" Margin="21,129,0,0" Text="Potency" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="26" FontFamily="Century" Width="99"/>
-                <ComboBox x:Name="combo" HorizontalAlignment="Left" Margin="193,66,0,0" VerticalAlignment="Top" Width="315" FontSize="22" Height="35" SelectionChanged="ComboBox_SelectionChanged">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="291*"/>
+                    <ColumnDefinition Width="47*"/>
+                    <ColumnDefinition Width="198*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock HorizontalAlignment="Left" Margin="21,11,0,0" Text="Name" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="26" FontFamily="Calibri" Width="88"/>
+                <TextBox x:Name="mediName" HorizontalAlignment="Left" Margin="193,12,0,0" VerticalAlignment="Top" Width="315" FontSize="26" Height="35" Grid.ColumnSpan="3"/>
+                <TextBlock HorizontalAlignment="Left" Margin="21,71,0,0" Text="Type" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="26" FontFamily="Calibri"/>
+                <TextBlock HorizontalAlignment="Left" Margin="21,129,0,0" Text="Potency" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="26" FontFamily="Calibri" Width="99"/>
+                <ComboBox x:Name="combo" HorizontalAlignment="Left" Margin="193,66,0,0" VerticalAlignment="Top" Width="315" FontSize="22" Height="35" SelectionChanged="ComboBox_SelectionChanged" Grid.ColumnSpan="3">
                     <ComboBox.Background>
                         <LinearGradientBrush EndPoint="0,1">
                             <GradientStop Color="#FFF0F0F0"/>
@@ -25,10 +30,10 @@
                         </LinearGradientBrush>
                     </ComboBox.Background>
                 </ComboBox>
-                <TextBox x:Name="potency" HorizontalAlignment="Left" Margin="193,121,0,0" VerticalAlignment="Top" Width="315" FontSize="26" Height="35"/>
-                <Button x:Name="Cancel" Content="Cancel" HorizontalAlignment="Left" Margin="409,175,0,0" VerticalAlignment="Top" Click="Button_Click" FontSize="24" Background="#FFF3C59F" FontFamily="Bell MT" Padding="8,4,8,4" RenderTransformOrigin="1.826,1.312" Width="98"/>
-                <Button x:Name="createButton" Content="Create" HorizontalAlignment="Left" Margin="299,175,0,0" VerticalAlignment="Top" Click="Button_Click" FontSize="24" Background="#FFC4DE9C" FontFamily="Bell MT" Padding="8,4,8,4" Width="98"/>
+                <TextBox x:Name="potency" HorizontalAlignment="Left" Margin="193,121,0,0" VerticalAlignment="Top" Width="315" FontSize="26" Height="35" Grid.ColumnSpan="3"/>
+                <Button x:Name="Cancel" Content="Cancel" HorizontalAlignment="Left" Margin="71,175,0,0" VerticalAlignment="Top" Click="Button_Click" FontSize="24" Background="#FFF3C59F" FontFamily="Bell MT" Padding="8,4,8,4" RenderTransformOrigin="1.826,1.312" Width="98" Grid.Column="2"/>
+                <Button x:Name="createButton" Content="Create" HorizontalAlignment="Left" Margin="8,175,0,0" VerticalAlignment="Top" Click="Button_Click" FontSize="24" Background="#FFC4DE9C" FontFamily="Bell MT" Padding="8,4,8,4" Width="98" Grid.ColumnSpan="2" Grid.Column="1"/>
             </Grid>
-        </Grid> 
+        </Grid>
     </Grid>
 </Window>

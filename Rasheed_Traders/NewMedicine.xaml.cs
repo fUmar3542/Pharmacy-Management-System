@@ -66,12 +66,13 @@ namespace Rasheed_Traders
                           select new
                           {
                               name = d.name,
+                              typeId = d.typeId
                           };
                 foreach (var item in doc1)
                 {
-                    if (item.name == mediName.Text)
+                    if (item.name == mediName.Text && item.typeId == i)
                     {
-                        MessageBox.Show("Medicine Name already exist");
+                        MessageBox.Show("Medicine already exist");
                         return;
                     }
                 }        
@@ -83,6 +84,7 @@ namespace Rasheed_Traders
                 updateWindow();
             }
         }
+
         public void updateWindow()
         {
             string title = "CreateSale";  /*Your Window Instance Name*/

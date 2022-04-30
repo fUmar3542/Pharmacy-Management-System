@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Rasheed_Traders"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="470" Width="810">
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="E:\login3.jpg" Opacity ="0.3" TileMode="None"/>
         </Grid.Background>
         <Grid x:Name="Main" HorizontalAlignment="center" VerticalAlignment="center">
-            <Label x:Name="mainHeading" Content="RASHEED TRADERS®" HorizontalAlignment="Left" Margin="130,58,0,0" VerticalAlignment="Top" Foreground="#FF361414" FontSize="48" FontWeight="Bold" HorizontalContentAlignment="Left" Height="70" Width="460" Background="{x:Null}" VerticalContentAlignment="Top" BorderBrush="#FF3C2323" FontFamily="Algerian"/>
+            <Label x:Name="mainHeading" Content="RASHEED TRADERS®" HorizontalAlignment="Left" Margin="127,58,0,0" VerticalAlignment="Top" Foreground="#FF361414" FontSize="50" FontWeight="Bold" HorizontalContentAlignment="Left" Height="70" Width="535" Background="{x:Null}" VerticalContentAlignment="Top" BorderBrush="#FF3C2323" FontFamily="Algerian"/>
             <Button x:Name="ChangePassword" Content="Change Password" HorizontalAlignment="Left" Margin="610,26,0,0" VerticalAlignment="Top" Click="Button_Click" RenderTransformOrigin="0.53,1.355" OpacityMask="#FF811515" FontSize="18" Background="#FF214F57" FontFamily="Book Antiqua" FontWeight="Bold" Foreground="#FFF9F2F2" BorderBrush="#FFD67070" BorderThickness="0,0,0,0" Padding="8,4,8,4" ClickMode="Press" />
             <TextBlock x:Name="Username" HorizontalAlignment="Left" Margin="134,156,0,0" Text="Username" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="36" FontFamily="Century Schoolbook" Foreground="#FF290C1B" FontStyle="Italic" TextDecorations="{x:Null}"/>
             <TextBlock x:Name="Password" HorizontalAlignment="Left" Margin="134,256,0,0" Text="Password" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="36" FontFamily="Century Schoolbook" Foreground="#FF290C1B" FontStyle="Italic" TextDecorations="{x:Null}"/>
