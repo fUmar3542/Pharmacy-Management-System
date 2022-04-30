@@ -8,20 +8,23 @@
         Title="HomeWindow" Height="500" Width="950"
         SizeChanged="Window_SizeChanged">
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="E:\medi3.jpg" Opacity ="0.3" TileMode="None"/>
+        </Grid.Background>
         <Grid x:Name="Main" Height="Auto" Width="Auto">
             <Menu x:Name="menu" Width="auto" Height="50" Background="#FFF3CDCD" Margin="45,10,-8,0" VerticalAlignment="Top" HorizontalAlignment="Left">
-                <MenuItem Header="Medicine" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Constantia" RenderTransformOrigin="13.029,35.393" Padding="25,9,25,9">
-                    <MenuItem x:Name="addMedicine" Header="Add New Medicine" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Constantia" RenderTransformOrigin="13.029,35.393" Padding="15,9,15,9" Click="MenuItem_Click"/>
-                    <MenuItem x:Name="addType" Header="Add/View Type" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Constantia" RenderTransformOrigin="13.029,35.393" Padding="15,9,15,9"  Click="MenuItem_Click"/>
-                    <MenuItem x:Name="addBonus" Header="Add/View Bonus" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Constantia" RenderTransformOrigin="13.029,35.393" Padding="15,9,15,9"  Click="MenuItem_Click"/>
+                <MenuItem Header="Medicine" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Calibri" RenderTransformOrigin="13.029,35.393" Padding="25,9,25,9">
+                    <MenuItem x:Name="addMedicine" Header="Add New Medicine" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Calibri" RenderTransformOrigin="13.029,35.393" Padding="15,9,15,9" Click="MenuItem_Click"/>
+                    <MenuItem x:Name="addType" Header="Add/View Type" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Calibri" RenderTransformOrigin="13.029,35.393" Padding="15,9,15,9"  Click="MenuItem_Click"/>
+                    <MenuItem x:Name="addBonus" Header="Add/View Bonus" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Calibri" RenderTransformOrigin="13.029,35.393" Padding="15,9,15,9"  Click="MenuItem_Click"/>
                 </MenuItem>
-                <MenuItem Header="Sale" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Constantia" RenderTransformOrigin="13.029,35.393" Padding="25,9,25,9">
-                    <MenuItem x:Name="addSale" Header="Add/View Sales" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Constantia" RenderTransformOrigin="13.029,35.393" Padding="15,9,15,9" Click="MenuItem_Click"/>
+                <MenuItem Header="Sale" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Calibri" RenderTransformOrigin="13.029,35.393" Padding="25,9,25,9">
+                    <MenuItem x:Name="addSale" Header="Add/View Sales" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Calibri" RenderTransformOrigin="13.029,35.393" Padding="15,9,15,9" Click="MenuItem_Click"/>
                 </MenuItem>
-                <MenuItem Header="Purchase" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Constantia" RenderTransformOrigin="13.029,35.393" Padding="25,9,25,9">
-                    <MenuItem x:Name="addPurchase" Header="Add/View Purchase" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Constantia" RenderTransformOrigin="13.029,35.393" Padding="15,9,15,9" Click="MenuItem_Click"/>
+                <MenuItem Header="Purchase" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Calibri" RenderTransformOrigin="13.029,35.393" Padding="25,9,25,9">
+                    <MenuItem x:Name="addPurchase" Header="Add/View Purchase" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Calibri" RenderTransformOrigin="13.029,35.393" Padding="15,9,15,9" Click="MenuItem_Click"/>
                 </MenuItem>
-                <MenuItem x:Name="ledger" Header="Ledger" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Constantia" RenderTransformOrigin="13.029,35.393" Padding="25,9,25,9" Click="MenuItem_Click"/>
+                <MenuItem x:Name="ledger" Header="Ledger" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Calibri" RenderTransformOrigin="13.029,35.393" Padding="25,9,25,9" Click="MenuItem_Click"/>
             </Menu>
             <TextBox x:Name="searchedContent" ToolTip="Search Medicine" TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="22" BorderBrush="#FF8B8D93" Height="40" Width="318" TextChanged="searchedContent_TextChanged" Margin="0,15,52,0" Padding="8,4,0,0"/>
             <DataGrid x:Name="table" ColumnWidth="*" Margin="48,78,52,14" FontSize="16" FontFamily="Arial" IsReadOnly="True" AutoGenerateColumns="False">
@@ -30,9 +33,9 @@
                     <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*"  FontFamily="Arial" ></DataGridTextColumn>
                     <DataGridTextColumn Header="Potency" Binding="{Binding Potency}" Width="*" FontFamily="Arial" ></DataGridTextColumn>
                     <DataGridTextColumn Header="Unit Price" Binding="{Binding Price}" Width="*"  FontFamily="Arial" ></DataGridTextColumn>
-                    <DataGridTextColumn Header="Date" Binding="{Binding Dt}" Width="*"  FontFamily="Arial" ></DataGridTextColumn>
                     <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="*" FontFamily="Arial" ></DataGridTextColumn>
-                   </DataGrid.Columns>
+                    <DataGridTextColumn Header="Date" Binding="{Binding Dt}" Width="*"  FontFamily="Arial" ></DataGridTextColumn>
+                </DataGrid.Columns>
             </DataGrid>
         </Grid>
     </Grid>

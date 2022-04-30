@@ -42,9 +42,11 @@ namespace Rasheed_Traders
                            Discount_Amount = d.discountAmount,
                        };
             list.Clear();
+            String s = "";
             foreach (var item in doc2)
             {
-                list.Add(new saleView() { Items = item.TOTAL_ITEMS, Name = item.BUYER_NAME, SubTotal = item.SUBTOTAL, Total = item.TOTAL, Dt = item.DATE, DiscountPercentage = Convert.ToDouble(item.Discount_Percentage), DiscountAmount = Convert.ToDouble(item.Discount_Amount) });
+                s = item.DATE.ToString("dd/MM/yyyy HH:mm:ss");
+                list.Add(new saleView() { Items = item.TOTAL_ITEMS, Name = item.BUYER_NAME, SubTotal = item.SUBTOTAL, Total = item.TOTAL, Dt = s, DiscountPercentage = Convert.ToDouble(item.Discount_Percentage), DiscountAmount = Convert.ToDouble(item.Discount_Amount) });
             }
             table.ItemsSource = list;
         }
@@ -144,8 +146,8 @@ namespace Rasheed_Traders
             set { total = value; }
         }
 
-        private DateTime dt;
-        public DateTime Dt
+        private string dt;
+        public string Dt
         {
             get { return dt; }
             set { dt = value; }

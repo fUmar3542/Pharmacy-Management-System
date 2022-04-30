@@ -21,6 +21,7 @@
         <EntityTypeShape EntityType="Rasheed_TradersModel.Stock" Width="1.5" PointX="3" PointY="8.75" />
         <AssociationConnector Association="Rasheed_TradersModel.FK_Stock_Medicine" />
         <AssociationConnector Association="Rasheed_TradersModel.FK_Stock_TradingPartner" />
+        <EntityTypeShape EntityType="Rasheed_TradersModel.Invoice" Width="1.5" PointX="5.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -24,7 +24,7 @@ namespace Rasheed_Traders
 
         List<TicketInfo> ticketsList = new List<TicketInfo>
         {
-            new TicketInfo{ mediStatus="True",mediCombo = new ObservableCollection<string>() { "Forward", "Defense", "Goalie" },typeStatus="True", typeCombo=new ObservableCollection<string>() { "Forward", "Defense", "Goalie" },Quantity=1}
+            new TicketInfo{ mediStatus="True",mediCombo = new ObservableCollection<string>() { "Forward", "Defense", "Goalie" }, typeCombo=new ObservableCollection<string>() { "Forward", "Defense", "Goalie" },Quantity=1}
         };
         public CreateSale()
         {
@@ -47,7 +47,7 @@ namespace Rasheed_Traders
             }
             else if (sender.Equals(addRow))
             {
-                TicketInfo t = new TicketInfo { mediStatus = "True", mediCombo = new ObservableCollection<string>() { "Forward", "Defense", "Goalie" }, typeStatus = "True", typeCombo = new ObservableCollection<string>() { "Forward", "Defense", "Goalie" }, Quantity = 1 };
+                TicketInfo t = new TicketInfo { mediStatus = "True", mediCombo = new ObservableCollection<string>() { "Forward", "Defense", "Goalie" },  typeCombo = new ObservableCollection<string>() { "Forward", "Defense", "Goalie" }, Quantity = 1 };
                 List<TicketInfo> list = table.Items.OfType<TicketInfo>().ToList();
                 list.Add(t);
                 table.ItemsSource = null;
@@ -109,18 +109,16 @@ namespace Rasheed_Traders
                 foreach (var index in list)
                 {
                     bonus = 0;
-                    id1 = returnId("Medicine", index.mediStatus);
-                    if (id1 == -1)
-                    {
-                        MessageBox.Show("Select items first");
-                        return;
-                    }
-                    id2 = returnId("Type", index.typeStatus);
+                    int index3 = index.mediStatus.IndexOf('-');
+                    string tp = index.mediStatus.Substring(0, index3 - 1), 
+                        md = index.mediStatus.Substring(index3+2);
+                    id2 = returnId("Type",tp);
                     if (id2 == -1)
                     {
                         MessageBox.Show("Select items first");
                         return;
                     }
+                    id1 = returnMedicineId( md, id2);
                     if (index.bonusStatus != "0")
                     {
                         id4 = returnId("Bonus", index.bonusStatus);
@@ -187,6 +185,16 @@ namespace Rasheed_Traders
         }
         private void updateWindow()
         {
+            string t = "Ledger";
+            var ex = Application.Current.Windows.
+                  Cast<Window>().SingleOrDefault(x => x.Title.Equals(t));
+            if (ex != null)
+            {
+                ex.Close();
+                Ledger newWindow1 = new Ledger(); /* Give Your window Instance */
+                newWindow1.Title = t;
+                newWindow1.Show();
+            }
             string title1 = "HomeWindow";
             var e = Application.Current.Windows.
             Cast<Window>().SingleOrDefault(x => x.Title.Equals(title1));
@@ -227,6 +235,7 @@ namespace Rasheed_Traders
             }
             else
             {
+                st.updatedAt = DateTime.Now;
                 st.quantity -= c;
                 var s = (from d in db.Medicines
                           where d.isDeleted == false && d.id == a
@@ -237,23 +246,28 @@ namespace Rasheed_Traders
             return true;
         }
 
-        public int returnId(string a,string b)
+        public int returnMedicineId(string s,int i)
         {
             Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+            if (s == "")
+                return -1;
+           var doc = (from d in db.Medicines
+                    where d.isDeleted == false && d.name == s && d.typeId == i
+                    select new
+                    {
+                        id = d.id
+                    }).SingleOrDefault();
+            if (doc != null)
+                return doc.id;
+            else
+                return -1;
+        }
+        public int returnId(string a,string b)
+        {
             if (b == "")
                 return -1;
-            if(a == "Medicine")
-            {
-                var doc = (from d in db.Medicines
-                          where d.isDeleted == false && d.name == b
-                          select new
-                          {
-                              id = d.id
-                          });
-                foreach(var item in doc)
-                     return item.id;
-            }
-            else if(a == "Bonus")
+            Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+            if (a == "Bonus")
             {
                 var doc = (from d in db.Bonus
                           where d.isDeleted == false  && d.name == b
@@ -297,28 +311,22 @@ namespace Rasheed_Traders
                        select new
                        {
                            name = d.name,
+                           typeId = d.typeId
                       };
             List<string> m = new List<string>();
             List<string> m1 = new List<string>();
             List<string> m2 = new List<string>();
             foreach (var item in doc1)
             {
-                m.Add(item.name);
-                //ticketsList[0].mediCombo.Add(item.name);
+                var tp = (from d in db.Types
+                         where d.id == item.typeId
+                         select new
+                         {
+                            name = d.name,
+                         }).SingleOrDefault();
+                m.Add(tp.name + " - " + item.name);
             }
             cm1.ItemsSource = m;
-
-            // Select Type
-            var doc2 = from d in db.Types
-                       select new
-                       {
-                           name = d.name,
-                       };
-            foreach (var item in doc2)
-            {
-                m1.Add(item.name);
-            }
-            cm.ItemsSource = m1;
 
             // Select Type
             var doc3 = from d in db.Bonus
@@ -346,12 +354,6 @@ namespace Rasheed_Traders
         {
             get { return mStatus; }
             set { mStatus = value; }
-        }
-        private string tStatus;
-        public string typeStatus
-        {
-            get { return tStatus; }
-            set { tStatus = value; }
         }
         private string bonuStatus = "0";
         public string bonusStatus

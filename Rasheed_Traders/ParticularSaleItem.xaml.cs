@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
 namespace Rasheed_Traders
 {
     /// <summary>
@@ -58,28 +59,21 @@ namespace Rasheed_Traders
                            select c);
                 foreach (var item in med)
                 {
-                    mediCombo.Items.Add(item.name.ToUpper());
+                    var tp = (from d in db.Types
+                              where d.id == item.typeId
+                              select new
+                              {
+                                  name = d.name,
+                              }).SingleOrDefault();
+                    mediCombo.Items.Add(tp.name.ToUpper() + " - " + item.name.ToUpper());
                     if (item.id == data.medId)
                     {
-                        mediCombo.SelectedItem = data.Name;
+                        mediCombo.SelectedItem = tp.name.ToUpper() + " - " +  data.Name;
                         mediCombo.SelectedIndex = index;
                     }
                     index++;
                 }
                 index = 0;
-                var type = (from c in db.Types
-                            where c.isDeleted == false
-                            select c);
-                foreach (var item in type)
-                {
-                    typeCombo.Items.Add(item.name.ToUpper());
-                    if (item.id == data.Tpid)
-                    {
-                        typeCombo.SelectedItem = item.name.ToUpper();
-                        typeCombo.SelectedIndex = index;
-                    }
-                    index++;
-                }
                 var bonus = (from c in db.Bonus
                              where c.isDeleted == false
                              select c);
@@ -104,7 +98,7 @@ namespace Rasheed_Traders
             else if(sender.Equals(update))
             {
                 Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
-                int i1 = mediCombo.SelectedIndex, i2 = typeCombo.SelectedIndex,i3 = 0,discountAm =0,bonus = 0, sId = 0;
+                int i1 = mediCombo.SelectedIndex, i3 = 0,discountAm =0,bonus = 0, sId = 0;
                 itemInfo item2 = new itemInfo();
                 item2.quantity = Convert.ToInt32(Double.Parse(quantity.Text));
                 item2.price = Convert.ToInt32(Double.Parse(price.Text));
@@ -118,19 +112,13 @@ namespace Rasheed_Traders
                 foreach (var item in med)
                 {
                     if (index == i1)
+                    {
                         item2.mediId = item.id;
+                        item2.typeId = item.typeId;
+                    }
                     index++;
                 }
-                var type = (from c in db.Types
-                            where c.isDeleted == false
-                            select c);
                 index = 0;
-                foreach (var item in type)
-                {
-                    if (index == i2)
-                        item2.typeId = item.id;
-                    index++;
-                }
                 if (bonusCombo.SelectedItem != null)
                 {
                     i3 = bonusCombo.SelectedIndex;
@@ -177,7 +165,7 @@ namespace Rasheed_Traders
                     db.SaleItems.Add(item);
                 }
                 sale.updatedAt = DateTime.Now;
-                var saleI = (from c in db.SaleItems
+                var saleI = (from c in db.SaleItems       // For deleting old item
                              where c.isDeleted == false && c.id == itemId
                              select c).SingleOrDefault();
                 saleI.isDeleted = true;

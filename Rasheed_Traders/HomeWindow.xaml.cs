@@ -44,15 +44,19 @@ namespace Rasheed_Traders
                             Type = f.name.ToUpper(),
                             Potency = c.potency.ToUpper(),
                             Unit_Price = c.priceBuy,
-                            Date = c.createdAt,
+                            updatedAt = e.updatedAt,
                             Quantity = e.quantity,
                         });
+            DateTime d = DateTime.Now;
+            string s = "";
             if (data != null)
             {
                 list.Clear();
                 foreach (var item in data)
                 {
-                    list.Add(new homeData() { Name = item.Name, Type = item.Type, Potency = item.Potency, Price = item.Unit_Price, Dt = item.Date,Quantity = item.Quantity });
+                    d = item.updatedAt.Value;
+                    s = d.ToString("dd/MM/yyyy HH:mm:ss");
+                    list.Add(new homeData() { Name = item.Name, Type = item.Type, Potency = item.Potency, Price = item.Unit_Price, Dt = s,Quantity = item.Quantity });
                 }
                 table.ItemsSource = list;
             }
@@ -176,8 +180,8 @@ namespace Rasheed_Traders
             set { potency = value; }
         }
 
-        private DateTime dt;
-        public DateTime Dt
+        private string dt;
+        public string Dt
         {
             get { return dt; }
             set { dt = value; }

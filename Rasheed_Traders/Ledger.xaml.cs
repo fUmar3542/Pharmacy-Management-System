@@ -29,42 +29,31 @@ namespace Rasheed_Traders
 
         private void dateTimePicker1_CloseUp(object sender, EventArgs e)
         {
-            ticketsList.Clear();
-            Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
             int totalPurchase = 0, totalSale = 0;
-            var date = to.SelectedDate.Value.AddDays(1);
-            var fromD = fromDate.SelectedDate.Value;
-            var doc2 = from d in db.Sales
-                       where d.isDeleted == false && (d.createdAt >= fromD ) && (d.createdAt <= date)
-                       select new
-                       {
-                           Total_Items = d.items,
-                           Partner_Name = d.Name.ToUpper(),
-                           SUBTOTAL = d.subTotal,
-                           Is_Purchase = d.isPurchase,
-                           TOTAL = d.total,
-                           DATE = d.createdAt,
-                           Discount_Percentage = d.discount,
-                           Discount_Amount = d.discountAmount,
-                       };
-            foreach (var item in doc2)
+            string date = to.SelectedDate.Value.AddDays(1).ToString("dd/MM/yyyy HH:mm:ss");
+            string fromD = fromDate.SelectedDate.Value.ToString("dd/MM/yyyy HH:mm:ss");
+            List<ledger> list = new List<ledger>() { };
+            foreach (var item in ticketsList)
             {
-                ledger g = new ledger { Partner_Name = item.Partner_Name, TOTAL = Convert.ToInt32(item.TOTAL), Total_Items = item.Total_Items, SUBTOTAL = item.SUBTOTAL, DATE = item.DATE, Discount_Amount = Convert.ToInt32(item.Discount_Amount), Discount_Percentage = Convert.ToDouble(item.Discount_Percentage) };
-                if (item.Is_Purchase == true)
+                if (String.Compare(item.DATE, fromD) >=0 && String.Compare(item.DATE, date) <= 0)
                 {
-                    g.Type = "Purchase";
-                    totalPurchase += Convert.ToInt32(item.TOTAL);
+                    ledger g = new ledger { Partner_Name = item.Partner_Name, TOTAL = Convert.ToInt32(item.TOTAL), Total_Items = item.Total_Items, SUBTOTAL = item.SUBTOTAL, DATE = item.DATE, Discount_Amount = Convert.ToInt32(item.Discount_Amount), Discount_Percentage = Convert.ToDouble(item.Discount_Percentage) };
+                    if (item.Type == "Purchase")
+                    {
+                        g.Type = "Purchase";
+                        totalPurchase += Convert.ToInt32(item.TOTAL);
+                    }
+                    else if (item.Type == "Sale")
+                    {
+                        g.Type = "Sale";
+                        totalSale += Convert.ToInt32(item.TOTAL);
+                    }
+                    list.Add(g);
                 }
-                else if (item.Is_Purchase == false)
-                {
-                    g.Type = "Sale";
-                    totalSale += Convert.ToInt32(item.TOTAL);
-                }
-                ticketsList.Add(g);
             }
             sale1.Text = totalSale.ToString();
             purchase.Text = totalPurchase.ToString();
-            table.ItemsSource = ticketsList;
+            table.ItemsSource = list;
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -89,9 +78,11 @@ namespace Rasheed_Traders
                            Discount_Amount = d.discountAmount,
                        };
             int totalPurchase = 0,totalSale = 0;
+            string s = "";
             foreach(var item in doc2)
             {
-                ledger g = new ledger { Partner_Name = item.Partner_Name, TOTAL = Convert.ToInt32(item.Total), Total_Items = item.Total_Items, SUBTOTAL = item.SubTotal, DATE = item.Date, Discount_Amount = Convert.ToInt32(item.Discount_Amount), Discount_Percentage = Convert.ToDouble(item.Discount_Percentage) };
+                s = item.Date.ToString("dd/MM/yyyy HH:mm:ss");
+                ledger g = new ledger { Partner_Name = item.Partner_Name, TOTAL = Convert.ToInt32(item.Total), Total_Items = item.Total_Items, SUBTOTAL = item.SubTotal, DATE = s, Discount_Amount = Convert.ToInt32(item.Discount_Amount), Discount_Percentage = Convert.ToDouble(item.Discount_Percentage) };
                 if (item.Is_Purchase == true)
                 {
                     g.Type = "Purchase";
@@ -146,8 +137,8 @@ namespace Rasheed_Traders
             get { return total; }
             set { total = value; }
         }
-        private DateTime date;
-        public DateTime DATE
+        private string date;
+        public string DATE
         {
             get { return date; }
             set { date = value; }

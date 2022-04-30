@@ -42,12 +42,19 @@ namespace Rasheed_Traders
                             Discount = c.discountAmount,
                             SubTotal = c.subTotal,
                             Total = c.total,
+                            typeId = f.typeId
                         });
             if (data != null)
             {
                 foreach (var item in data)
                 {
-                    ticketsList.Add(new SaleInfo() { Name = item.Name, Potency = item.Potency, Quantity = item.Quanitity, Discount = Convert.ToDouble(item.Discount), SubTotal = item.SubTotal, Total = Convert.ToInt32(item.Total) });
+                    var tp = (from d in db.Types
+                              where d.id == item.typeId
+                              select new
+                              {
+                                  name = d.name,
+                              }).SingleOrDefault();
+                    ticketsList.Add(new SaleInfo() { Name = tp.name + " - " + item.Name, Potency = item.Potency, Quantity = item.Quanitity, Discount = Convert.ToDouble(item.Discount), SubTotal = item.SubTotal, Total = Convert.ToInt32(item.Total) });
                 }
                 table.ItemsSource = ticketsList;
             }
@@ -95,7 +102,7 @@ namespace Rasheed_Traders
                         var data2 = (from c in db.Stocks
                                      where c.isDeleted == false && c.medicineId == medId
                                      select c).SingleOrDefault();
-                        data2.quantity += medQuantity;     // Stock updationn
+                        data2.quantity -= medQuantity;     // Stock updationn
                         db.SaveChanges();
                         if (data1.items == 0)
                             this.Close();
