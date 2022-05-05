@@ -31,6 +31,11 @@ namespace Rasheed_Traders
         {
         }
 
+        public void Focus(object sender, RoutedEventArgs e)
+        {
+            searchedContent.Text = "";
+        }
+
         private void loadData()
         {
             Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
@@ -46,6 +51,7 @@ namespace Rasheed_Traders
                             Unit_Price = c.priceBuy,
                             updatedAt = e.updatedAt,
                             Quantity = e.quantity,
+                            createdAt = e.createdAt
                         });
             DateTime d = DateTime.Now;
             string s = "";
@@ -54,11 +60,20 @@ namespace Rasheed_Traders
                 list.Clear();
                 foreach (var item in data)
                 {
-                    d = item.updatedAt.Value;
-                    s = d.ToString("dd/MM/yyyy HH:mm:ss");
-                    list.Add(new homeData() { Name = item.Name, Type = item.Type, Potency = item.Potency, Price = item.Unit_Price, Dt = s,Quantity = item.Quantity });
+                    if (item != null)
+                    {
+                        if (item.updatedAt != null)
+                            d = item.updatedAt.Value;
+                        else
+                            d = item.createdAt;
+                        s = d.ToString("dd/MM/yyyy HH:mm:ss");
+                        list.Add(new homeData() { Name = item.Name, Type = item.Type, Potency = item.Potency, Price = item.Unit_Price, Dt = s, Quantity = item.Quantity });
+                    }
                 }
                 table.ItemsSource = list;
+                //table.RowBackground = Brushes.Red;
+                //DataGridRow r = (DataGridRow)table.ItemContainerGenerator.ContainerFromIndex(0);
+                //r.Background = Brushes.Black;
             }
         }
 

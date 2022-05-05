@@ -21,7 +21,7 @@
                 </DataGrid.Columns>
             </DataGrid>
             <Grid x:Name="search"  Margin="0,0,0,0" HorizontalAlignment="Right" Width="Auto" >
-                <TextBox x:Name="searchedContent" Margin="0,20,250,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" BorderBrush="#FF8B8D93" Height="37" Width="470" TextChanged="searchedContent_TextChanged"/>
+                <TextBox x:Name="searchedContent" GotFocus="Focus"   MaxLength="50"  Margin="0,20,250,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" BorderBrush="#FF8B8D93" Height="37" Width="470" TextChanged="searchedContent_TextChanged"/>
                 <Button x:Name="createSale" Content="Create Sale"  Margin="480,20,24,0" VerticalAlignment="Top" FontSize="22" Padding="5,5,5,5" FontFamily="Bell MT" Background="#FFF1A26B" RenderTransformOrigin="0.457,0.582" Click="Button_Click"/>
             </Grid>
         </Grid>

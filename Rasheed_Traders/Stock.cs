@@ -21,6 +21,7 @@ namespace Rasheed_Traders
         public System.DateTime createdAt { get; set; }
         public Nullable<System.DateTime> updatedAt { get; set; }
         public bool isDeleted { get; set; }
+        public string batch { get; set; }
     
         public virtual Medicine Medicine { get; set; }
         public virtual TradingPartener TradingPartener { get; set; }

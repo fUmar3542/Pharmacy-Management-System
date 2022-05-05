@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Globalization;
+using System.Threading;
 
 namespace Rasheed_Traders
 {
@@ -29,31 +31,45 @@ namespace Rasheed_Traders
 
         private void dateTimePicker1_CloseUp(object sender, EventArgs e)
         {
-            int totalPurchase = 0, totalSale = 0;
-            string date = to.SelectedDate.Value.AddDays(1).ToString("dd/MM/yyyy HH:mm:ss");
-            string fromD = fromDate.SelectedDate.Value.ToString("dd/MM/yyyy HH:mm:ss");
             List<ledger> list = new List<ledger>() { };
-            foreach (var item in ticketsList)
+            Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+            var doc2 = from d in db.Sales
+                       where d.isDeleted == false
+                       select new
+                       {
+                           Total_Items = d.items,
+                           Partner_Name = d.Name.ToUpper(),
+                           SubTotal = d.subTotal,
+                           Is_Purchase = d.isPurchase,
+                           Total = d.total,
+                           Date = d.createdAt,
+                           Discount_Percentage = d.discount,
+                           Discount_Amount = d.discountAmount,
+                       };
+            int totalPurchase = 0, totalSale = 0;
+            string s = "";
+            foreach (var item in doc2)
             {
-                if (String.Compare(item.DATE, fromD) >=0 && String.Compare(item.DATE, date) <= 0)
+                if (item.Date >= fromDate.SelectedDate && item.Date <= to.SelectedDate.Value.AddDays(1))
                 {
-                    ledger g = new ledger { Partner_Name = item.Partner_Name, TOTAL = Convert.ToInt32(item.TOTAL), Total_Items = item.Total_Items, SUBTOTAL = item.SUBTOTAL, DATE = item.DATE, Discount_Amount = Convert.ToInt32(item.Discount_Amount), Discount_Percentage = Convert.ToDouble(item.Discount_Percentage) };
-                    if (item.Type == "Purchase")
+                    s = item.Date.ToString("dd/MM/yyyy HH:mm:ss");
+                    ledger g = new ledger { Partner_Name = item.Partner_Name, TOTAL = Convert.ToInt32(item.Total), Total_Items = item.Total_Items, SUBTOTAL = item.SubTotal, DATE = s, Discount_Amount = Convert.ToInt32(item.Discount_Amount), Discount_Percentage = Convert.ToDouble(item.Discount_Percentage) };
+                    if (item.Is_Purchase == true)
                     {
                         g.Type = "Purchase";
-                        totalPurchase += Convert.ToInt32(item.TOTAL);
+                        totalPurchase += Convert.ToInt32(item.Total);
                     }
-                    else if (item.Type == "Sale")
+                    else if (item.Is_Purchase == false)
                     {
                         g.Type = "Sale";
-                        totalSale += Convert.ToInt32(item.TOTAL);
+                        totalSale += Convert.ToInt32(item.Total);
                     }
                     list.Add(g);
                 }
             }
             sale1.Text = totalSale.ToString();
             purchase.Text = totalPurchase.ToString();
-            table.ItemsSource = list;
+            table.ItemsSource = list;         
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -62,6 +78,10 @@ namespace Rasheed_Traders
 
         private void loadData()
         {
+            //fromDate.Text = Convert.ToDateTime(fromDate.Text).ToString("yyyy/MM/dd");
+            System.Globalization.CultureInfo ci = CultureInfo.CreateSpecificCulture(CultureInfo.CurrentCulture.Name);
+            ci.DateTimeFormat.ShortDatePattern = "dd/MM/yyyy";
+            Thread.CurrentThread.CurrentCulture = ci;
             Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
             DateTime from = DateTime.Now;
             var doc2 = from d in db.Sales
@@ -157,3 +177,30 @@ namespace Rasheed_Traders
         }
     }
 }
+
+
+//int totalPurchase = 0, totalSale = 0;
+//string date = to.SelectedDate.Value.AddDays(1).ToString("dd/MM/yyyy HH:mm:ss");
+//string fromD = fromDate.SelectedDate.Value.ToString("dd/MM/yyyy HH:mm:ss");
+//List<ledger> list = new List<ledger>() { };
+//foreach (var item in ticketsList)
+//{
+//    if ((String.Compare(item.DATE, fromD) >= 0) && (String.Compare(item.DATE, date) <= 0))
+//    {
+//        ledger g = new ledger { Partner_Name = item.Partner_Name, TOTAL = Convert.ToInt32(item.TOTAL), Total_Items = item.Total_Items, SUBTOTAL = item.SUBTOTAL, DATE = item.DATE, Discount_Amount = Convert.ToInt32(item.Discount_Amount), Discount_Percentage = Convert.ToDouble(item.Discount_Percentage) };
+//        if (item.Type == "Purchase")
+//        {
+//            g.Type = "Purchase";
+//            totalPurchase += Convert.ToInt32(item.TOTAL);
+//        }
+//        else if (item.Type == "Sale")
+//        {
+//            g.Type = "Sale";
+//            totalSale += Convert.ToInt32(item.TOTAL);
+//        }
+//        list.Add(g);
+//    }
+//}
+//sale1.Text = totalSale.ToString();
+//purchase.Text = totalPurchase.ToString();
+//table.ItemsSource = list;

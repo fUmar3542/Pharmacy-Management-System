@@ -14,11 +14,11 @@
             <Label x:Name="changePassword" Content="CHANGE PASSWORD" HorizontalAlignment="Center" Margin="0,18,0,0" VerticalAlignment="Top" Foreground="#FF361414" FontSize="34" FontWeight="Bold" HorizontalContentAlignment="Left" Height="48" Width="354" Background="{x:Null}" VerticalContentAlignment="Top" BorderBrush="#FF3C2323" FontFamily="Modern No. 20"/>
             <Grid x:Name="sub" Background="#FFE8E8E0" Margin="31,76,27,17" Width="Auto" Height="Auto" >
                 <TextBlock HorizontalAlignment="Left" Margin="15,15,0,0" Text="Previous Password" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="20" FontFamily="Century"/>
-                <PasswordBox x:Name="previousPassword" HorizontalAlignment="Left" Margin="207,12,0,0" VerticalAlignment="Top" Width="278" FontSize="20" Height="30"/>
+                <PasswordBox x:Name="previousPassword"  MaxLength="50"  HorizontalAlignment="Left" Margin="207,12,0,0" VerticalAlignment="Top" Width="278" FontSize="20" Height="30"/>
                 <TextBlock HorizontalAlignment="Left" Margin="16,60,0,0" Text="New Password" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="20" FontFamily="Century" RenderTransformOrigin="0.514,0.874"/>
                 <TextBlock HorizontalAlignment="Left" Margin="14,109,0,0" Text="Confirm Password" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="20" FontFamily="Century"/>
-                <PasswordBox x:Name="password" HorizontalAlignment="Left" Margin="207,56,0,0" VerticalAlignment="Top" Width="276" FontSize="20" Height="30"/>
-                <PasswordBox x:Name="confirmPassword" HorizontalAlignment="Left" Margin="208,107,0,0" VerticalAlignment="Top" Width="275" FontSize="20" Height="30"/>
+                <PasswordBox x:Name="password"  MaxLength="50"  HorizontalAlignment="Left" Margin="207,56,0,0" VerticalAlignment="Top" Width="276" FontSize="20" Height="30"/>
+                <PasswordBox x:Name="confirmPassword"  MaxLength="50"  HorizontalAlignment="Left" Margin="208,107,0,0" VerticalAlignment="Top" Width="275" FontSize="20" Height="30"/>
                 <Button x:Name="cancel" Content="Cancel" HorizontalAlignment="Left" Margin="397,158,0,0" VerticalAlignment="Top" Click="Button_Click" FontSize="20" Background="#FFF3C59F" FontFamily="Bell MT" Padding="8,4,8,4" Width="85"/>
                 <Button x:Name="change" Content="Change" HorizontalAlignment="Left" Margin="306,158,0,0" VerticalAlignment="Top" Click="Button_Click" FontSize="20" Background="#FFC4DE9C" FontFamily="Bell MT" Padding="8,4,8,4" Width="85"/>
             </Grid>

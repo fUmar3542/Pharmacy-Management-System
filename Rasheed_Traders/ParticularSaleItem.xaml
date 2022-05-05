@@ -35,9 +35,9 @@
         <Button x:Name="cancel" Content="Cancel" HorizontalAlignment="Left" Margin="84,398,0,80"  FontSize="22" Padding="5,5,5,5" FontFamily="Bell MT" Background="#FFF1A26B" RenderTransformOrigin="0.457,0.582" Click="Button_Click" Width="110" Grid.ColumnSpan="2" Grid.Column="1"/>
         <TextBox x:Name="quantity" Text="0" HorizontalAlignment="Left" Margin="277,214,0,0" VerticalAlignment="Top" Width="300" FontSize="26" Height="35" Grid.ColumnSpan="3"/>
         <TextBlock HorizontalAlignment="Left" Margin="22,331,0,0" Text="Discount Percentage" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="26" FontFamily="Century" Width="249"/>
-        <TextBox x:Name="price" Text="0" HorizontalAlignment="Left" Margin="277,273,0,0" VerticalAlignment="Top" Width="300" FontSize="26" Height="35" Grid.ColumnSpan="3"/>
+        <TextBox x:Name="price"  Text="0" HorizontalAlignment="Left" Margin="277,273,0,0" VerticalAlignment="Top" Width="300" FontSize="26" Height="35" Grid.ColumnSpan="3"/>
         <TextBlock HorizontalAlignment="Left" Margin="22,213,0,0" Text="Quantity" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="26" FontFamily="Century" Width="125"/>
-        <TextBox x:Name="dPercentage" Text="0" HorizontalAlignment="Left" Margin="277,329,0,0" VerticalAlignment="Top" Width="300" FontSize="26" Height="35" Grid.ColumnSpan="3"/>
+        <TextBox x:Name="dPercentage"  Text="0" HorizontalAlignment="Left" Margin="277,329,0,0" VerticalAlignment="Top" Width="300" FontSize="26" Height="35" Grid.ColumnSpan="3"/>
         <TextBlock  HorizontalAlignment="Left" Margin="22,278,0,0" Text="Price" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="26" FontFamily="Century" Width="90"/>
     </Grid>
 </Window>

@@ -46,13 +46,29 @@ namespace Rasheed_Traders
                             Total = c.total,
                             Tpid = c.typeId,
                             medId = c.medicineId,
-                            bId = c.buyerId
+                            bId = c.buyerId,
+                            bonusId = c.bonusId,
+                            price = c.Price,  
+                            bonus = c.bonus
                         }).SingleOrDefault();
+            string bonusName = "";
             if (data != null)
             {
-                quantity.Text = data.Quanitity.ToString();
+                if (data.bonusId == null)
+                {
+                    quantity.Text = data.Quanitity.ToString();
+                }
+                else
+                {
+                    var b = (from c in db.Bonus
+                               where c.isDeleted == false && c.id == data.bonusId
+                               select c).SingleOrDefault();
+                    int bonu = (int)(data.bonus);
+                    bonusName = b.name;
+                    quantity.Text = (data.Quanitity - bonu).ToString();
+                }
+                price.Text = data.price.ToString();
                 dPercentage.Text = data.Discount.ToString();
-                price.Text = Convert.ToInt32((data.SubTotal / data.Quanitity)).ToString();
                 int index = 0;
                 var med = (from c in db.Medicines
                            where c.isDeleted == false
@@ -60,7 +76,7 @@ namespace Rasheed_Traders
                 foreach (var item in med)
                 {
                     var tp = (from d in db.Types
-                              where d.id == item.typeId
+                              where d.id == item.typeId && d.isDeleted == false
                               select new
                               {
                                   name = d.name,
@@ -81,10 +97,12 @@ namespace Rasheed_Traders
                 {
                     bonusCombo.Items.Add(item.name);
                 }
+                if(bonusName != "")
+                    bonusCombo.SelectedItem = bonusName;
                 item1.mediId = data.medId;
                 item1.typeId = data.Tpid;
                 item1.discount = Convert.ToDouble(data.Discount);
-                item1.price = Convert.ToInt32((data.SubTotal / data.Quanitity));
+                item1.price = Convert.ToInt32(price.Text);
                 item1.quantity = data.Quanitity;
                 item1.buyerId = data.bId;
                 item1.total = data.Total;
@@ -98,13 +116,14 @@ namespace Rasheed_Traders
             else if(sender.Equals(update))
             {
                 Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
-                int i1 = mediCombo.SelectedIndex, i3 = 0,discountAm =0,bonus = 0, sId = 0;
+                int i1 = mediCombo.SelectedIndex, i3 = 0,discountAm =0,bonus1 = 0, sId = 0;
+                if (!validateInput())
+                    return;
                 itemInfo item2 = new itemInfo();
                 item2.quantity = Convert.ToInt32(Double.Parse(quantity.Text));
                 item2.price = Convert.ToInt32(Double.Parse(price.Text));
                 item2.discount = Double.Parse(dPercentage.Text);
-                item2.buyerId = item1.buyerId;
-          
+                item2.buyerId = item1.buyerId;          
                 int index = 0;
                 var med = (from c in db.Medicines
                            where c.isDeleted == false
@@ -130,22 +149,26 @@ namespace Rasheed_Traders
                     {
                         if (index == i3)
                             item2.bonusId = item.id;
+                        index++;
                     }
                     char[] num = bonusCombo.Text.ToCharArray();
                     int len = num.Length;
                     int num2 = 0, num3 = 0, num4 = 0;
                     while (num[num2] != '+')
                     {
+                        num3 *= 10;
                         num3 += (num[num2] - '0');
                         num2++;
                     }
                     num2++;
                     while (num2 != len)
                     {
+                        num4 *= 10;
                         num4 += (num[num2] - '0');
                         num2++;
                     }
-                    bonus = (item2.quantity / num3) * num4; // bonus items
+                    if(num3 != 0)
+                        bonus1 = (item2.quantity / num3) * num4; // bonus items
                 }
                 var sale = (from c in db.Sales
                             where c.isDeleted == false && c.id == saleId
@@ -156,12 +179,12 @@ namespace Rasheed_Traders
                 sId = saleId;
                 if (bonusCombo.SelectedItem != null)
                 {
-                    SaleItem item = new SaleItem() { saleId = sId, medicineId = item2.mediId, typeId = item2.typeId, buyerId = item2.buyerId, bonusId = item2.bonusId, total = item2.total, subTotal = item2.subTotal, discount = item2.discount, discountAmount = discountAm, quantity = item2.quantity + bonus, createdAt = DateTime.Now, isDeleted = false };
+                    SaleItem item = new SaleItem() {bonus = bonus1, Price = item2.price, saleId = sId, medicineId = item2.mediId, typeId = item2.typeId, buyerId = item2.buyerId, bonusId = item2.bonusId, total = item2.total, subTotal = item2.subTotal, discount = item2.discount, discountAmount = discountAm, quantity = (item2.quantity + bonus1), createdAt = DateTime.Now, isDeleted = false };
                     db.SaleItems.Add(item);
                 }
                 else
                 {
-                    SaleItem item = new SaleItem() { saleId = sId, medicineId = item2.mediId, typeId = item2.typeId, buyerId = item2.buyerId, total = item2.total, subTotal = item2.subTotal, discount = item2.discount, discountAmount = discountAm, quantity = item2.quantity + bonus, createdAt = DateTime.Now, isDeleted = false };
+                    SaleItem item = new SaleItem() {bonus = bonus1, Price = item2.price, saleId = sId, medicineId = item2.mediId, typeId = item2.typeId, buyerId = item2.buyerId, total = item2.total, subTotal = item2.subTotal, discount = item2.discount, discountAmount = discountAm, quantity = item2.quantity, createdAt = DateTime.Now, isDeleted = false };
                     db.SaleItems.Add(item);
                 }
                 sale.updatedAt = DateTime.Now;
@@ -171,21 +194,23 @@ namespace Rasheed_Traders
                 saleI.isDeleted = true;
                 if (sale.items == 1)
                 {
-                    sale.discount = item2.discount;
-                    sale.discountAmount = discountAm;                   
                     sale.subTotal = item2.subTotal;
-                    sale.total = item2.total;
                 }
                 else
                 {
-                    sale.total -= item1.total;
-                    sale.subTotal -= item1.subTotal;
-                    sale.subTotal += item2.subTotal;
-                    sale.total += item2.total - Convert.ToDouble(item2.total * (sale.discount / 100));
+                    sale.subTotal -= item1.total;
+                    sale.subTotal += item2.total;
                 }
+                if (sale.discount != null)
+                {
+                    sale.discountAmount = (int)(sale.subTotal * (Convert.ToDouble(sale.discount) / 100));
+                    sale.total = sale.subTotal - (double)(sale.discountAmount);
+                }
+                else
+                    sale.total = sale.subTotal;
                 if (isSale)
                 {
-                    if (updateStock1(item1.mediId, item1.buyerId, item1.quantity, item1.price) && updateStock(item2.mediId, item2.quantity, item2.price))
+                    if (addStock(item1.mediId, item1.buyerId, item1.quantity, item1.price) && removeStock(item2.mediId, item2.quantity + bonus1, item2.price))
                     {
                         db.SaveChanges();
                         this.Close();
@@ -194,17 +219,68 @@ namespace Rasheed_Traders
                 }
                 else
                 {
-                    if (updateStock(item1.mediId, item1.quantity, item1.price) && updateStock1(item2.mediId,item2.buyerId, item2.quantity, item2.price))
+                    if (addStock(item2.mediId,item2.buyerId, item2.quantity + bonus1, item2.price) && removeStock(item1.mediId, item1.quantity, item1.price))
                     {
                         db.SaveChanges();
                         this.Close();
-                        updateWindow();
+                        updateWindow1();
                     }
                 }
             }
         }
 
-        private bool updateStock1(int a, int b, int c, int price)     // Add Stock
+        private bool validateInput()
+        {
+            double number1 = 0;
+            int number2 = 0;
+            if (price.Text == "" || quantity.Text == "")
+            {
+                MessageBox.Show("Enter fields first");
+                return false;
+            }
+            if (Double.TryParse(dPercentage.Text, out number1))
+            {
+                if (number1 < 0)
+                {
+                    MessageBox.Show("Enter the valid Discount Percentage");
+                    return false;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Enter the valid Discount Percentage");
+                return false;
+            }
+            if (int.TryParse(quantity.Text, out number2))
+            {
+                if (number2 < 0)
+                {
+                    MessageBox.Show("Enter valid Quantity");
+                    return false;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Enter valid Quantity");
+                return false;
+            }
+            if (int.TryParse(price.Text, out number2))
+            {
+                if (number2 < 0)
+                {
+                    MessageBox.Show("Enter valid Price");
+                    return false;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Enter valid Price");
+                return false;
+            }
+            return true;
+        }
+
+        private bool addStock(int a, int b, int c, int price)     // Add Stock
         {
             // Updating stock
             Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
@@ -219,6 +295,7 @@ namespace Rasheed_Traders
                     tpId = b,
                     quantity = c,
                     createdAt = DateTime.Now,
+                    updatedAt = DateTime.Now,
                     isDeleted = false
                 };
                 db.Stocks.Add(stk);
@@ -228,11 +305,14 @@ namespace Rasheed_Traders
                 s.priceBuy = price;
             }
             else
+            {
+                st.updatedAt = DateTime.Now;
                 st.quantity += c;
+            }
             db.SaveChanges();
             return true;
         }
-        private bool updateStock(int a, int c, int price)     // Remove Stock
+        private bool removeStock(int a, int c, int price)     // Remove Stock
         {
             // Updating stock
             Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
@@ -244,21 +324,61 @@ namespace Rasheed_Traders
                 MessageBox.Show("Stock item not exist");
                 return false;
             }
-            if (st.quantity < c)
+            if (isSale == true)
             {
-                MessageBox.Show("Stock not available");
-                return false;
+                if (st.quantity < c)
+                {
+                    var med = (from d in db.Medicines
+                               where d.isDeleted == false && d.id == a
+                               select d).FirstOrDefault();
+                    MessageBox.Show(med.name + " stock not available");
+                    return false;
+                }
             }
-            else
-            {
-                st.quantity -= c;
-                var s = (from d in db.Medicines
-                         where d.isDeleted == false && d.id == a
-                         select d).SingleOrDefault();
-                s.priceSell = price;
-                db.SaveChanges();
-            }
+            st.quantity -= c;
+            if (st.quantity < 0)
+                st.quantity = 0;
+            var s = (from d in db.Medicines
+                        where d.isDeleted == false && d.id == a
+                        select d).SingleOrDefault();
+            s.priceSell = price;
+            st.updatedAt = DateTime.Now;
+            db.SaveChanges();
             return true;
+        }
+
+        private void updateWindow1()      // For purchase
+        {
+            string title1 = "HomeWindow";
+            var e = Application.Current.Windows.
+            Cast<Window>().SingleOrDefault(x => x.Title.Equals(title1));
+            if (e != null)
+            {
+                e.Close();
+                HomeWindow newWindow = new HomeWindow(); /* Give Your window Instance */
+                newWindow.Title = title1;
+                newWindow.Show();
+            }
+            string title = "AddOrViewPurchase";  /*Your Window Instance Name*/
+            var existingWindow = Application.Current.Windows.
+            Cast<Window>().SingleOrDefault(x => x.Title.Equals(title));
+            if (existingWindow != null)
+            {
+                existingWindow.Close();
+                AddOrViewPurchase newWindow1 = new AddOrViewPurchase(); /* Give Your window Instance */
+                newWindow1.Title = title;
+                newWindow1.Show();
+            }
+            string title2 = "purchaseItems";  /*Your Window Instance Name*/
+            var eWindow = Application.Current.Windows.
+            Cast<Window>().SingleOrDefault(x => x.Title.Equals(title2));
+            if (eWindow != null)
+            {
+                eWindow.Close();
+                purchaseItems newWindow1 = new purchaseItems(saleId); /* Give Your window Instance */
+                newWindow1.Title = title2;
+                newWindow1.Show();
+            }
         }
         private void updateWindow()
         {

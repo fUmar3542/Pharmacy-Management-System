@@ -19,7 +19,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <ComboBox x:Name="combobox"  HorizontalAlignment="Right" Margin="0,67,25,0" VerticalAlignment="Top" Width="264" SelectionChanged="ComboBox_SelectionChanged" SelectedIndex="0" FontSize="18"/>
-        <TextBlock HorizontalAlignment="Right" Margin="0,68,300,0" Text="Select a Buyer" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="24" FontFamily="Century" Width="190" Padding="14,0,14,3"/>
+        <TextBlock HorizontalAlignment="Right" Margin="0,68,300,0" Text="Select a Seller" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFF1EECE" FontSize="24" FontFamily="Century" Width="190" Padding="14,0,14,3"/>
         <Button x:Name="addRow" Content="Add a new Row" HorizontalAlignment="Left" Margin="21,0,0,39" VerticalAlignment="Bottom" FontSize="22" Padding="5,5,5,5" FontFamily="Bell MT" Background="#FFF1EECE" RenderTransformOrigin="0.457,0.582" Click="Button_Click" Width="160"/>
         <Button x:Name="removeRow" Content="Remove the selected Row" HorizontalAlignment="Left" Margin="186,0,0,39" VerticalAlignment="Bottom" FontSize="22" Padding="5,5,5,5" FontFamily="Bell MT" Background="#FFF1A26B" RenderTransformOrigin="0.457,0.582" Click="Button_Click" Width="250"/>
         <Button x:Name="done" Content="Done" HorizontalAlignment="Right" Margin="0,0,24,5" VerticalAlignment="Bottom" FontSize="22" Padding="5,5,5,5" FontFamily="Bell MT" Background="#FF88A43C" RenderTransformOrigin="0.457,0.582" Click="Button_Click" Width="149"/>

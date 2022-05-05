@@ -19,6 +19,7 @@ namespace Rasheed_Traders
     /// </summary>
     public partial class AddOrViewBonus : Window
     {
+        List<Bonus> list = new List<Bonus>() { };
         public AddOrViewBonus()
         {
             InitializeComponent();
@@ -31,13 +32,13 @@ namespace Rasheed_Traders
                 this.Close();
             else if (sender.Equals(create))
             {
-                if (bonusName.Text == null)
+                if (bonusName.Text == "")
                 {
                     MessageBox.Show("Enter bonus name");
                     return;
                 }
                 Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
-                var doc = from d in db.Bonus
+                var doc = from d in db.Bonus where d.isDeleted == false
                           select d;
                 foreach (var item in doc)
                 {
@@ -52,9 +53,43 @@ namespace Rasheed_Traders
                 db.SaveChanges();
                 MessageBox.Show("Bonus Created successfully");
                 loadData();
-                bonusName.Text = null;
-                description.Text = null;
+                bonusName.Text = "";
+                description.Text = "";
                 updateWindow();
+            }
+            else if (sender.Equals(Delete))
+            {
+                if (bonusName.Text == "")
+                    return;   
+                Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+                var doc = (from d in db.Bonus
+                            where d.name == bonusName.Text && d.isDeleted == false
+                            select d).SingleOrDefault();
+                if(doc == null)
+                {
+                    MessageBox.Show("Item not found");
+                        return;
+                }    
+                if (doc.SaleItems.Count > 0)
+                {
+                    MessageBox.Show("Bonus can't be deleted. Delete the respective Sale/Purchase first");
+                    return;
+                }
+                if (doc != null)
+                {
+                    MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+                    if (messageBoxResult == MessageBoxResult.Yes)
+                    {
+                        doc.isDeleted = true;
+                        db.SaveChanges();
+                        loadData();
+                        MessageBox.Show("Bonus Deleted successfully");
+                        bonusName.Text = "";
+                        description.Text = "";
+                        updateWindow();
+                    }
+                }
+                
             }
         }
 
@@ -87,6 +122,7 @@ namespace Rasheed_Traders
         }
         private void loadData()
         {
+            list.Clear();
             Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
             var doc = from d in db.Bonus
                       where d.isDeleted == false
@@ -96,7 +132,60 @@ namespace Rasheed_Traders
                           Date = d.createdAt,
                           Description = d.description
                       };
-            tableData.ItemsSource = doc.ToList();
+            string s = "";
+            foreach(var item in doc)
+            {
+                s = item.Date.ToString("dd/MM/yyyy HH:MM:ss");
+                list.Add(new Bonus() {Name = item.Name,Dt = s,Description = item.Description});
+            }
+            tableData.ItemsSource = "";
+            tableData.ItemsSource = list;
+        }
+
+        private void Row_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var row = ItemsControl.ContainerFromElement((DataGrid)sender,
+                                                 e.OriginalSource as DependencyObject) as DataGridRow;
+            if (row == null)
+                return;
+            else
+            {
+                int a = tableData.SelectedIndex, index = 0;
+                Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+                var doc2 = from d in db.Bonus
+                           where d.isDeleted == false
+                           select d;
+                foreach (var item in doc2)
+                {
+                    if (a == index)
+                    {
+                        bonusName.Text = item.name;
+                        description.Text = item.description;
+                    }
+                    index++;
+                }
+            }
+        }
+        public class Bonus
+        {
+            private string name;
+            public string Name
+            {
+                get { return name; }
+                set { name = value; }
+            }
+            private string description;
+            public string Description
+            {
+                get { return description; }
+                set { description = value; }
+            }
+            private string date;
+            public string Dt
+            {
+                get { return date; }
+                set { date = value; }
+            }
         }
     }
 }

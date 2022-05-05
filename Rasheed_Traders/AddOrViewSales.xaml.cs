@@ -26,6 +26,11 @@ namespace Rasheed_Traders
             InitializeComponent();
             searchedContent.Text = "Search";
         }
+
+        public void Focus(object sender, RoutedEventArgs e)
+        {
+            searchedContent.Text = "";
+        }
         public void loadData()
         {
             Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
@@ -46,7 +51,7 @@ namespace Rasheed_Traders
             foreach (var item in doc2)
             {
                 s = item.DATE.ToString("dd/MM/yyyy HH:mm:ss");
-                list.Add(new saleView() { Items = item.TOTAL_ITEMS, Name = item.BUYER_NAME, SubTotal = item.SUBTOTAL, Total = item.TOTAL, Dt = s, DiscountPercentage = Convert.ToDouble(item.Discount_Percentage), DiscountAmount = Convert.ToDouble(item.Discount_Amount) });
+                list.Add(new saleView() { Items = item.TOTAL_ITEMS, Name = item.BUYER_NAME, SubTotal = item.SUBTOTAL, Total = Math.Round(Convert.ToDouble(item.TOTAL)), Dt = s, DiscountPercentage = Convert.ToDouble(item.Discount_Percentage), DiscountAmount = Convert.ToDouble(Math.Round(Convert.ToDouble(item.Discount_Amount))) });
             }
             table.ItemsSource = list;
         }
@@ -113,7 +118,7 @@ namespace Rasheed_Traders
             foreach (var item in list)
             {
                 if(item.Name.Contains(searchedContent.Text.ToUpper()))
-                    list1.Add(new saleView() { Items = item.Items, Name = item.Name, SubTotal = item.SubTotal, Total = item.Total, Dt = item.Dt, DiscountPercentage = Convert.ToDouble(item.DiscountPercentage), DiscountAmount = Convert.ToDouble(item.DiscountAmount) });
+                    list1.Add(new saleView() { Items = item.Items, Name = item.Name, SubTotal = item.SubTotal, Total = Math.Round(Convert.ToDouble(item.Total)), Dt = item.Dt, DiscountPercentage = Convert.ToDouble(item.DiscountPercentage), DiscountAmount = Convert.ToDouble(Math.Round(Convert.ToDouble(item.DiscountAmount))) });
             }
             table.ItemsSource = list1;
         }

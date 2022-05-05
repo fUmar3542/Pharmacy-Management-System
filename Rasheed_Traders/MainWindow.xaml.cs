@@ -42,7 +42,7 @@ namespace Rasheed_Traders
             }
             else if (sender.Equals(ChangePassword))
             {
-                if (userBlock.Text != null)
+                if (userBlock.Text != "")
                 {
                     Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
                     var doc = from d in db.Users
@@ -75,7 +75,7 @@ namespace Rasheed_Traders
             }
             else if(sender.Equals(Login))
             {
-                if ( userBlock.Text == null || passBlock.Password == null )
+                if ( userBlock.Text == "" || passBlock.Password == "" )
                 {
                     MessageBox.Show("Please fill out all the fields first");
                     return;

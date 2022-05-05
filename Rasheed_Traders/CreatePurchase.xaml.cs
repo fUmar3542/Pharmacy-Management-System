@@ -48,8 +48,16 @@ namespace Rasheed_Traders
             }
             else if (sender.Equals(addRow))
             {
-                TicketInfo t = new TicketInfo { mediStatus = "True", mediCombo = new ObservableCollection<string>() { "Forward", "Defense", "Goalie" }, typeCombo = new ObservableCollection<string>() { "Forward", "Defense", "Goalie" }, Quantity = 1 };
                 List<TicketInfo> list = table.Items.OfType<TicketInfo>().ToList();
+                foreach (var item1 in list)
+                {
+                    if (item1.mediStatus == "True" || item1.Quantity < 0 || item1.DiscountPercentage < 0)
+                    {
+                        MessageBox.Show("Not a valid input. Please enter valid input");
+                        return;
+                    }
+                }
+                TicketInfo t = new TicketInfo { mediStatus = "True", mediCombo = new ObservableCollection<string>() { "Forward", "Defense", "Goalie" }, typeCombo = new ObservableCollection<string>() { "Forward", "Defense", "Goalie" }, Quantity = 1 };
                 list.Add(t);
                 table.ItemsSource = null;
                 table.ItemsSource = list;
@@ -77,39 +85,71 @@ namespace Rasheed_Traders
 
         private void saleDone()
         {
+            List<TicketInfo> list = table.Items.OfType<TicketInfo>().ToList();
+            if (list.Count() == 0)
+            {
+                this.Close();
+                return;
+            }
+            foreach (var item1 in list)
+            {
+                if (item1.mediStatus == "True" || item1.Quantity < 0 || item1.DiscountPercentage < 0)
+                {
+                    MessageBox.Show("Not a valid input. Please enter valid input");
+                    return;
+                }
+            }
+            double number1 = 0;
+            if (percentage.Text != "")
+            {
+                if (Double.TryParse(percentage.Text, out number1))
+                {
+                    if(number1 < 0)
+                    {
+                        MessageBox.Show("Enter the valid Discount Percentage");
+                        return;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Enter the valid Discount Percentage");
+                    return;
+                }
+            }
+            if(combobox.Text == "")
+            {
+                MessageBox.Show("Select Partner first");
+                return;
+            }
+            Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+            List<string> mediId = new List<string>();
+            int id1 = 0, id2 = 0, id3 = 0, id4 = -1, i = 0;
+            double total1 = 0,  iTotal = 0, iSubtotal, dAmount = 0;
+            int pIndex = combobox.Text.IndexOf('-');
+            string name = "",pName = combobox.Text.Substring(0,(pIndex-1)),pLocation = combobox.Text.Substring(pIndex+2);
+            // Partner id searching
+            var doc2 = (from d in db.TradingParteners
+                        where d.isDeleted == false && d.isSeller == true && d.name == pName && d.location == pLocation
+                        select new
+                        {
+                            id = d.id,
+                            nm = d.name
+                        }).FirstOrDefault();
+            id3 = doc2.id;
+            name = doc2.nm;
+            Sale s = new Sale();
+            int bonus1 = 0;
+            double dPercentage = 0;
             MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure?", "Purchase Confirmation", System.Windows.MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
-                List<TicketInfo> list = table.Items.OfType<TicketInfo>().ToList();
-                if (list.Count() == 0)
-                    return;
-                Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
-                List<string> mediId = new List<string>();
-                int id1 = 0, id2 = 0, id3 = 0, id4 = -1, i = 0;
-                double total1 = 0, subTotal = 0, iTotal = 0, iSubtotal, dAmount = 0;
-                string name = "";
-                // Partner id searching
-                var doc2 = (from d in db.TradingParteners
-                            where d.isDeleted == false && d.isSeller == true && d.name == combobox.Text
-                            select new
-                            {
-                                id = d.id,
-                                nm = d.name
-                            }).FirstOrDefault();
-                id3 = doc2.id;
-                name = doc2.nm;
-
-                Sale s = new Sale();
-                int bonus = 0;
-                double dPercentage = 0;
-
                 // Searching of medicineId and typeId of each record
                 foreach (var index in list)
                 {
-                    bonus = 0;
+                    bonus1 = 0;
                     int index3 = index.mediStatus.IndexOf('-');
                     string tp = index.mediStatus.Substring(0, index3 - 1),
-                              md = index.mediStatus.Substring(index3 + 2);
+                                md = index.mediStatus.Substring(index3 + 2);
                     id2 = returnId("Type", tp);
                     if (id2 == -1)
                     {
@@ -125,53 +165,55 @@ namespace Rasheed_Traders
                         int num2 = 0, num3 = 0, num4 = 0;
                         while (num[num2] != '+')
                         {
+                            num3 *= 10;
                             num3 += (num[num2] - '0');
                             num2++;
                         }
                         num2++;
                         while (num2 != len)
                         {
+                            num4 *= 10;
                             num4 += (num[num2] - '0');
                             num2++;
                         }
-                        bonus = (index.Quantity / num3) * num4; // bonus items
+                        if (num3 != 0)
+                            bonus1 = (index.Quantity / num3) * num4; // bonus items
                     }
-                    updateStock(id1, id3, bonus + index.Quantity,index.Price);
+                    updateStock(id1, id3, bonus1 + index.Quantity, index.Price);
                     iSubtotal = index.Price * (index.Quantity);
-                    dAmount = (index.DiscountPercentage / 100) * iSubtotal;
+                    dAmount = (int)((index.DiscountPercentage / 100) * iSubtotal);
                     iTotal = iSubtotal - dAmount;
                     total1 += iTotal;
-                    subTotal += iSubtotal;
-                    if (bonus != 0)   // if bonusId selected
+                    if (bonus1 != 0)   // if bonusId selected
                     {
-                        SaleItem item = new SaleItem() { saleId = s.id, medicineId = id1, typeId = id2, buyerId = id3, bonusId = id4, total = iTotal, subTotal = iSubtotal, discount = index.DiscountPercentage, discountAmount = dAmount, quantity = index.Quantity + bonus, createdAt = DateTime.Now };
+                        SaleItem item = new SaleItem() { Price = index.Price, saleId = s.id, medicineId = id1, typeId = id2, buyerId = id3, bonusId = id4, total = iTotal, subTotal = iSubtotal, discount = index.DiscountPercentage, discountAmount = dAmount, quantity = index.Quantity + bonus1,bonus = bonus1, createdAt = DateTime.Now };
                         db.SaleItems.Add(item);
                     }
                     else
                     {
-                        SaleItem item = new SaleItem() { saleId = s.id, medicineId = id1, typeId = id2, buyerId = id3, total = iTotal, subTotal = iSubtotal, discount = index.DiscountPercentage, discountAmount = dAmount, quantity = index.Quantity, createdAt = DateTime.Now };
+                        SaleItem item = new SaleItem() { Price = index.Price, saleId = s.id, medicineId = id1, typeId = id2, buyerId = id3, total = iTotal, subTotal = iSubtotal, discount = index.DiscountPercentage, discountAmount = dAmount, quantity = index.Quantity, bonus = bonus1, createdAt = DateTime.Now };
                         db.SaleItems.Add(item);
                     }
                     dPercentage = index.DiscountPercentage;
                     i++;
                 }
+                s.subTotal = total1;
                 if (percentage.Text != "")
                 {
                     double number = Convert.ToDouble(percentage.Text);
                     s.discount = number;
-                    s.discountAmount = total1 * (number / 100);
+                    s.discountAmount = (int)(total1 * (number / 100));
                     total1 = total1 - Convert.ToDouble(s.discountAmount);
                 }
-                s.subTotal = subTotal;
+                else
+                {
+                    s.discount = 0;
+                    s.discountAmount = 0;
+                }
                 s.total = total1;
                 s.createdAt = DateTime.Now;
                 s.isDeleted = false;
                 s.items = i;
-                if(i == 1)
-                {
-                    s.discountAmount = dAmount;
-                    s.discount = dPercentage;
-                }
                 s.Name = name;
                 s.isPurchase = true;
                 db.Sales.Add(s);
@@ -183,6 +225,18 @@ namespace Rasheed_Traders
 
         private void updateWindow()
         {
+            string title4 = "CreateSale";  /*Your Window Instance Name*/
+            var eWindow = Application.Current.Windows.
+            Cast<Window>().SingleOrDefault(x => x.Title.Equals(title4));
+            if (eWindow != null)
+            {
+                CreateSale newWindow1 = new CreateSale(); /* Give Your window Instance */
+                List<TicketInfo> list = ((CreateSale)eWindow).table.Items.OfType<TicketInfo>().ToList();
+                newWindow1.table.ItemsSource = list;
+                eWindow.Close();
+                newWindow1.Title = title4;
+                newWindow1.Show();
+            }
             string t = "Ledger";
             var ex = Application.Current.Windows.
                   Cast<Window>().SingleOrDefault(x => x.Title.Equals(t));
@@ -233,16 +287,16 @@ namespace Rasheed_Traders
                     isDeleted = false
                 };
                 db.Stocks.Add(stk);
-                var s = (from d in db.Medicines
-                         where d.isDeleted == false && d.id == a
-                         select d).FirstOrDefault();
-                s.priceBuy = price;
             }
             else
             {
                 st.quantity += c;
                 st.updatedAt = DateTime.Now;
             }
+            var s = (from d in db.Medicines
+                     where d.isDeleted == false && d.id == a
+                     select d).FirstOrDefault();
+            s.priceBuy = price;
             db.SaveChanges();
         }
 
@@ -256,7 +310,7 @@ namespace Rasheed_Traders
                        select new
                        {
                            id = d.id
-                       }).SingleOrDefault();
+                       }).FirstOrDefault();
             if (doc != null)
                 return doc.id;
             else
@@ -294,17 +348,18 @@ namespace Rasheed_Traders
             // Select Seller
             Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
             var doc = from d in db.TradingParteners
-                      where d.isSeller == true
+                      where d.isSeller == true && d.isDeleted == false
                       select new
                       {
                           name = d.name,
+                          loc = d.location
                       };
             foreach (var item in doc)
             {
-                combobox.Items.Add(item.name);
+                combobox.Items.Add(item.name + " - " + item.loc);
             }
             // Select Medicine
-            var doc1 = from d in db.Medicines
+            var doc1 = from d in db.Medicines where d.isDeleted == false
                        select new
                        {
                            name = d.name,
@@ -316,7 +371,7 @@ namespace Rasheed_Traders
             foreach (var item in doc1)
             {
                 var tp = (from d in db.Types
-                          where d.id == item.typeId
+                          where d.id == item.typeId &&  d.isDeleted == false
                           select new
                           {
                               name = d.name,
@@ -327,6 +382,7 @@ namespace Rasheed_Traders
             
             // Select Bonus
             var doc3 = from d in db.Bonus
+                       where d.isDeleted == false
                        select new
                        {
                            name = d.name,
