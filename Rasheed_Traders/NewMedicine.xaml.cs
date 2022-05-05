@@ -46,14 +46,19 @@ namespace Rasheed_Traders
             else if (sender.Equals(createButton))
             {
                 Int32 i = 0;
-                if (mediName.Text == null || potency.Text == null)
+                if (mediName.Text == "" || potency.Text == "")
                 {
                     MessageBox.Show("Please fill out all the fields first");
                     return;
                 }
+                if (combo.Text == "")
+                {
+                    MessageBox.Show("Select Type First");
+                    return;
+                }
                 Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
                 var doc = from d in db.Types
-                          where d.name == combo.SelectedItem.ToString()
+                          where d.name == combo.SelectedItem.ToString() && d.isDeleted == false
                           select new
                           {
                               id = d.id,
@@ -63,7 +68,8 @@ namespace Rasheed_Traders
                     i = item.id;
                 }
                 var doc1 = from d in db.Medicines
-                          select new
+                           where d.isDeleted == false
+                           select new
                           {
                               name = d.name,
                               typeId = d.typeId
@@ -80,7 +86,8 @@ namespace Rasheed_Traders
                 db.Medicines.Add(u);
                 db.SaveChanges();
                 MessageBox.Show("Medicine added successfully");
-                this.Close();
+                mediName.Text = "";
+                potency.Text = "";
                 updateWindow();
             }
         }

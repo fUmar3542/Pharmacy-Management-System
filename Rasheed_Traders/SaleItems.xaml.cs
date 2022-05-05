@@ -36,6 +36,7 @@ namespace Rasheed_Traders
 
         private void loadData()
         {
+            ticketsList.Clear();
             Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
             var data = (from c in db.SaleItems
                         from f in db.Medicines.Where(y => y.id == c.medicineId).DefaultIfEmpty()
@@ -53,7 +54,7 @@ namespace Rasheed_Traders
             foreach (var item in data)
             {
                 var tp = (from d in db.Types
-                          where d.id == item.typeId
+                          where d.id == item.typeId && d.isDeleted == false
                           select new
                           {
                               name = d.name,
@@ -94,7 +95,6 @@ namespace Rasheed_Traders
                     index++;
                 }
                 loadData();
-
             }
         }
 
@@ -127,7 +127,8 @@ namespace Rasheed_Traders
                                 item.isDeleted = true;     
                                 data1.items--;
                                 data1.subTotal -= item.subTotal;
-                                data1.total -= item.total;
+                                data1.discountAmount = (int)(data1.subTotal * data1.discount / 100);
+                                data1.total = data1.subTotal - (double)(data1.discountAmount);
                                 medId = item.medicineId;
                                 medQuantity = item.quantity;
                             }
@@ -149,10 +150,11 @@ namespace Rasheed_Traders
                     }
                 }
             }
-            else
+            else if (sender.Equals(invoice))
             {
                 int subtotal = 0, total = 0;
                 Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+                var dat = (from d in db.Sales where d.id == saleId && d.isDeleted == false select d).SingleOrDefault();
                 var data1 = from d in db.Invoices select d;
                 if (db != null)
                 {
@@ -163,15 +165,35 @@ namespace Rasheed_Traders
                             from f in db.Medicines.Where(y => y.id == p.medicineId).DefaultIfEmpty()
                             where p.isDeleted == false && p.saleId == saleId
                             select p);
+                double total1 = Math.Round(Convert.ToDouble(dat.total)),subTota = Math.Round(Convert.ToDouble(dat.subTotal)),inTotal = 0;
+                string tr = total1.ToString("N2");
+                string top1 = saleId.ToString();
+                while(top1.Length != 5)
+                {
+                    top1 = "0" + top1;
+                }
+                string bonu = "",s = "";
+                string quantity = "";
+                int bonusValue = 0;
                 foreach(var item in data)
                 {
                     var medicine = (from d in db.Medicines
-                                   where d.id == item.medicineId
-                                   select d).SingleOrDefault();
+                                   where d.id == item.medicineId && d.isDeleted == false
+                                    select d).SingleOrDefault();
                     var type = (from d in db.Types
-                                where d.id == medicine.typeId
+                                where d.id == medicine.typeId && d.isDeleted == false
                                 select d).SingleOrDefault();
-                    Invoice invoice = new Invoice() { Item = medicine.name, Type = type.name, Discount = item.discount.ToString() + "%", SubTotal = item.subTotal, Total = Convert.ToInt32(item.total) };
+                    quantity = item.quantity.ToString();
+                    if (item.bonusId != null || item.bonusId == -1)
+                    {
+                        var bonus = (from d in db.Bonus where d.id == item.bonusId && d.isDeleted == false select d).SingleOrDefault();
+                        bonu = bonus.name;
+                        bonusValue = Convert.ToInt32(item.bonus);
+                        quantity = (item.quantity - item.bonus).ToString();
+                    }
+                    inTotal = Math.Round(Convert.ToDouble(item.total));
+                    s = DateTime.Now.ToString("dd/MM/yyyy");
+                    Invoice invoice = new Invoice() { Total = inTotal.ToString("N2"), R_Price = item.Price.ToString(), SubTotal = subTota.ToString("N2"),Discount = item.discount + "%",Quantity = quantity, Date = s, OverallTotal = tr,Bonus = bonu,Name = dat.Name.ToUpper(),SaleType = "Customer",SaleId = top1, TotalDiscount = dat.discount.ToString() + "%", Item = medicine.name, Type = type.name };
                     db.Invoices.Add(invoice);
                     subtotal += Convert.ToInt32(item.subTotal);
                     total += Convert.ToInt32(item.total);

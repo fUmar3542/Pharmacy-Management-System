@@ -9,7 +9,7 @@
     <Grid>
         <Grid x:Name="Date" Width="Auto" Height="80" VerticalAlignment="Top" HorizontalAlignment="Center">
             <Label Content="From Date"  Margin="13,18,650,0" VerticalAlignment="Top" FontSize="22"  Padding="3,5,10,9" FontFamily="Bell MT" Background="#FFE6ECC5"/>
-            <DatePicker x:Name="fromDate" Margin="128,18,405,0" VerticalAlignment="Top" FontSize="22" BorderBrush="#FF8B8D93" Height="37"  CalendarClosed="dateTimePicker1_CloseUp"/>
+            <DatePicker x:Name="fromDate"  Margin="128,18,405,0" VerticalAlignment="Top" FontSize="22" BorderBrush="#FF8B8D93" Height="37"  CalendarClosed="dateTimePicker1_CloseUp"/>
             <Label Content="To Date"  Margin="400,18,252,0" VerticalAlignment="Top" FontSize="22"  Padding="20,5,3,9" FontFamily="Bell MT" Background="#FFE6ECC5"  FontStyle="Normal"/>
             <DatePicker x:Name="to" Margin="528,18,21,0"  VerticalAlignment="Top" FontSize="22" BorderBrush="#FF8B8D93" Height="37" CalendarClosed="dateTimePicker1_CloseUp"/>
         </Grid>

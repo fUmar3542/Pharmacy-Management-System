@@ -26,7 +26,7 @@
                 </MenuItem>
                 <MenuItem x:Name="ledger" Header="Ledger" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Calibri" RenderTransformOrigin="13.029,35.393" Padding="25,9,25,9" Click="MenuItem_Click"/>
             </Menu>
-            <TextBox x:Name="searchedContent" ToolTip="Search Medicine" TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="22" BorderBrush="#FF8B8D93" Height="40" Width="318" TextChanged="searchedContent_TextChanged" Margin="0,15,52,0" Padding="8,4,0,0"/>
+            <TextBox x:Name="searchedContent" GotFocus="Focus"  MaxLength="50"  ToolTip="Search Medicine" TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="22" BorderBrush="#FF8B8D93" Height="40" Width="318" TextChanged="searchedContent_TextChanged" Margin="0,15,52,0" Padding="8,4,0,0"/>
             <DataGrid x:Name="table" ColumnWidth="*" Margin="48,78,52,14" FontSize="16" FontFamily="Arial" IsReadOnly="True" AutoGenerateColumns="False">
                 <DataGrid.Columns >
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"  FontFamily="Arial" ></DataGridTextColumn>

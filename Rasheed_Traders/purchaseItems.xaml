@@ -17,7 +17,7 @@
                 <DataGridTextColumn Header="Total" Binding="{Binding Total}" Width="*" FontFamily="Arial" ></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="removeRow" Content="Remove the selected Row" HorizontalAlignment="Left" Margin="56,0,0,27" VerticalAlignment="Bottom" FontSize="22" Padding="5,5,5,5" FontFamily="Bell MT" Background="#FFF1A26B" RenderTransformOrigin="0.457,0.582" Click="Button_Click" Width="250"/>
+        <Button x:Name="removeRow" Content="Remove the selected Row" HorizontalAlignment="Left" Margin="51,0,0,27" VerticalAlignment="Bottom" FontSize="22" Padding="5,5,5,5" FontFamily="Bell MT" Background="#FFF1A26B" RenderTransformOrigin="0.457,0.582" Click="Button_Click" Width="250"/>
     <Button x:Name="invoice" Content="Generate Invoice" HorizontalAlignment="Right" Margin="0,0,45,27" VerticalAlignment="Bottom" FontSize="22" Padding="5,5,5,5" FontFamily="Bell MT" Background="#FF8FB944" RenderTransformOrigin="0.457,0.582" Click="Button_Click" Width="250"/>
     </Grid>
 </Window>

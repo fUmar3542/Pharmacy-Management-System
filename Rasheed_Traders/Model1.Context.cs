@@ -27,12 +27,12 @@ namespace Rasheed_Traders
     
         public virtual DbSet<Bonu> Bonus { get; set; }
         public virtual DbSet<Medicine> Medicines { get; set; }
-        public virtual DbSet<SaleItem> SaleItems { get; set; }
-        public virtual DbSet<TradingPartener> TradingParteners { get; set; }
         public virtual DbSet<Type> Types { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Sale> Sales { get; set; }
         public virtual DbSet<Stock> Stocks { get; set; }
         public virtual DbSet<Invoice> Invoices { get; set; }
+        public virtual DbSet<TradingPartener> TradingParteners { get; set; }
+        public virtual DbSet<SaleItem> SaleItems { get; set; }
     }
 }

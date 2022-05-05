@@ -28,6 +28,8 @@ namespace Rasheed_Traders
         public bool isDeleted { get; set; }
         public int buyerId { get; set; }
         public int typeId { get; set; }
+        public Nullable<int> Price { get; set; }
+        public Nullable<int> bonus { get; set; }
     
         public virtual Bonu Bonu { get; set; }
         public virtual Medicine Medicine { get; set; }

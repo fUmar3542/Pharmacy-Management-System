@@ -19,6 +19,7 @@ namespace Rasheed_Traders
     /// </summary>
     public partial class AddOrViewType : Window
     {
+        List<Type1> list = new List<Type1>() { };
         public AddOrViewType()
         {
             InitializeComponent();
@@ -30,13 +31,13 @@ namespace Rasheed_Traders
                 this.Close();
             else if (sender.Equals(create))
             {
-                if (typeName.Text == null )
+                if (typeName.Text == "")
                 {
                     MessageBox.Show("Enter the type name");
                     return;
                 }
                 Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
-                var doc = from d in db.Types
+                var doc = from d in db.Types where d.isDeleted == false
                           select d;
                 foreach (var item in doc)
                 {
@@ -53,6 +54,39 @@ namespace Rasheed_Traders
                 loadData();
                 typeName.Text = "";
                 updateWindow();
+            }
+            else if (sender.Equals(delete))
+            {
+                if (typeName.Text == "")
+                    return;
+
+                Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+                var doc = (from d in db.Types
+                            where d.name == typeName.Text && d.isDeleted == false
+                            select d).SingleOrDefault();
+                if (doc == null)
+                {
+                    MessageBox.Show("Item not found");
+                    return;
+                }
+                if (doc.Medicines.Count > 0)
+                {
+                    MessageBox.Show("Type can't be deleted. Delete the respective Medicines first");
+                    return;
+                }
+                if (doc != null)
+                {
+                    MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+                    if (messageBoxResult == MessageBoxResult.Yes)
+                    {
+                        doc.isDeleted = true;
+                        db.SaveChanges();
+                        loadData();
+                        MessageBox.Show("Type Deleted successfully");
+                        typeName.Text = "";
+                        updateWindow();
+                    }
+                }
             }
         }
         public void updateWindow()
@@ -94,15 +128,63 @@ namespace Rasheed_Traders
         }
         private void loadData()
         {
+            list.Clear();
             Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
             var doc = from d in db.Types
                       where d.isDeleted == false
                       select new
                       {
                           Name = d.name.ToUpper(),
-                          Date = d.createdAt
+                          Date = d.createdAt,
                       };
-            table.ItemsSource = doc.ToList();
+            string s = "";
+            foreach (var item in doc)
+            {
+                s = item.Date.ToString("dd/MM/yyyy HH:MM:ss");
+                list.Add(new Type1() { Name = item.Name, Dt = s});
+            }
+            table.ItemsSource = "";
+            table.ItemsSource = list;
+        }
+
+        private void Row_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var row = ItemsControl.ContainerFromElement((DataGrid)sender,
+                                                 e.OriginalSource as DependencyObject) as DataGridRow;
+            if (row == null)
+                return;
+            else
+            {
+                int a = table.SelectedIndex, index = 0;
+                Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+                var doc2 = from d in db.Types
+                           where d.isDeleted == false
+                           select d;
+                foreach (var item in doc2)
+                {
+                    if (a == index)
+                    {
+                        typeName.Text = item.name;
+                    }
+                    index++;
+                }
+            }
+        }
+
+        public class Type1
+        {
+            private string name;
+            public string Name
+            {
+                get { return name; }
+                set { name = value; }
+            }
+            private string date;
+            public string Dt
+            {
+                get { return date; }
+                set { date = value; }
+            }
         }
     }
 }

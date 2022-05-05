@@ -29,12 +29,12 @@ namespace Rasheed_Traders
                 this.Close();
             else if(sender.Equals(Create))
             {
-                if(name.Text == null || username.Text == null || password.Password == null || confirmPassword.Password == null)
+                if(name.Text == "" || username.Text == "" || password.Password == "" || confirmPassword.Password == "")
                 {
                     MessageBox.Show("Please fill out all the fields first");
                     return;
                 }
-                if(password.Password != confirmPassword.Password)
+                if (password.Password != confirmPassword.Password)
                 {
                     MessageBox.Show("Password must match the confirm password");
                     return;
