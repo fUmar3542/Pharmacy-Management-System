@@ -82,6 +82,27 @@ namespace Rasheed_Traders
             }
         }
 
+        private bool checkStock(int a,int c)
+        {
+            Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+            var st = (from d in db.Stocks
+                      where d.isDeleted == false && d.medicineId == a
+                      select d).FirstOrDefault();
+            if (st == null)
+            {
+                MessageBox.Show("Stock item not exist");
+                return false;
+            }
+            if (st.quantity < c)
+            {
+                var med = (from d in db.Medicines
+                           where d.isDeleted == false && d.id == a
+                           select d).FirstOrDefault();
+                MessageBox.Show(med.name + " stock not available");
+                return false;
+            }
+            return true;
+        }
         private void saleDone()
         {
             double number1;
@@ -127,6 +148,45 @@ namespace Rasheed_Traders
                 List<string> mediId = new List<string>();
                 int id1 = 0, id2 = 0, id3 = 0, id4 = -1, i = 0;
                 double total1 = 0, iTotal = 0, iSubtotal = 0, dAmount = 0;
+                int bonus1 = 0;
+                foreach (var item in list)
+                {
+                    bonus1 = 0;
+                    int index3 = item.mediStatus.IndexOf('-');
+                    string tp = item.mediStatus.Substring(0, index3 - 1),
+                        md = item.mediStatus.Substring(index3 + 2);
+                    id2 = returnId("Type", tp);
+                    if (id2 == -1)
+                    {
+                        MessageBox.Show("Select items first");
+                        return;
+                    }
+                    id1 = returnMedicineId(md, id2);
+                    if (item.bonusStatus != "0")
+                    {
+                        id4 = returnId("Bonus", item.bonusStatus);
+                        char[] num = item.bonusStatus.ToCharArray();
+                        int len = num.Length;
+                        int num2 = 0, num3 = 0, num4 = 0;
+                        while (num[num2] != '+')
+                        {
+                            num3 *= 10;
+                            num3 += (num[num2] - '0');
+                            num2++;
+                        }
+                        num2++;
+                        while (num2 != len)
+                        {
+                            num4 *= 10;
+                            num4 += (num[num2] - '0');
+                            num2++;
+                        }
+                        if (num3 != 0)
+                            bonus1 = (item.Quantity / num3) * num4; // bonus items
+                    }
+                    if (checkStock(id1, bonus1 + item.Quantity) == false)
+                        return;
+                }
                 int pIndex = combobox.Text.IndexOf('-');
                 string name = "", pName = combobox.Text.Substring(0, (pIndex - 1)), pLocation = combobox.Text.Substring(pIndex + 2);
                 // Partner id searching
@@ -143,27 +203,54 @@ namespace Rasheed_Traders
                     name = m.nm;
                 }
                 Sale s = new Sale();
-                int bonus1 = 0;
                 double dPercentage = 0;
-
-                // Searching of medicineId and typeId of each record
-                foreach (var index in list)
+                foreach(var item in list)
                 {
-                    if (index.mediStatus == "True")
-                    {
-                        MessageBox.Show("Select Medicine first");
-                        return;
-                    }
                     bonus1 = 0;
-                    int index3 = index.mediStatus.IndexOf('-');
-                    string tp = index.mediStatus.Substring(0, index3 - 1), 
-                        md = index.mediStatus.Substring(index3+2);
-                    id2 = returnId("Type",tp);
+                    int index3 = item.mediStatus.IndexOf('-');
+                    string tp = item.mediStatus.Substring(0, index3 - 1),
+                        md = item.mediStatus.Substring(index3 + 2);
+                    id2 = returnId("Type", tp);
                     if (id2 == -1)
                     {
                         MessageBox.Show("Select items first");
                         return;
                     }
+                    id1 = returnMedicineId(md, id2);
+                    if (item.bonusStatus != "0")
+                    {
+                        id4 = returnId("Bonus", item.bonusStatus);
+                        char[] num = item.bonusStatus.ToCharArray();
+                        int len = num.Length;
+                        int num2 = 0, num3 = 0, num4 = 0;
+                        while (num[num2] != '+')
+                        {
+                            num3 *= 10;
+                            num3 += (num[num2] - '0');
+                            num2++;
+                        }
+                        num2++;
+                        while (num2 != len)
+                        {
+                            num4 *= 10;
+                            num4 += (num[num2] - '0');
+                            num2++;
+                        }
+                        if (num3 != 0)
+                            bonus1 = (item.Quantity / num3) * num4; // bonus items
+                    }
+                    if (checkStock(id1,bonus1 + item.Quantity) == false)
+                        return;
+                }
+
+                // Searching of medicineId and typeId of each record
+                foreach (var index in list)
+                {
+                    bonus1 = 0;
+                    int index3 = index.mediStatus.IndexOf('-');
+                    string tp = index.mediStatus.Substring(0, index3 - 1), 
+                        md = index.mediStatus.Substring(index3+2);
+                    id2 = returnId("Type",tp);
                     id1 = returnMedicineId( md, id2);
                     if (index.bonusStatus != "0")
                     {
@@ -273,29 +360,13 @@ namespace Rasheed_Traders
             var st = (from d in db.Stocks
                      where d.isDeleted == false && d.medicineId == a
                      select d).FirstOrDefault();
-            if (st == null)
-            {
-                MessageBox.Show("Stock item not exist");
-                return false;
-            }
-            if (st.quantity < c)
-            {
-                var med = (from d in db.Medicines
-                          where d.isDeleted == false && d.id == a
-                          select d).FirstOrDefault();
-                MessageBox.Show(med.name + " stock not available");
-                return false;
-            }
-            else
-            {
-                st.updatedAt = DateTime.Now;
-                st.quantity -= c;
-                var s = (from d in db.Medicines
-                         where d.isDeleted == false && d.id == a
-                         select d).FirstOrDefault();
-                s.priceSell = price;
-                db.SaveChanges();
-            }
+           st.updatedAt = DateTime.Now;
+           st.quantity -= c;
+           var s = (from d in db.Medicines
+                    where d.isDeleted == false && d.id == a
+                    select d).FirstOrDefault();
+           s.priceSell = price;
+           db.SaveChanges();
             return true;
         }
 

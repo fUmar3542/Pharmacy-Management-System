@@ -33,8 +33,8 @@ namespace Rasheed_Traders
     
         public virtual Bonu Bonu { get; set; }
         public virtual Medicine Medicine { get; set; }
+        public virtual Sale Sale { get; set; }
         public virtual TradingPartener TradingPartener { get; set; }
         public virtual Type Type { get; set; }
-        public virtual Sale Sale { get; set; }
     }
 }

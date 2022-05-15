@@ -177,8 +177,12 @@ namespace Rasheed_Traders
                 int bonusValue = 0;
                 foreach(var item in data)
                 {
+                    bonu = "";
+                    var data2 = (from d in db.TradingParteners
+                                 where d.isDeleted == false && d.id == item.buyerId && d.isBuyer == true
+                                 select d).SingleOrDefault();
                     var medicine = (from d in db.Medicines
-                                   where d.id == item.medicineId && d.isDeleted == false
+                                   where  d.id == item.medicineId && d.isDeleted == false
                                     select d).SingleOrDefault();
                     var type = (from d in db.Types
                                 where d.id == medicine.typeId && d.isDeleted == false
@@ -193,7 +197,7 @@ namespace Rasheed_Traders
                     }
                     inTotal = Math.Round(Convert.ToDouble(item.total));
                     s = DateTime.Now.ToString("dd/MM/yyyy");
-                    Invoice invoice = new Invoice() { Total = inTotal.ToString("N2"), R_Price = item.Price.ToString(), SubTotal = subTota.ToString("N2"),Discount = item.discount + "%",Quantity = quantity, Date = s, OverallTotal = tr,Bonus = bonu,Name = dat.Name.ToUpper(),SaleType = "Customer",SaleId = top1, TotalDiscount = dat.discount.ToString() + "%", Item = medicine.name, Type = type.name };
+                    Invoice invoice = new Invoice() {Location = data2.location, Total = inTotal.ToString("N2"), R_Price = item.Price.ToString(), SubTotal = subTota.ToString("N2"),Discount = item.discount + "%",Quantity = quantity, Date = s, OverallTotal = tr,Bonus = bonu,Name = data2.name.ToUpper(), SaleType = "Customer",SaleId = top1, TotalDiscount = dat.discount.ToString() + "%", Item = medicine.name, Type = type.name };
                     db.Invoices.Add(invoice);
                     subtotal += Convert.ToInt32(item.subTotal);
                     total += Convert.ToInt32(item.total);

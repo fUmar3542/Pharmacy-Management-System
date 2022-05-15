@@ -29,5 +29,6 @@ namespace Rasheed_Traders
         public string SubTotal { get; set; }
         public string R_Price { get; set; }
         public string Total { get; set; }
+        public string Location { get; set; }
     }
 }

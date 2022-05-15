@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,42 +39,49 @@ namespace Rasheed_Traders
 
         private void loadData()
         {
-            Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
-            var data = (from c in db.Medicines
-                        from e in db.Stocks.Where(x => x.medicineId == c.id).DefaultIfEmpty()
-                        from f in db.Types.Where(y => y.id == c.typeId).DefaultIfEmpty()
-                        where c.isDeleted == false && e.id != null                      // Stock id exists
-                        select new
-                        {
-                            Name = c.name.ToUpper(),
-                            Type = f.name.ToUpper(),
-                            Potency = c.potency.ToUpper(),
-                            Unit_Price = c.priceBuy,
-                            updatedAt = e.updatedAt,
-                            Quantity = e.quantity,
-                            createdAt = e.createdAt
-                        });
-            DateTime d = DateTime.Now;
-            string s = "";
-            if (data != null)
+            try
             {
-                list.Clear();
-                foreach (var item in data)
+                Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+                var data = (from c in db.Medicines
+                            from e in db.Stocks.Where(x => x.medicineId == c.id).DefaultIfEmpty()
+                            from f in db.Types.Where(y => y.id == c.typeId).DefaultIfEmpty()
+                            where c.isDeleted == false && (e.id != null)                      // Stock id exists
+                            select new
+                            {
+                                Name = c.name.ToUpper(),
+                                Type = f.name.ToUpper(),
+                                Potency = c.potency.ToUpper(),
+                                Unit_Price = c.priceBuy,
+                                updatedAt = e.updatedAt,
+                                Quantity = e.quantity,
+                                createdAt = e.createdAt
+                            });
+                DateTime d = DateTime.Now;
+                string s = "";
+                if (data != null)
                 {
-                    if (item != null)
+                    list.Clear();
+                    foreach (var item in data)
                     {
-                        if (item.updatedAt != null)
-                            d = item.updatedAt.Value;
-                        else
-                            d = item.createdAt;
-                        s = d.ToString("dd/MM/yyyy HH:mm:ss");
-                        list.Add(new homeData() { Name = item.Name, Type = item.Type, Potency = item.Potency, Price = item.Unit_Price, Dt = s, Quantity = item.Quantity });
+                        if (item != null)
+                        {
+                            if (item.updatedAt != null)
+                                d = item.updatedAt.Value;
+                            else
+                                d = item.createdAt;
+                            s = d.ToString("dd/MM/yyyy HH:mm:ss");
+                            list.Add(new homeData() { Name = item.Name, Type = item.Type, Potency = item.Potency, Price = item.Unit_Price, Dt = s, Quantity = item.Quantity });
+                        }
                     }
+                    table.ItemsSource = list;
                 }
-                table.ItemsSource = list;
-                //table.RowBackground = Brushes.Red;
-                //DataGridRow r = (DataGridRow)table.ItemContainerGenerator.ContainerFromIndex(0);
-                //r.Background = Brushes.Black;
+            }
+            catch(Exception x)
+            {
+                using (StreamWriter w = File.AppendText("error.txt"))
+                {
+                    w.WriteLine("\n\nIn Home Window \n\n" + x);
+                }
             }
         }
 
@@ -215,3 +223,19 @@ namespace Rasheed_Traders
         }
     }
 }
+
+
+
+//for(int i = 0; i < table.Items.Count;i++)
+//{
+//    DataGridRow r = (DataGridRow)table.ItemContainerGenerator.ContainerFromIndex(i);
+//    if(r != null)
+//    {
+//        SolidColorBrush b = new SolidColorBrush(Color.FromArgb(100, 0, 87, 67));
+//        r.Background = b;
+//    }
+
+//}
+//table.RowBackground = Brushes.Red;
+//DataGridRow r = (DataGridRow)table.ItemContainerGenerator.ContainerFromIndex(0);
+//r.Background = Brushes.Black;

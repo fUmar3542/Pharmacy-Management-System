@@ -14,8 +14,8 @@
         <Grid x:Name="Main" Height="Auto" Width="Auto">
             <Menu x:Name="menu" Width="auto" Height="50" Background="#FFF3CDCD" Margin="45,10,-8,0" VerticalAlignment="Top" HorizontalAlignment="Left">
                 <MenuItem Header="Medicine" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Calibri" RenderTransformOrigin="13.029,35.393" Padding="25,9,25,9">
-                    <MenuItem x:Name="addMedicine" Header="Add New Medicine" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Calibri" RenderTransformOrigin="13.029,35.393" Padding="15,9,15,9" Click="MenuItem_Click"/>
                     <MenuItem x:Name="addType" Header="Add/View Type" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Calibri" RenderTransformOrigin="13.029,35.393" Padding="15,9,15,9"  Click="MenuItem_Click"/>
+                    <MenuItem x:Name="addMedicine" Header="Add New Medicine" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Calibri" RenderTransformOrigin="13.029,35.393" Padding="15,9,15,9" Click="MenuItem_Click"/>
                     <MenuItem x:Name="addBonus" Header="Add/View Bonus" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Calibri" RenderTransformOrigin="13.029,35.393" Padding="15,9,15,9"  Click="MenuItem_Click"/>
                 </MenuItem>
                 <MenuItem Header="Sale" Background="#FFF1EDED" FontSize="22" FontWeight="Bold" FontFamily="Calibri" RenderTransformOrigin="13.029,35.393" Padding="25,9,25,9">

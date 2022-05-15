@@ -17,8 +17,8 @@ namespace Rasheed_Traders
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TradingPartener()
         {
-            this.Stocks = new HashSet<Stock>();
             this.SaleItems = new HashSet<SaleItem>();
+            this.Stocks = new HashSet<Stock>();
         }
     
         public int id { get; set; }
@@ -32,8 +32,8 @@ namespace Rasheed_Traders
         public Nullable<bool> isSeller { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Stock> Stocks { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SaleItem> SaleItems { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Stock> Stocks { get; set; }
     }
 }

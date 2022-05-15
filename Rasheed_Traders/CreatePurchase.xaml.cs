@@ -86,9 +86,15 @@ namespace Rasheed_Traders
         private void saleDone()
         {
             List<TicketInfo> list = table.Items.OfType<TicketInfo>().ToList();
+            int id1 = 0, id2 = 0, id3 = 0, id4 = -1, i = 0;
             if (list.Count() == 0)
             {
                 this.Close();
+                return;
+            }
+            if (combobox.Text == "")
+            {
+                MessageBox.Show("Select Partner first");
                 return;
             }
             foreach (var item1 in list)
@@ -96,6 +102,15 @@ namespace Rasheed_Traders
                 if (item1.mediStatus == "True" || item1.Quantity < 0 || item1.DiscountPercentage < 0)
                 {
                     MessageBox.Show("Not a valid input. Please enter valid input");
+                    return;
+                }
+                int index3 = item1.mediStatus.IndexOf('-');
+                string tp = item1.mediStatus.Substring(0, index3 - 1),
+                            md = item1.mediStatus.Substring(index3 + 2);
+                id2 = returnId("Type", tp);
+                if (id2 == -1)
+                {
+                    MessageBox.Show("Select items first");
                     return;
                 }
             }
@@ -115,15 +130,9 @@ namespace Rasheed_Traders
                     MessageBox.Show("Enter the valid Discount Percentage");
                     return;
                 }
-            }
-            if(combobox.Text == "")
-            {
-                MessageBox.Show("Select Partner first");
-                return;
-            }
+            }          
             Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
             List<string> mediId = new List<string>();
-            int id1 = 0, id2 = 0, id3 = 0, id4 = -1, i = 0;
             double total1 = 0,  iTotal = 0, iSubtotal, dAmount = 0;
             int pIndex = combobox.Text.IndexOf('-');
             string name = "",pName = combobox.Text.Substring(0,(pIndex-1)),pLocation = combobox.Text.Substring(pIndex+2);
@@ -151,11 +160,6 @@ namespace Rasheed_Traders
                     string tp = index.mediStatus.Substring(0, index3 - 1),
                                 md = index.mediStatus.Substring(index3 + 2);
                     id2 = returnId("Type", tp);
-                    if (id2 == -1)
-                    {
-                        MessageBox.Show("Select items first");
-                        return;
-                    }
                     id1 = returnMedicineId(md, id2);
                     if (index.bonusStatus != "0")
                     {
