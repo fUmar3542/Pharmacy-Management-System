@@ -194,7 +194,7 @@ namespace Rasheed_Traders
                 saleI.isDeleted = true;
                 if (sale.items == 1)
                 {
-                    sale.subTotal = item2.subTotal;
+                    sale.subTotal = item2.total;
                 }
                 else
                 {

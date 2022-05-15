@@ -20,7 +20,6 @@ namespace Rasheed_Traders
             this.SaleItems = new HashSet<SaleItem>();
         }
     
-        public int id { get; set; }
         public Nullable<double> discount { get; set; }
         public Nullable<double> discountAmount { get; set; }
         public double subTotal { get; set; }
@@ -31,6 +30,7 @@ namespace Rasheed_Traders
         public int items { get; set; }
         public string Name { get; set; }
         public Nullable<bool> isPurchase { get; set; }
+        public int id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SaleItem> SaleItems { get; set; }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -80,42 +81,52 @@ namespace Rasheed_Traders
                     MessageBox.Show("Please fill out all the fields first");
                     return;
                 }
-                Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
-                var doc = from d in db.Users
-                          select new
-                          {
-                              username = d.username,
-                              Password = d.password
-                          };
-                bool check = false;
-                foreach (var item in doc)
+                try
                 {
-                    if (item.username == userBlock.Text)
+                    Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+                    var doc = from d in db.Users
+                              select new
+                              {
+                                  username = d.username,
+                                  Password = d.password
+                              };
+                    bool check = false;
+                    foreach (var item in doc)
                     {
-                        check = true;
-                        if (item.Password == passBlock.Password)
-                        {                           
-                            string title = "HomeWindow";  /*Your Window Instance Name*/
-                            var existingWindow = Application.Current.Windows.
-                            Cast<Window>().SingleOrDefault(x => x.Title.Equals(title));
-                            if (existingWindow == null)
-                            {
-                                HomeWindow newWindow = new HomeWindow(); /* Give Your window Instance */
-                                newWindow.Title = title;
-                                newWindow.Show();
-                            }
-                            this.Close();
-                        }
-                        else
+                        if (item.username == userBlock.Text)
                         {
-                            MessageBox.Show("Incorrect Password");
-                            return;
+                            check = true;
+                            if (item.Password == passBlock.Password)
+                            {
+                                string title = "HomeWindow";  /*Your Window Instance Name*/
+                                var existingWindow = Application.Current.Windows.
+                                Cast<Window>().SingleOrDefault(x => x.Title.Equals(title));
+                                if (existingWindow == null)
+                                {
+                                    HomeWindow newWindow = new HomeWindow(); /* Give Your window Instance */
+                                    newWindow.Title = title;
+                                    newWindow.Show();
+                                }
+                                this.Close();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Incorrect Password");
+                                return;
+                            }
                         }
                     }
+                    if (check == false)
+                    {
+                        MessageBox.Show("Username doesn't exist. Please signup");
+                    }
                 }
-                if(check == false)
+                catch (Exception x)
                 {
-                    MessageBox.Show("Username doesn't exist. Please signup");
+                    using (StreamWriter w = File.AppendText("error.txt"))
+                    {
+                        w.WriteLine("\n\nIn Home Window \n\n" + x);
+                    }
                 }
             }
         }
