@@ -81,52 +81,42 @@ namespace Rasheed_Traders
                     MessageBox.Show("Please fill out all the fields first");
                     return;
                 }
-                try
+                Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
+                var doc = from d in db.Users
+                            select new
+                            {
+                                username = d.username,
+                                Password = d.password
+                            };
+                bool check = false;
+                foreach (var item in doc)
                 {
-                    Rasheed_TradersEntities1 db = new Rasheed_TradersEntities1();
-                    var doc = from d in db.Users
-                              select new
-                              {
-                                  username = d.username,
-                                  Password = d.password
-                              };
-                    bool check = false;
-                    foreach (var item in doc)
+                    if (item.username == userBlock.Text)
                     {
-                        if (item.username == userBlock.Text)
+                        check = true;
+                        if (item.Password == passBlock.Password)
                         {
-                            check = true;
-                            if (item.Password == passBlock.Password)
+                            string title = "HomeWindow";  /*Your Window Instance Name*/
+                            var existingWindow = Application.Current.Windows.
+                            Cast<Window>().SingleOrDefault(x => x.Title.Equals(title));
+                            if (existingWindow == null)
                             {
-                                string title = "HomeWindow";  /*Your Window Instance Name*/
-                                var existingWindow = Application.Current.Windows.
-                                Cast<Window>().SingleOrDefault(x => x.Title.Equals(title));
-                                if (existingWindow == null)
-                                {
-                                    HomeWindow newWindow = new HomeWindow(); /* Give Your window Instance */
-                                    newWindow.Title = title;
-                                    newWindow.Show();
-                                }
-                                this.Close();
+                                HomeWindow newWindow = new HomeWindow(); /* Give Your window Instance */
+                                newWindow.Title = title;
+                                newWindow.Show();
                             }
-                            else
-                            {
-                                MessageBox.Show("Incorrect Password");
-                                return;
-                            }
+                            this.Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Incorrect Password");
+                            return;
                         }
                     }
-                    if (check == false)
-                    {
-                        MessageBox.Show("Username doesn't exist. Please signup");
-                    }
                 }
-                catch (Exception x)
+                if (check == false)
                 {
-                    using (StreamWriter w = File.AppendText("error.txt"))
-                    {
-                        w.WriteLine("\n\nIn Home Window \n\n" + x);
-                    }
+                    MessageBox.Show("Username doesn't exist. Please signup");
                 }
             }
         }

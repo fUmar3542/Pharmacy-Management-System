@@ -9,7 +9,7 @@
         SizeChanged="Window_SizeChanged">
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="E:\medi3.jpg" Opacity ="0.3" TileMode="None"/>
+            <ImageBrush ImageSource="/img/medi3.jpg" Opacity ="0.3" TileMode="None"/>
         </Grid.Background>
         <Grid x:Name="Main" Height="Auto" Width="Auto">
             <Menu x:Name="menu" Width="auto" Height="50" Background="#FFF3CDCD" Margin="45,10,-8,0" VerticalAlignment="Top" HorizontalAlignment="Left">
