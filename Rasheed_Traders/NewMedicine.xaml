@@ -8,7 +8,7 @@
         Title="NewMedicine" Height="450" Width="800">
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="E:\medicine.jpg" Opacity ="0.3" TileMode="None"/>
+            <ImageBrush ImageSource="/img/medicine.jpg" Opacity ="0.3" TileMode="None"/>
         </Grid.Background>
         <Grid x:Name="Main" Background="#FFDED6D8" HorizontalAlignment="Center" VerticalAlignment="Center" Height="322" Width="594" >
             <Label x:Name="newMedicine" Content="NEW MEDICINE" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FF361414" FontSize="34" FontWeight="Bold" HorizontalContentAlignment="Left" Height="48" Width="251" Background="{x:Null}" VerticalContentAlignment="Top" BorderBrush="#FF3C2323" FontFamily="Calibri" Margin="169,4,174,0"/>

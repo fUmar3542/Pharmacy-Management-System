@@ -8,7 +8,7 @@
         Title="Partner" Height="450" Width="800">
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="E:\partners.jpg" Opacity ="0.4" TileMode="None"/>
+            <ImageBrush ImageSource="/img/partners.jpg" Opacity ="0.4" TileMode="None"/>
         </Grid.Background>
         <Grid x:Name="Main" Background="#FFDBE0D1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="327" Width="594" >
             <Label x:Name="newMedicine" Content="NEW PARTNER" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FF260383" FontSize="34" FontWeight="Bold" HorizontalContentAlignment="Left" Height="48" Width="276" Background="{x:Null}" VerticalContentAlignment="Top" BorderBrush="#FF3C2323" FontFamily="Modern No. 20" Margin="0,8,0,0"/>

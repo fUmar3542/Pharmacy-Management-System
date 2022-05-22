@@ -8,7 +8,7 @@
         Title="Window1" Height="450" Width="800"       SizeChanged="Window_SizeChanged">
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="E:\password2.jpg" Opacity ="0.3" TileMode="None"/>
+            <ImageBrush ImageSource="/img/password2.jpg" Opacity ="0.3" TileMode="None"/>
         </Grid.Background>
         <Grid x:Name="Main" Background="#FFF2F2F3" HorizontalAlignment="Center" VerticalAlignment="Center" Height="302" Width="558" >
             <Label x:Name="changePassword" Content="CHANGE PASSWORD" HorizontalAlignment="Center" Margin="0,18,0,0" VerticalAlignment="Top" Foreground="#FF361414" FontSize="34" FontWeight="Bold" HorizontalContentAlignment="Left" Height="48" Width="354" Background="{x:Null}" VerticalContentAlignment="Top" BorderBrush="#FF3C2323" FontFamily="Modern No. 20"/>

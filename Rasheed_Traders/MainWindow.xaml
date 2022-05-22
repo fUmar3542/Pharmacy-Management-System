@@ -8,7 +8,7 @@
         Title="MainWindow" Height="470" Width="810">
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="E:\login3.jpg" Opacity ="0.3" TileMode="None"/>
+            <ImageBrush ImageSource="/img/login3.jpg" Opacity ="0.3" TileMode="None"/>
         </Grid.Background>
         <Grid x:Name="Main" HorizontalAlignment="center" VerticalAlignment="center">
             <Label x:Name="mainHeading" Content="RASHEED TRADERS®" HorizontalAlignment="Left" Margin="127,58,0,0" VerticalAlignment="Top" Foreground="#FF361414" FontSize="50" FontWeight="Bold" HorizontalContentAlignment="Left" Height="70" Width="535" Background="{x:Null}" VerticalContentAlignment="Top" BorderBrush="#FF3C2323" FontFamily="Algerian"/>
